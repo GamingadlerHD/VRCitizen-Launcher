@@ -21,13 +21,11 @@ HOSTS_FILE = r"C:\\Windows\\System32\\drivers\\etc\\hosts"
 # Placeholder bypass line
 BYPASS_LINE = "127.0.0.1 modules-cdn.eac-prod.on.epicgames.com\n"
 
-def save_config(sc_path, vorpx_path, digi_path, attr_orig, attr_custom):
+def save_config(sc_path, vorpx_path, eac_folder):
     config = {
         "sc_path": sc_path,
         "vorpx_path": vorpx_path,
-        "digi_path": digi_path,
-        "attr_orig": attr_orig,
-        "attr_custom": attr_custom
+        "eac_folder": eac_folder
     }
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
@@ -37,6 +35,7 @@ def load_config():
         return None
     with open(CONFIG_FILE, 'r') as f:
         return json.load(f)
+
 
 
 # === FUNCTIONS ===
@@ -94,67 +93,148 @@ def browse_file(entry, filetypes):
         entry.delete(0, tk.END)
         entry.insert(0, filename)
 
+def browse_folder(entry):
+    foldername = filedialog.askdirectory()
+    if foldername:
+        entry.delete(0, tk.END)
+        entry.insert(0, foldername)
 
 
 def launch():
-    sc_path = sc_entry.get()
+    sc_folder_path = sc_entry.get()
     vorpx_path = vorpx_entry.get()
-    digi_path = digi_entry.get()
-    attr_orig_path = attr_orig_entry.get()
-    attr_custom_path = attr_custom_entry.get()
+    attr_orig_path = os.path.join(sc_folder_path, "/user/client/0/Profiles/default/attributes.xml")
+    sc_executable = os.path.join(sc_folder_path, "/Bin64/StarCitizen.exe")
+    dxgi_dest_path = os.path.join(os.path.dirname(sc_folder_path, "/Bin64/dxgi.dll"))
+    eac_folder_path = eac_folder_entry.get()
+    
+    # Pre-Validation
+    custom_attr_path = os.path.join(os.path.dirname(sys.argv[0]), "attributes.xml")
+    dxgi_path = os.path.join(os.path.dirname(sys.argv[0]), "dxgi.dll")
 
-    if not all([sc_path, vorpx_path, attr_orig_path, attr_custom_path]):
+    if not os.path.isfile(custom_attr_path):
+        messagebox.showerror("Error", f"Required custom attributes file not found:\n{custom_attr_path}")
+        exit(1)
+    if not os.path.isfile(dxgi_path):
+        messagebox.showerror("Error", f"Required vorpX hook file not found:\n{dxgi_path}")
+        exit(1)
+
+    if not all([sc_folder_path, vorpx_path, eac_folder_path]):
         messagebox.showerror("Error", "Please select all necessary files!")
         return
 
-    sc_proc_name = os.path.basename(sc_path)
+    sc_proc_name = os.path.basename(sc_executable)
     vorpx_proc_name = os.path.basename(vorpx_path)
+
+    # check if all paths are valid
+    if not os.path.isdir(sc_folder_path):
+        messagebox.showerror("Error", f"Star Citizen folder not found:\n{sc_folder_path}")
+        return
+    if not os.path.isdir(eac_folder_path):
+        messagebox.showerror("Error", f"EasyAntiCheat folder not found:\n{eac_folder_path}")
+        return
+    if not os.path.isfile(vorpx_path):
+        messagebox.showerror("Error", f"vorpX executable not found:\n{vorpx_path}")
+        return 
+    if not os.path.isfile(sc_executable):
+        messagebox.showerror("Error", f"Star Citizen executable not found:\n{sc_executable}")
+        return
+    if not os.path.isfile(attr_orig_path):
+        messagebox.showerror("Error", f"Original attributes file not found:\n{attr_orig_path}")
+        return
 
 
     if not is_admin():
         messagebox.showerror("Admin Required", "This launcher must be run as administrator!")
         return
-
     try:
-        messagebox.showinfo("Info", "Modifying hosts file...")
-        backup_file(HOSTS_FILE)
-        modify_hosts(add=True)
+        # Initialize variables to track changes
+        hosts_modified = False
+        attr_modified = False
+        inserted_dxgi = False
+        vorpx_proc = None
+        sc_proc = None
+    
+        try:
+            messagebox.showinfo("Info", "Modifying hosts file...")
+            backup_file(HOSTS_FILE)
+            modify_hosts(add=True)
+            hosts_modified = True
 
-        messagebox.showinfo("Info", "Starting vorpX...")
-        vorpx_proc = launch_process(vorpx_path)
+            messagebox.showinfo("Info", "Pasting dxgi.dll... (Hook Helper)")
+            shutil.copy2(dxgi_path, dxgi_dest_path)
+            inserted_dxgi = True
 
-        messagebox.showinfo("Info", "Replacing attributes file...")
-        backup_file(attr_orig_path)
-        replace_file(attr_custom_path, attr_orig_path)
+            messagebox.showinfo("Info", "Starting vorpX...")
+            vorpx_proc = launch_process(vorpx_path)
 
-        messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
-        wait_for_process(vorpx_proc_name)
+            messagebox.showinfo("Info", "Replacing attributes file...")
+            backup_file(attr_orig_path)
+            replace_file(custom_attr_path, attr_orig_path)
+            attr_modified = True
 
-        messagebox.showinfo("Info", "Launching Star Citizen...")
-        sc_proc = launch_process(sc_path)
-        wait_for_exit(sc_proc)
+            messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
+            wait_for_process(vorpx_proc_name)
 
-        messagebox.showinfo("Info", "Closing vorpX...")
-        kill_process_by_name(vorpx_proc_name)
+            messagebox.showinfo("Info", "Launching Star Citizen...")
+            sc_proc = launch_process(sc_executable)
+            wait_for_exit(sc_proc)
 
-        messagebox.showinfo("Info", "Restoring original attributes...")
-        shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
-        os.remove(attr_orig_path + ".backup")
+            messagebox.showinfo("Info", "Closing vorpX...")
+            kill_process_by_name(vorpx_proc_name)
 
-        messagebox.showinfo("Info", "Restoring hosts file...")
-        shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
-        os.remove(HOSTS_FILE + ".backup")
+            messagebox.showinfo("Info", "Removing dxgi.dll...")
+            if os.path.exists(dxgi_dest_path):
+                os.remove(dxgi_dest_path)
+                inserted_dxgi = False
 
+            messagebox.showinfo("Info", "Restoring original attributes...")
+            shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
+            os.remove(attr_orig_path + ".backup")
+            attr_modified = False
 
-        # messagebox.showinfo("Info", "Deleting digi file...")
-        # try:
-        #     os.remove(digi_path)
-        # except Exception as e:
-        #     print(f"Couldn't delete digi file: {e}")
+            messagebox.showinfo("Info", "Restoring hosts file...")
+            shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
+            os.remove(HOSTS_FILE + ".backup")
+            hosts_modified = False
 
-        messagebox.showinfo("Success", "All done! Enjoy!")
+            messagebox.showinfo("Success", "All done! Enjoy!")
+
+        except Exception as e:
+            # Revert changes in reverse order
+            messagebox.showerror("Error", f"An error occurred: {e}\nAttempting to revert changes...")
+        
+            try:
+                # Restore attributes if they were modified
+                if attr_modified and os.path.exists(attr_orig_path + ".backup"):
+                    shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
+                    os.remove(attr_orig_path + ".backup")
+                    messagebox.showinfo("Info", "Restored original attributes file")
+                
+                # Restore hosts file if it was modified
+                if hosts_modified and os.path.exists(HOSTS_FILE + ".backup"):
+                    shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
+                    os.remove(HOSTS_FILE + ".backup")
+                    messagebox.showinfo("Info", "Restored original hosts file")
+
+                if inserted_dxgi and os.path.exists(dxgi_dest_path):
+                    os.remove(dxgi_dest_path)
+                    messagebox.showinfo("Info", "Removed dxgi.dll hook file")
+                
+                # Kill vorpX if it was launched
+                if vorpx_proc is not None:
+                    try:
+                        kill_process_by_name(vorpx_proc_name)
+                        messagebox.showinfo("Info", "Closed vorpX process")
+                    except:
+                        pass
+                
+                    
+            except Exception as revert_error:
+                messagebox.showerror("Revert Error", f"Failed to fully revert changes: {revert_error}")
+
     except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
+        messagebox.showerror("Error", f"Operation failed: {e}")
 
 # --- Build GUI
 root = tk.Tk()
@@ -165,7 +245,7 @@ root.title("Star Citizen VR Launcher")
 tk.Label(root, text="Star Citizen Exe").grid(row=0, column=0)
 sc_entry = tk.Entry(root, width=50)
 sc_entry.grid(row=0, column=1)
-tk.Button(root, text="Browse", command=lambda: browse_file(sc_entry, [('Executables', '*.exe')])).grid(row=0, column=2)
+tk.Button(root, text="Browse", command=lambda: browse_folder(sc_entry)).grid(row=0, column=2)
 
 # VorpX Exe
 tk.Label(root, text="vorpX Exe").grid(row=1, column=0)
@@ -173,11 +253,11 @@ vorpx_entry = tk.Entry(root, width=50)
 vorpx_entry.grid(row=1, column=1)
 tk.Button(root, text="Browse", command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2)
 
-# Digi File (currently disabled)
-tk.Label(root, text="Digi File (unused)").grid(row=2, column=0)
-digi_entry = tk.Entry(root, width=50, state='disabled')
-digi_entry.grid(row=2, column=1)
-tk.Button(root, text="Browse", command=lambda: browse_file(digi_entry, [('All Files', '*.*')])).grid(row=2, column=2)
+# EasyAntiCheat Folder
+tk.Label(root, text="EasyAntiCheat Folder").grid(row=2, column=0)
+eac_folder_entry = tk.Entry(root, width=50)
+eac_folder_entry.grid(row=3, column=1)
+tk.Button(root, text="Browse", command=lambda: browse_folder(eac_folder_entry)).grid(row=2, column=2)
 
 # Original Attributes File
 tk.Label(root, text="Original Attributes File").grid(row=3, column=0)
@@ -185,19 +265,11 @@ attr_orig_entry = tk.Entry(root, width=50)
 attr_orig_entry.grid(row=3, column=1)
 tk.Button(root, text="Browse", command=lambda: browse_file(attr_orig_entry, [('XML Files', '*.xml')])).grid(row=3, column=2)
 
-# Custom Attributes File
-tk.Label(root, text="Custom Attributes File").grid(row=4, column=0)
-attr_custom_entry = tk.Entry(root, width=50)
-attr_custom_entry.grid(row=4, column=1)
-tk.Button(root, text="Browse", command=lambda: browse_file(attr_custom_entry, [('XML Files', '*.xml')])).grid(row=4, column=2)
-
 # Buttons
 tk.Button(root, text="Save Config", command=lambda: save_config(
-    sc_entry.get(), vorpx_entry.get(), digi_entry.get(), attr_orig_entry.get(), attr_custom_entry.get())
+    sc_entry.get(), vorpx_entry.get(), attr_orig_entry.get(), eac_folder_entry.get())
 ).grid(row=5, column=0)
-
 tk.Button(root, text="Launch", command=launch).grid(row=5, column=1)
-
 
 
 
@@ -205,12 +277,6 @@ config = load_config()
 if config:
     sc_entry.insert(0, config.get('sc_path', ''))
     vorpx_entry.insert(0, config.get('vorpx_path', ''))
-    digi_entry.insert(0, config.get('digi_path', ''))
-    attr_orig_entry.insert(0, config.get('attr_orig', ''))
-    attr_custom_entry.insert(0, config.get('attr_custom', ''))
-
-# Disable Digi Entry
-digi_entry.config(state='disabled')
+    eac_folder_entry.insert(0, config.get('eac_folder', ''))
 
 root.mainloop()
-
