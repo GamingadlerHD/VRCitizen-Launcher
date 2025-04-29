@@ -17,11 +17,12 @@ def launch():
     # Derived paths
     attr_orig_path = os.path.join(sc_folder_path, "user/client/0/Profiles/default/attributes.xml")
     sc_executable = os.path.join(sc_folder_path, "Bin64/StarCitizen.exe")
-    dxgi_dest_path = os.path.join(os.path.dirname(sc_folder_path), "Bin64/dxgi.dll")
+    dxgi_dest_path = os.path.join(sc_folder_path, "Bin64/dxgi.dll")
 
     # Pre-Validation
-    custom_attr_path = os.path.join(os.path.dirname(sys.argv[0]), "attributes.xml")
-    dxgi_path = os.path.join(os.path.dirname(sys.argv[0]), "dxgi.dll")
+    script_dir = os.getcwd()
+    custom_attr_path = os.path.join(script_dir, "attributes.xml")
+    dxgi_path = os.path.join(script_dir, "dxgi.dll")
 
     if not os.path.isfile(custom_attr_path):
         messagebox.showerror("Error", f"Required custom attributes file not found:\n{custom_attr_path}")
