@@ -5,16 +5,16 @@ import os
 import sys
 import shutil
 from config import save_config, load_config
+from xml_editor import update_attributes
 from utilities import *
 from gui import setup_gui
 
 def launch():
     sc_folder_path = gui_components['sc_entry'].get()
     vorpx_path = gui_components['vorpx_entry'].get()
-    eac_folder_path = gui_components['eac_folder_entry'].get()
-    attr_orig_path = gui_components['attr_orig_entry'].get()
 
     # Derived paths
+    eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
     attr_orig_path = os.path.join(sc_folder_path, "user/client/0/Profiles/default/attributes.xml")
     sc_executable = os.path.join(sc_folder_path, "Bin64/StarCitizen.exe")
     dxgi_dest_path = os.path.join(sc_folder_path, "Bin64/dxgi.dll")
@@ -31,7 +31,7 @@ def launch():
         messagebox.showerror("Error", f"Required vorpX hook file not found:\n{dxgi_path}")
         exit(1)
 
-    if not all([sc_folder_path, vorpx_path, eac_folder_path]):
+    if not all([sc_folder_path, vorpx_path]):
         messagebox.showerror("Error", "Please select all necessary files!")
         return
 
@@ -41,9 +41,6 @@ def launch():
     # Path validations
     if not os.path.isdir(sc_folder_path):
         messagebox.showerror("Error", f"Star Citizen folder not found:\n{sc_folder_path}")
-        return
-    if not os.path.isdir(eac_folder_path):
-        messagebox.showerror("Error", f"EasyAntiCheat folder not found:\n{eac_folder_path}")
         return
     if not os.path.isfile(vorpx_path):
         messagebox.showerror("Error", f"vorpX executable not found:\n{vorpx_path}")
@@ -67,6 +64,8 @@ def launch():
         sc_proc = None
     
         try:
+
+
             messagebox.showinfo("Info", "Modifying hosts file...")
             backup_file(HOSTS_FILE)
             modify_hosts(add=True)
@@ -79,17 +78,32 @@ def launch():
             messagebox.showinfo("Info", "Starting vorpX...")
             vorpx_proc = launch_process(vorpx_path)
 
-            messagebox.showinfo("Info", "Replacing attributes file...")
+            messagebox.showinfo("Info", "Updating attributes file...")
             backup_file(attr_orig_path)
-            replace_file(custom_attr_path, attr_orig_path)
+            update_attributes(attr_orig_path, width=gui_components['width_entry'].get(), height=gui_components['height_entry'].get(), fov=gui_components['fov_entry'].get())
             attr_modified = True
 
             messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
             wait_for_process(vorpx_proc_name)
 
+            messagebox.showinfo("Info", "Deleting EasyAntiCheat folder...")
+            if not os.path.isdir(eac_folder_path):
+                messagebox.showinfo("Info", "EasyAntiCheat folder already removed.")
+            else:
+                shutil.rmtree(eac_folder_path, ignore_errors=True)
+                messagebox.showinfo("Info", "EasyAntiCheat folder removed.")
+
+            
+            launcher = launch_process("C:\Program Files\Roberts Space Industries\RSI Launcher\RSI Launcher.exe")
+            messagebox.showinfo("Info", "Waiting for RSI Launcher to fully start...")
+            wait_for_process("StarCitizen")
             messagebox.showinfo("Info", "Launching Star Citizen...")
-            sc_proc = launch_process(sc_executable)
+            #sc_proc = launch_process(sc_executable)
             wait_for_exit(sc_proc)
+
+
+
+
 
             messagebox.showinfo("Info", "Closing vorpX...")
             kill_process_by_name(vorpx_proc_name)
@@ -126,7 +140,9 @@ if __name__ == "__main__":
     gui_components['save_button']['command'] = lambda: save_config(
         gui_components['sc_entry'].get(),
         gui_components['vorpx_entry'].get(),
-        gui_components['eac_folder_entry'].get()
+        gui_components['fov_entry'].get(),
+        gui_components['width_entry'].get(),
+        gui_components['height_entry'].get()
     )
     gui_components['launch_button']['command'] = launch
 
@@ -135,6 +151,8 @@ if __name__ == "__main__":
     if config:
         gui_components['sc_entry'].insert(0, config.get('sc_path', ''))
         gui_components['vorpx_entry'].insert(0, config.get('vorpx_path', ''))
-        gui_components['eac_folder_entry'].insert(0, config.get('eac_folder', ''))
+        gui_components['fov_entry'].insert(0, config.get('fov', ''))
+        gui_components['width_entry'].insert(0, config.get('width', ''))
+        gui_components['height_entry'].insert(0, config.get('height', ''))
 
     root.mainloop()

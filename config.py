@@ -3,11 +3,13 @@ import json
 import os
 from constants import CONFIG_FILE
 
-def save_config(sc_path, vorpx_path, eac_folder):
+def save_config(sc_path, vorpx_path, fov, width, height):
     config = {
         "sc_path": sc_path,
         "vorpx_path": vorpx_path,
-        "eac_folder": eac_folder
+        "fov": fov,
+        "width": width,
+        "height": height
     }
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
