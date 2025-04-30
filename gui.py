@@ -45,57 +45,63 @@ def on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry):
 
 def setup_gui(root):
     root.title("Star Citizen VR Launcher")
-
     # Star Citizen Folder
-    tk.Label(root, text="Star Citizen Folder").grid(row=0, column=0)
+    tk.Label(root, text="Star Citizen Folder").grid(row=0, column=0, padx=5, pady=5, sticky="w")
     sc_entry = tk.Entry(root, width=50)
-    sc_entry.grid(row=0, column=1)
-    tk.Button(root, text="Browse", command=lambda: browse_folder(sc_entry)).grid(row=0, column=2)
+    sc_entry.grid(row=0, column=1, padx=5, pady=5)
+    tk.Button(root, text="Browse", command=lambda: browse_folder(sc_entry)).grid(row=0, column=2, padx=5, pady=5)
 
     # VorpX Exe
-    tk.Label(root, text="vorpX Exe").grid(row=1, column=0)
+    tk.Label(root, text="vorpX Exe").grid(row=1, column=0, padx=5, pady=5, sticky="w")
     vorpx_entry = tk.Entry(root, width=50)
-    vorpx_entry.grid(row=1, column=1)
-    tk.Button(root, text="Browse", command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2)
+    vorpx_entry.grid(row=1, column=1, padx=5, pady=5)
+    tk.Button(root, text="Browse", command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2, padx=5, pady=5)
 
-    tk.Label(root, text="Launcher Exe").grid(row=2, column=0)
+    # Launcher Exe
+    tk.Label(root, text="Launcher Exe").grid(row=2, column=0, padx=5, pady=5, sticky="w")
     launcher_entry = tk.Entry(root, width=50)
-    launcher_entry.grid(row=2, column=1)
-    tk.Button(root, text="Browse", command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2)
+    launcher_entry.grid(row=2, column=1, padx=5, pady=5)
+    tk.Button(root, text="Browse", command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2, padx=5, pady=5)
 
+    # Divider Line
+    ttk.Separator(root, orient="horizontal").grid(row=3, column=0, columnspan=3, sticky="ew", pady=10)
+
+    # Templates Dropdown
     templates = load_templates()
+    tk.Label(root, text="Templates").grid(row=4, column=0, padx=5, pady=5, sticky="w")
     dropdown = ttk.Combobox(root, values=["No Template"] + [tmpl['name'] for tmpl in templates])
-    dropdown.grid(row=3, column=0, columnspan=2)  # Adjusted to span two columns
-
+    dropdown.grid(row=4, column=1, columnspan=2, padx=5, pady=5, sticky="ew")
     dropdown.bind("<<ComboboxSelected>>", lambda event: on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry))
+    dropdown.current(0)
 
-    dropdown.current(0)  # Selects the first item initially
-
-    tk.Label(root, text="FOV").grid(row=4, column=0)
+    # FOV, Width, Height
+    tk.Label(root, text="FOV").grid(row=5, column=0, padx=5, pady=5, sticky="w")
     fov_entry = tk.Entry(root, width=10)
-    fov_entry.grid(row=4, column=1)
+    fov_entry.grid(row=5, column=1, padx=5, pady=5, sticky="w")
 
-    tk.Label(root, text="Width").grid(row=4, column=2)
+    tk.Label(root, text="Width").grid(row=5, column=2, padx=5, pady=5, sticky="w")
     width_entry = tk.Entry(root, width=10)
-    width_entry.grid(row=4, column=3)
+    width_entry.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
-    tk.Label(root, text="Height").grid(row=4, column=4)
+    tk.Label(root, text="Height").grid(row=5, column=4, padx=5, pady=5, sticky="w")
     height_entry = tk.Entry(root, width=10)
-    height_entry.grid(row=4, column=5)
+    height_entry.grid(row=5, column=5, padx=5, pady=5, sticky="w")
 
-    # stay in vr checkbox
+    # Divider Line
+    ttk.Separator(root, orient="horizontal").grid(row=6, column=0, columnspan=6, sticky="ew", pady=10)
+
+    # Stay in VR Checkbox
     stay_in_vr = tk.IntVar()
     stay_in_vr_check = tk.Checkbutton(root, text="Stay in VR", variable=stay_in_vr)
-    stay_in_vr_check.grid(row=5, column=0, columnspan=2)
-
+    stay_in_vr_check.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
     # Buttons
     save_button = tk.Button(root, text="Save Config")
-    save_button.grid(row=6, column=0)
+    save_button.grid(row=8, column=0, padx=5, pady=5)
     launch_button = tk.Button(root, text="Launch")
-    launch_button.grid(row=6, column=1)
+    launch_button.grid(row=8, column=1, padx=5, pady=5)
     res_button = tk.Button(root, text="Restore")
-    res_button.grid(row=6, column=2)
+    res_button.grid(row=8, column=2, padx=5, pady=5)
 
     return {
         'sc_entry': sc_entry,
