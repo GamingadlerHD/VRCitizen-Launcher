@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
-import sys
 import shutil
 from config import save_config, load_config
 from xml_editor import update_attributes
@@ -12,6 +11,8 @@ from gui import setup_gui
 def launch():
     sc_folder_path = gui_components['sc_entry'].get()
     vorpx_path = gui_components['vorpx_entry'].get()
+    launcher_path = gui_components['launcher_entry'].get()
+    stay_in_vr = gui_components['stay_in_vr'].get()
 
     # Derived paths
     eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
@@ -35,9 +36,6 @@ def launch():
         messagebox.showerror("Error", "Please select all necessary files!")
         return
 
-    sc_proc_name = os.path.basename(sc_executable)
-    vorpx_proc_name = os.path.basename(vorpx_path)
-
     # Path validations
     if not os.path.isdir(sc_folder_path):
         messagebox.showerror("Error", f"Star Citizen folder not found:\n{sc_folder_path}")
@@ -57,9 +55,14 @@ def launch():
         return
 
     try:
-        hosts_modified = False
-        attr_modified = False
-        inserted_dxgi = False
+        doneStepID = 0
+        # 1 = modify hosts file
+        # 2 = paste dxgi.dll
+        # 3 = start vorpX
+        # 4 = update attributes file
+        # 5 = delete EAC folder
+        # 6 = start RSI Launcher
+
         vorpx_proc = None
         sc_proc = None
     
@@ -69,22 +72,23 @@ def launch():
             messagebox.showinfo("Info", "Modifying hosts file...")
             backup_file(HOSTS_FILE)
             modify_hosts(add=True)
-            hosts_modified = True
+            doneStepID += 1
 
             messagebox.showinfo("Info", "Pasting dxgi.dll... (Hook Helper)")
             shutil.copy2(dxgi_path, dxgi_dest_path)
-            inserted_dxgi = True
+            doneStepID += 1
 
             messagebox.showinfo("Info", "Starting vorpX...")
             vorpx_proc = launch_process(vorpx_path)
+            doneStepID += 1
 
             messagebox.showinfo("Info", "Updating attributes file...")
             backup_file(attr_orig_path)
             update_attributes(attr_orig_path, width=gui_components['width_entry'].get(), height=gui_components['height_entry'].get(), fov=gui_components['fov_entry'].get())
-            attr_modified = True
+            doneStepID += 1
 
             messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
-            wait_for_process(vorpx_proc_name)
+            wait_for_process(vorpx_proc)
 
             messagebox.showinfo("Info", "Deleting EasyAntiCheat folder...")
             if not os.path.isdir(eac_folder_path):
@@ -92,45 +96,62 @@ def launch():
             else:
                 shutil.rmtree(eac_folder_path, ignore_errors=True)
                 messagebox.showinfo("Info", "EasyAntiCheat folder removed.")
+            doneStepID += 1
 
             
-            launcher = launch_process("C:\Program Files\Roberts Space Industries\RSI Launcher\RSI Launcher.exe")
+            launch_process(launcher_path)
             messagebox.showinfo("Info", "Waiting for RSI Launcher to fully start...")
-            wait_for_process("StarCitizen")
-            messagebox.showinfo("Info", "Launching Star Citizen...")
-            #sc_proc = launch_process(sc_executable)
-            wait_for_exit(sc_proc)
 
+            
+            if (not stay_in_vr):
+                wait_for_process("StarCitizen")
+                messagebox.showinfo("Info", "Launching Star Citizen...")
+                wait_for_exit(sc_proc)
+                quit_vr_mode(vorpx_proc, dxgi_dest_path, attr_orig_path, doneStepID)
 
-
-
-
-            messagebox.showinfo("Info", "Closing vorpX...")
-            kill_process_by_name(vorpx_proc_name)
-
-            messagebox.showinfo("Info", "Removing dxgi.dll...")
-            if os.path.exists(dxgi_dest_path):
-                os.remove(dxgi_dest_path)
-                inserted_dxgi = False
-
-            messagebox.showinfo("Info", "Restoring original attributes...")
-            shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
-            os.remove(attr_orig_path + ".backup")
-            attr_modified = False
-
-            messagebox.showinfo("Info", "Restoring hosts file...")
-            shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
-            os.remove(HOSTS_FILE + ".backup")
-            hosts_modified = False
-
-            messagebox.showinfo("Success", "All done! Enjoy!")
 
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {e}\nAttempting to revert changes...")
             # Revert logic here...
+            quit_vr_mode(vorpx_proc, dxgi_dest_path, attr_orig_path, doneStepID)
 
     except Exception as e:
         messagebox.showerror("Error", f"Operation failed: {e}")
+
+
+
+def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
+    # Logic to quit VR mode
+    try:
+        if doneStepID > 0:
+            messagebox.showinfo("Info", "Restoring hosts file...")
+            shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
+            os.remove(HOSTS_FILE + ".backup")
+
+        if doneStepID > 1:
+            messagebox.showinfo("Info", "Removing dxgi.dll...")
+            if os.path.exists(dxgi_dest_path):
+                os.remove(dxgi_dest_path)
+
+        if doneStepID > 2:
+            messagebox.showinfo("Info", "Killing vorpX process...")
+            kill_process_by_name(vorpx_proc_name)
+
+        if doneStepID > 3:
+            messagebox.showinfo("Info", "Restoring original attributes...")
+            if os.path.exists(attr_orig_path + ".backup"):
+                shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
+                os.remove(attr_orig_path + ".backup")
+
+
+        messagebox.showinfo("Successfully Restored", "Everything has been restored to its original state.")
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while quitting VR mode: {e}")
+
+    return
+
+
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -142,9 +163,16 @@ if __name__ == "__main__":
         gui_components['vorpx_entry'].get(),
         gui_components['fov_entry'].get(),
         gui_components['width_entry'].get(),
-        gui_components['height_entry'].get()
+        gui_components['height_entry'].get(),
+        gui_components['launcher_entry'].get()
     )
     gui_components['launch_button']['command'] = launch
+    gui_components['res_button']['command'] = lambda: quit_vr_mode(
+        gui_components['vorpx_entry'].get(),
+        os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
+        os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
+        99999
+    )
 
     # Load config
     config = load_config()
@@ -154,5 +182,6 @@ if __name__ == "__main__":
         gui_components['fov_entry'].insert(0, config.get('fov', ''))
         gui_components['width_entry'].insert(0, config.get('width', ''))
         gui_components['height_entry'].insert(0, config.get('height', ''))
+        gui_components['launcher_entry'].insert(0, config.get('launcher_path', ''))
 
     root.mainloop()
