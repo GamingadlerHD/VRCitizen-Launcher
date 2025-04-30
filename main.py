@@ -103,7 +103,7 @@ def launch():
             messagebox.showinfo("Info", "Waiting for RSI Launcher to fully start...")
 
             
-            if (not stay_in_vr):
+            if (stay_in_vr):
                 wait_for_process("StarCitizen")
                 messagebox.showinfo("Info", "Launching Star Citizen...")
                 wait_for_exit(sc_proc_name)
