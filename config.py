@@ -3,10 +3,11 @@ import json
 import os
 from constants import CONFIG_FILE
 
-def save_config(sc_path, vorpx_path, fov, width, height):
+def save_config(sc_path, vorpx_path, launcher_path, fov, width, height):
     config = {
         "sc_path": sc_path,
         "vorpx_path": vorpx_path,
+        "launcher_path": launcher_path,
         "fov": fov,
         "width": width,
         "height": height

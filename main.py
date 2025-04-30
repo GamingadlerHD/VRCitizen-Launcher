@@ -63,8 +63,8 @@ def launch():
         # 5 = delete EAC folder
         # 6 = start RSI Launcher
 
-        vorpx_proc = None
-        sc_proc = None
+        sc_proc_name = os.path.basename(sc_executable)
+        vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
 
@@ -79,7 +79,7 @@ def launch():
             doneStepID += 1
 
             messagebox.showinfo("Info", "Starting vorpX...")
-            vorpx_proc = launch_process(vorpx_path)
+            launch_process(vorpx_path)
             doneStepID += 1
 
             messagebox.showinfo("Info", "Updating attributes file...")
@@ -88,7 +88,7 @@ def launch():
             doneStepID += 1
 
             messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
-            wait_for_process(vorpx_proc)
+            wait_for_process(vorpx_proc_name)
 
             messagebox.showinfo("Info", "Deleting EasyAntiCheat folder...")
             if not os.path.isdir(eac_folder_path):
@@ -106,14 +106,14 @@ def launch():
             if (not stay_in_vr):
                 wait_for_process("StarCitizen")
                 messagebox.showinfo("Info", "Launching Star Citizen...")
-                wait_for_exit(sc_proc)
-                quit_vr_mode(vorpx_proc, dxgi_dest_path, attr_orig_path, doneStepID)
+                wait_for_exit(sc_proc_name)
+                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
 
 
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {e}\nAttempting to revert changes...")
             # Revert logic here...
-            quit_vr_mode(vorpx_proc, dxgi_dest_path, attr_orig_path, doneStepID)
+            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
 
     except Exception as e:
         messagebox.showerror("Error", f"Operation failed: {e}")
@@ -161,10 +161,10 @@ if __name__ == "__main__":
     gui_components['save_button']['command'] = lambda: save_config(
         gui_components['sc_entry'].get(),
         gui_components['vorpx_entry'].get(),
+        gui_components['launcher_entry'].get(),
         gui_components['fov_entry'].get(),
         gui_components['width_entry'].get(),
-        gui_components['height_entry'].get(),
-        gui_components['launcher_entry'].get()
+        gui_components['height_entry'].get()
     )
     gui_components['launch_button']['command'] = launch
     gui_components['res_button']['command'] = lambda: quit_vr_mode(

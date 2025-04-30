@@ -43,8 +43,12 @@ def wait_for_process(name_substring):
                 return proc
         time.sleep(1)
 
-def wait_for_exit(proc):
-    proc.wait()
+def wait_for_exit(proc :str):
+    for p in psutil.process_iter(['pid', 'name']):
+        if proc.lower() == p.info['name'].lower():
+            p.wait()
+            return
+    raise ValueError(f"No process found with name containing: {proc}")
 
 def kill_process_by_name(name_substring):
     for proc in psutil.process_iter(['pid', 'name']):
