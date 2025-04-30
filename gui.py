@@ -58,6 +58,11 @@ def setup_gui(root):
     vorpx_entry.grid(row=1, column=1)
     tk.Button(root, text="Browse", command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2)
 
+    tk.Label(root, text="Launcher Exe").grid(row=2, column=0)
+    launcher_entry = tk.Entry(root, width=50)
+    launcher_entry.grid(row=2, column=1)
+    tk.Button(root, text="Browse", command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2)
+
     templates = load_templates()
     dropdown = ttk.Combobox(root, values=["No Template"] + [tmpl['name'] for tmpl in templates])
     dropdown.grid(row=3, column=0, columnspan=2)  # Adjusted to span two columns
@@ -78,21 +83,30 @@ def setup_gui(root):
     height_entry = tk.Entry(root, width=10)
     height_entry.grid(row=4, column=5)
 
+    # stay in vr checkbox
+    stay_in_vr = tk.IntVar()
+    stay_in_vr_check = tk.Checkbutton(root, text="Stay in VR", variable=stay_in_vr)
+    stay_in_vr_check.grid(row=5, column=0, columnspan=2)
 
 
     # Buttons
     save_button = tk.Button(root, text="Save Config")
-    save_button.grid(row=5, column=0)
+    save_button.grid(row=6, column=0)
     launch_button = tk.Button(root, text="Launch")
-    launch_button.grid(row=5, column=1)
+    launch_button.grid(row=6, column=1)
+    res_button = tk.Button(root, text="Restore")
+    res_button.grid(row=6, column=2)
 
     return {
         'sc_entry': sc_entry,
         'vorpx_entry': vorpx_entry,
         'save_button': save_button,
         'launch_button': launch_button,
+        'res_button': res_button,
         'fov_entry': fov_entry,
         'width_entry': width_entry,
         'height_entry': height_entry,
+        'stay_in_vr': stay_in_vr,
+        'launcher_entry': launcher_entry,
         'root': root
     }
