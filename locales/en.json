@@ -1,0 +1,26 @@
+{
+    "sc_folder": "Star Citizen Folder",
+    "Browse": "Browse",
+    "vorpX_exe": "vorpX exe",
+    "Launcher_Exe": "Launcher exe",
+    "templates" : "Templates",
+    "no_template": "No template",
+    "width" : "Width",
+    "height" : "Height",
+    "revert": "Automaticaly revert Changes when closing Star Citizen (Launcher needs to stay open)",
+    "save": "Save Config",
+    "launch": "Apply & Launch",
+    "restore": "Restore Defaults",
+    "title": "VR Citizen Launcher",
+    "home": "Home",
+    "setting": "Settings",
+    "info": "Info",
+    "coppyright": "Licensed under CC BY-NC-ND 4.0",
+    "join": "Join the VR Citizen Discord",
+    "support": "If you need support setting VR up:",
+    "github": "Visit my GitHub Repo",
+    "madeby": "Made by Gamingadler",
+    "donate": "You can donate me a ingame"
+
+}
+  

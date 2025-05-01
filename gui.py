@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk  # Required for Combobox
 from tkinter import filedialog
 import webbrowser
+from i18n import translate
 
 def browse_file(entry, filetypes):
     filename = filedialog.askopenfilename(filetypes=filetypes)
@@ -45,30 +46,30 @@ def on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry):
 def create_main_window(container):
     frame = tk.Frame(container)
     # Star Citizen Folder
-    tk.Label(frame, text="Star Citizen Folder").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+    tk.Label(frame, text=translate("sc_folder")).grid(row=0, column=0, padx=5, pady=5, sticky="w")
     sc_entry = tk.Entry(frame, width=50)
     sc_entry.grid(row=0, column=1, padx=5, pady=5)
-    tk.Button(frame, text="Browse", command=lambda: browse_folder(sc_entry)).grid(row=0, column=2, padx=5, pady=5)
+    tk.Button(frame, text=translate("Browse"), command=lambda: browse_folder(sc_entry)).grid(row=0, column=2, padx=5, pady=5)
 
     # VorpX Exe
-    tk.Label(frame, text="vorpX Exe").grid(row=1, column=0, padx=5, pady=5, sticky="w")
+    tk.Label(frame, text=translate("vorpX_exe")).grid(row=1, column=0, padx=5, pady=5, sticky="w")
     vorpx_entry = tk.Entry(frame, width=50)
     vorpx_entry.grid(row=1, column=1, padx=5, pady=5)
-    tk.Button(frame, text="Browse", command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2, padx=5, pady=5)
+    tk.Button(frame, text=translate("Browse"), command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2, padx=5, pady=5)
 
     # Launcher Exe
-    tk.Label(frame, text="Launcher Exe").grid(row=2, column=0, padx=5, pady=5, sticky="w")
+    tk.Label(frame, text=translate("Launcher_Exe")).grid(row=2, column=0, padx=5, pady=5, sticky="w")
     launcher_entry = tk.Entry(frame, width=50)
     launcher_entry.grid(row=2, column=1, padx=5, pady=5)
-    tk.Button(frame, text="Browse", command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2, padx=5, pady=5)
+    tk.Button(frame, text=translate("Browse"), command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2, padx=5, pady=5)
 
     # Divider Line
     ttk.Separator(frame, orient="horizontal").grid(row=3, column=0, columnspan=3, sticky="ew", pady=10)
 
     # Templates Dropdown
     templates = load_templates()
-    tk.Label(frame, text="Templates").grid(row=4, column=0, padx=5, pady=5, sticky="w")
-    dropdown = ttk.Combobox(frame, values=["No Template"] + [tmpl['name'] for tmpl in templates])
+    tk.Label(frame, text=translate("templates")).grid(row=4, column=0, padx=5, pady=5, sticky="w")
+    dropdown = ttk.Combobox(frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
     dropdown.grid(row=4, column=1, columnspan=2, padx=5, pady=5, sticky="ew")
     dropdown.bind("<<ComboboxSelected>>", lambda event: on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry))
     dropdown.current(0)
@@ -78,11 +79,11 @@ def create_main_window(container):
     fov_entry = tk.Entry(frame, width=10)
     fov_entry.grid(row=5, column=1, padx=5, pady=5, sticky="w")
 
-    tk.Label(frame, text="Width").grid(row=5, column=2, padx=5, pady=5, sticky="w")
+    tk.Label(frame, text=translate("width")).grid(row=5, column=2, padx=5, pady=5, sticky="w")
     width_entry = tk.Entry(frame, width=10)
     width_entry.grid(row=5, column=3, padx=5, pady=5, sticky="w")
 
-    tk.Label(frame, text="Height").grid(row=5, column=4, padx=5, pady=5, sticky="w")
+    tk.Label(frame, text=translate("height")).grid(row=5, column=4, padx=5, pady=5, sticky="w")
     height_entry = tk.Entry(frame, width=10)
     height_entry.grid(row=5, column=5, padx=5, pady=5, sticky="w")
 
@@ -91,15 +92,15 @@ def create_main_window(container):
 
     # Stay in VR Checkbox
     stay_in_vr = tk.IntVar()
-    stay_in_vr_check = tk.Checkbutton(frame, text="Automaticaly revert Changes when closing Star Citizen (Launcher needs to stay open)", variable=stay_in_vr)
+    stay_in_vr_check = tk.Checkbutton(frame, text=translate("revert"), variable=stay_in_vr)
     stay_in_vr_check.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
     # Buttons
-    save_button = tk.Button(frame, text="Save Config")
+    save_button = tk.Button(frame, text=translate("save"))
     save_button.grid(row=8, column=0, padx=5, pady=5)
-    launch_button = tk.Button(frame, text="Launch")
+    launch_button = tk.Button(frame, text=translate("launch"))
     launch_button.grid(row=8, column=1, padx=5, pady=5)
-    res_button = tk.Button(frame, text="Restore")
+    res_button = tk.Button(frame, text=translate("restore"))
     res_button.grid(row=8, column=2, padx=5, pady=5)
 
     components = {
@@ -134,29 +135,43 @@ def create_info_frame(container):
     frame.logo2 = logo2
 
 
-    tk.Label(frame, text="Made by Gamingadler", font=("Arial", 14, "bold")).pack(pady=10)
-    tk.Label(frame, text="You can donate me a ingame", font=("Arial", 12)).pack(pady=5)
+    tk.Label(frame, text=translate("madeby"), font=("Arial", 14, "bold")).pack(pady=10)
+    tk.Label(frame, text=translate("donate"), font=("Arial", 12)).pack(pady=5)
 
     # GitHub Link
-    github_link = tk.Label(frame, text="Visit my GitHub Repo", font=("Arial", 12), fg="blue", cursor="hand2")
+    github_link = tk.Label(frame, text=translate("github"), font=("Arial", 12), fg="blue", cursor="hand2")
     github_link.pack(pady=5)
     github_link.bind("<Button-1>", lambda e: open_url("https://github.com/GamingadlerHD"))
 
     # Support Info
-    tk.Label(frame, text="If you need support setting VR up:", font=("Arial", 12)).pack(pady=10)
+    tk.Label(frame, text=translate("support"), font=("Arial", 12)).pack(pady=10)
 
     # Discord Invite
-    discord_link = tk.Label(frame, text="Join the VR Citizen Discord", font=("Arial", 12), fg="blue", cursor="hand2")
+    discord_link = tk.Label(frame, text=translate("join"), font=("Arial", 12), fg="blue", cursor="hand2")
     discord_link.pack(pady=5)
     discord_link.bind("<Button-1>", lambda e: open_url("https://discord.gg/StarCitizen"))
 
     # Display copyright notice
     tk.Label(frame, text="© 2025 Gamingadler", font=("Arial", 10)).pack(pady=5)
-    tk.Label(frame, text="Licensed under CC BY-NC-ND 4.0", font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
+    tk.Label(frame, text=translate("coppyright"), font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
     tk.Label(frame, text="http://creativecommons.org/licenses/by-nc-nd/4.0/", font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
     frame.pack_propagate(False)
 
     return frame
+
+def create_settings_frame(container):
+    frame = tk.Frame(container)
+    # Add settings widgets here
+    tk.Label(frame, text="Settings").pack(pady=10)
+    # Example setting
+    tk.Checkbutton(frame, text="Enable Feature X").pack(pady=5)
+
+    data = {
+        "setting1": True,
+        "setting2": False,
+        "setting3": 50
+    }
+    return frame, data
 
 def open_url(url):
     webbrowser.open(url)
@@ -166,20 +181,24 @@ def show_frame(frame):
     
 
 def setup_gui(root):
-    root.title("VR Citizen Launcher")
+    root.title(translate("title"))
 
     # Top-level Menu
     menu_bar = tk.Menu(root)
 
     # Home Menu
     home_menu = tk.Menu(menu_bar, tearoff=0)
-    home_menu.add_command(label="Home", command=lambda: show_frame(home_frame))
-    menu_bar.add_cascade(label="Home", menu=home_menu)
+    home_menu.add_command(label=translate("home"), command=lambda: show_frame(home_frame))
+    menu_bar.add_cascade(label=translate("home"), menu=home_menu)
 
     # Info Menu
+    setting_menu = tk.Menu(menu_bar, tearoff=0)
+    setting_menu.add_command(label=translate("setting"), command=lambda: show_frame(settings_frame))
+    menu_bar.add_cascade(label=translate("setting"), menu=setting_menu)
+
     info_menu = tk.Menu(menu_bar, tearoff=0)
-    info_menu.add_command(label="Info", command=lambda: show_frame(info_frame))
-    menu_bar.add_cascade(label="Info", menu=info_menu)
+    info_menu.add_command(label=translate("info"), command=lambda: show_frame(info_frame))
+    menu_bar.add_cascade(label=translate("info"), menu=info_menu)
 
     root.config(menu=menu_bar)
 
@@ -190,14 +209,15 @@ def setup_gui(root):
 
     home_frame, components = create_main_window(container)
     info_frame = create_info_frame(container)
+    settings_frame, settings = create_settings_frame(container)
 
-    for frame in (home_frame, info_frame):
+    for frame in (home_frame, info_frame, settings_frame):
         frame.grid(row=0, column=0, columnspan=6, rowspan=9, sticky="nsew")
 
     # Show home frame by default
     show_frame(home_frame)
 
-    return components
+    return components, settings
 
 
 
