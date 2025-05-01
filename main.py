@@ -1,4 +1,3 @@
-# main.py
 import tkinter as tk
 from tkinter import messagebox
 import os
@@ -27,37 +26,59 @@ def launch():
     dxgi_path = os.path.join(script_dir, "dxgi.dll")
 
     if not os.path.isfile(dxgi_path):
-        messagebox.showerror("Error", f"Required vorpX hook file not found:\n{dxgi_path}")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("hook_file_not_found").format(dxgi_path=dxgi_path)
+        )
         exit(1)
 
     if not all([sc_folder_path, vorpx_path]):
-        messagebox.showerror("Error", "Please select all necessary files!")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("select_all_files")
+        )
         return
 
     # Path validations
     if not os.path.isdir(sc_folder_path):
-        messagebox.showerror("Error", f"Star Citizen folder not found:\n{sc_folder_path}")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("sc_folder_not_found").format(sc_folder_path=sc_folder_path)
+        )
         return
     if not os.path.isfile(vorpx_path):
-        messagebox.showerror("Error", f"vorpX executable not found:\n{vorpx_path}")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("vorpx_exe_not_found").format(vorpx_path=vorpx_path)
+        )
         return 
     if not os.path.isfile(sc_executable):
-        messagebox.showerror("Error", f"Star Citizen executable not found:\n{sc_executable}")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("sc_exe_not_found").format(sc_executable=sc_executable)
+        )
         return
     if not os.path.isfile(attr_orig_path):
-        messagebox.showerror("Error", f"Original attributes file not found:\n{attr_orig_path}")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("attributes_file_not_found").format(attr_orig_path=attr_orig_path)
+        )
         return
 
     if not is_admin():
-        messagebox.showerror("Admin Required", "This launcher must be run as administrator!")
+        messagebox.showerror(
+            translate("admin_required_title"), 
+            translate("admin_required_message")
+        )
         return
     
     if not validate_resolution(int(gui_components['width_entry'].get()), int(gui_components['height_entry'].get())):
-        messagebox.showerror("Error", "Your monitor resolution is to small for the selected VR resolution. Visit xyz for more information.")
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("resolution_too_small")
+        )
         return
     
-    
-
     try:
         doneStepID = 0
         # 1 = modify hosts file
@@ -71,91 +92,131 @@ def launch():
         vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
-
-
-            messagebox.showinfo("Info", "Modifying hosts file...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("modifying_hosts")
+            )
             backup_file(HOSTS_FILE)
             modify_hosts(add=True)
             doneStepID += 1
 
-            messagebox.showinfo("Info", "Pasting dxgi.dll... (Hook Helper)")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("pasting_dxgi")
+            )
             shutil.copy2(dxgi_path, dxgi_dest_path)
             doneStepID += 1
 
-            messagebox.showinfo("Info", "Starting vorpX...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("starting_vorpx")
+            )
             launch_process(vorpx_path)
             doneStepID += 1
 
-            messagebox.showinfo("Info", "Updating attributes file...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("updating_attributes")
+            )
             backup_file(attr_orig_path)
             update_attributes(attr_orig_path, width=gui_components['width_entry'].get(), height=gui_components['height_entry'].get(), fov=gui_components['fov_entry'].get())
             doneStepID += 1
 
-            messagebox.showinfo("Info", "Waiting for vorpX to fully start...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("waiting_vorpx_start")
+            )
             wait_for_process(vorpx_proc_name)
 
-            messagebox.showinfo("Info", "Deleting EasyAntiCheat folder...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("deleting_eac")
+            )
             if not os.path.isdir(eac_folder_path):
-                messagebox.showinfo("Info", "EasyAntiCheat folder already removed.")
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("eac_already_removed")
+                )
             else:
                 shutil.rmtree(eac_folder_path, ignore_errors=True)
-                messagebox.showinfo("Info", "EasyAntiCheat folder removed.")
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("eac_removed")
+                )
             doneStepID += 1
-
             
             launch_process(launcher_path)
-            messagebox.showinfo("Info", "Waiting for RSI Launcher to fully start...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("waiting_launcher_start")
+            )
 
-            
             if (stay_in_vr):
                 wait_for_process("StarCitizen")
-                messagebox.showinfo("Info", "Launching Star Citizen...")
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("launching_sc")
+                )
                 wait_for_exit(sc_proc_name)
                 quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
 
-
         except Exception as e:
-            messagebox.showerror("Error", f"An error occurred: {e}\nAttempting to revert changes...")
-            # Revert logic here...
+            messagebox.showerror(
+                translate("error_title"), 
+                translate("error_occurred_revert").format(e=e)
+            )
             quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
 
     except Exception as e:
-        messagebox.showerror("Error", f"Operation failed: {e}")
-
-
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("operation_failed").format(e=e)
+        )
 
 def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
-    # Logic to quit VR mode
     try:
         if doneStepID > 0:
-            messagebox.showinfo("Info", "Restoring hosts file...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("restoring_hosts")
+            )
             shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
             os.remove(HOSTS_FILE + ".backup")
 
         if doneStepID > 1:
-            messagebox.showinfo("Info", "Removing dxgi.dll...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("removing_dxgi")
+            )
             if os.path.exists(dxgi_dest_path):
                 os.remove(dxgi_dest_path)
 
         if doneStepID > 2:
-            messagebox.showinfo("Info", "Killing vorpX process...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("killing_vorpx")
+            )
             kill_process_by_name(vorpx_proc_name)
 
         if doneStepID > 3:
-            messagebox.showinfo("Info", "Restoring original attributes...")
+            messagebox.showinfo(
+                translate("info_title"), 
+                translate("restoring_attributes")
+            )
             if os.path.exists(attr_orig_path + ".backup"):
                 shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
                 os.remove(attr_orig_path + ".backup")
 
-
-        messagebox.showinfo("Successfully Restored", "Everything has been restored to its original state.")
+        messagebox.showinfo(
+            translate("restored_title"), 
+            translate("restored_message")
+        )
 
     except Exception as e:
-        messagebox.showerror("Error", f"An error occurred while quitting VR mode: {e}")
-
-    return
-
-
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("error_quitting_vr").format(e=e)
+        )
 
 if __name__ == "__main__":
     root = tk.Tk()

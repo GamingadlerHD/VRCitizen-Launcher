@@ -90,18 +90,24 @@ def create_main_window(container):
     # Divider Line
     ttk.Separator(frame, orient="horizontal").grid(row=6, column=0, columnspan=6, sticky="ew", pady=10)
 
+    # Hook Checkbox
+    use_dxgi = tk.IntVar()
+    use_dxgi_check = tk.Checkbutton(frame, text=translate("use_dxgi"), variable=use_dxgi)
+    use_dxgi_check.grid(row=7, column=0, columnspan=4, padx=5, pady=5, sticky="w")
+
+
     # Stay in VR Checkbox
     stay_in_vr = tk.IntVar()
     stay_in_vr_check = tk.Checkbutton(frame, text=translate("revert"), variable=stay_in_vr)
-    stay_in_vr_check.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky="w")
+    stay_in_vr_check.grid(row=8, column=0, columnspan=4, padx=5, pady=5, sticky="w")
 
     # Buttons
     save_button = tk.Button(frame, text=translate("save"))
-    save_button.grid(row=8, column=0, padx=5, pady=5)
+    save_button.grid(row=9, column=0, padx=5, pady=5)
     launch_button = tk.Button(frame, text=translate("launch"))
-    launch_button.grid(row=8, column=1, padx=5, pady=5)
+    launch_button.grid(row=9, column=1, padx=5, pady=5)
     res_button = tk.Button(frame, text=translate("restore"))
-    res_button.grid(row=8, column=2, padx=5, pady=5)
+    res_button.grid(row=9, column=2, padx=5, pady=5)
 
     components = {
         'sc_entry': sc_entry,
@@ -212,7 +218,7 @@ def setup_gui(root):
     settings_frame, settings = create_settings_frame(container)
 
     for frame in (home_frame, info_frame, settings_frame):
-        frame.grid(row=0, column=0, columnspan=6, rowspan=9, sticky="nsew")
+        frame.grid(row=0, column=0, columnspan=6, rowspan=10, sticky="nsew")
 
     # Show home frame by default
     show_frame(home_frame)
