@@ -7,6 +7,8 @@ from config import save_config, load_config
 from xml_editor import update_attributes
 from utilities import *
 from gui import setup_gui
+from validation import validate_resolution
+from i18n import set_language, translate
 
 def launch():
     sc_folder_path = gui_components['sc_entry'].get()
@@ -22,12 +24,8 @@ def launch():
 
     # Pre-Validation
     script_dir = os.getcwd()
-    custom_attr_path = os.path.join(script_dir, "attributes.xml")
     dxgi_path = os.path.join(script_dir, "dxgi.dll")
 
-    if not os.path.isfile(custom_attr_path):
-        messagebox.showerror("Error", f"Required custom attributes file not found:\n{custom_attr_path}")
-        exit(1)
     if not os.path.isfile(dxgi_path):
         messagebox.showerror("Error", f"Required vorpX hook file not found:\n{dxgi_path}")
         exit(1)
@@ -53,6 +51,12 @@ def launch():
     if not is_admin():
         messagebox.showerror("Admin Required", "This launcher must be run as administrator!")
         return
+    
+    if not validate_resolution(int(gui_components['width_entry'].get()), int(gui_components['height_entry'].get())):
+        messagebox.showerror("Error", "Your monitor resolution is to small for the selected VR resolution. Visit xyz for more information.")
+        return
+    
+    
 
     try:
         doneStepID = 0
@@ -155,7 +159,7 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    gui_components = setup_gui(root)
+    gui_components, settings = setup_gui(root)
     
     # Assign button commands
     gui_components['save_button']['command'] = lambda: save_config(
@@ -164,7 +168,8 @@ if __name__ == "__main__":
         gui_components['launcher_entry'].get(),
         gui_components['fov_entry'].get(),
         gui_components['width_entry'].get(),
-        gui_components['height_entry'].get()
+        gui_components['height_entry'].get(),
+        settings['lang'].get()
     )
     gui_components['launch_button']['command'] = launch
     gui_components['res_button']['command'] = lambda: quit_vr_mode(
@@ -183,5 +188,7 @@ if __name__ == "__main__":
         gui_components['width_entry'].insert(0, config.get('width', ''))
         gui_components['height_entry'].insert(0, config.get('height', ''))
         gui_components['launcher_entry'].insert(0, config.get('launcher_path', ''))
+        
+        set_language(config.get('lang', ''))
 
     root.mainloop()
