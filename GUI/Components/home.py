@@ -4,6 +4,16 @@ from i18n import translate
 from tkinter import filedialog
 import json
 
+def update_resolution(widht, heigh, height_changed, template_index):
+    print(f"Template Index: {template_index}")
+    if template_index == 0:
+        return
+    elif height_changed:
+        widht.insert(0, heigh.get()*load_templates()[template_index]['ratio'])
+    else:
+        heigh.insert(0, widht.get()/load_templates()[template_index]['ratio'])
+
+
 def browse_file(entry, filetypes):
     filename = filedialog.askopenfilename(filetypes=filetypes)
     if filename:
