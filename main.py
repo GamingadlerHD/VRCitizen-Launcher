@@ -8,6 +8,7 @@ from utilities import *
 from GUI.gui import setup_gui
 from validation import validate_resolution
 from i18n import set_language, translate
+from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT
 
 def launch():
     sc_folder_path = gui_components['sc_entry'].get()
@@ -231,7 +232,7 @@ if __name__ == "__main__":
         gui_components['fov_entry'].get(),
         gui_components['width_entry'].get(),
         gui_components['height_entry'].get(),
-        settings['lang'].get()
+        settings
     )
     gui_components['launch_button']['command'] = launch
     gui_components['res_button']['command'] = lambda: quit_vr_mode(
@@ -250,7 +251,14 @@ if __name__ == "__main__":
         gui_components['width_entry'].insert(0, config.get('width', ''))
         gui_components['height_entry'].insert(0, config.get('height', ''))
         gui_components['launcher_entry'].insert(0, config.get('launcher_path', ''))
-        
-        set_language(config.get('lang', ''))
+
+    else:
+        if os.path.exists(STARCITIZEN_DEFAULT):
+            gui_components['sc_entry'].insert(0, STARCITIZEN_DEFAULT)
+        if os.path.exists(VORPX_DEFAULT):
+            gui_components['vorpx_entry'].insert(0, VORPX_DEFAULT)
+        if os.path.exists(LAUNCHER_DEFAULT):
+            gui_components['launcher_entry'].insert(0, LAUNCHER_DEFAULT)
+
 
     root.mainloop()
