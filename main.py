@@ -3,7 +3,7 @@ from tkinter import messagebox
 import os
 import shutil
 from config import save_config, load_config
-from xml_editor import update_attributes
+from xml_editor import update_xml_by_dict
 from utilities import *
 from gui import setup_gui
 from validation import validate_resolution
@@ -119,7 +119,8 @@ def launch():
                 translate("updating_attributes")
             )
             backup_file(attr_orig_path)
-            update_attributes(attr_orig_path, width=gui_components['width_entry'].get(), height=gui_components['height_entry'].get(), fov=gui_components['fov_entry'].get())
+            view_attr = {'width': gui_components['width_entry'].get(), 'height': gui_components['height_entry'].get(), 'FOV': gui_components['fov_entry'].get()}
+            update_xml_by_dict(attr_orig_path, view_attr)
             doneStepID += 1
 
             messagebox.showinfo(
