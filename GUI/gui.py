@@ -36,7 +36,7 @@ def setup_gui(root):
     container = tk.Frame(root)
     container.pack(fill="both", expand=True)
 
-    home_frame, components = create_main_window(container)
+    home_frame, components, buttons = create_main_window(container)
     info_frame = create_info_frame(container)
     settings_frame, settings = create_settings_frame(container)
 
@@ -46,7 +46,7 @@ def setup_gui(root):
     # Show home frame by default
     show_frame(home_frame)
 
-    return components, settings
+    return components, settings, buttons
 
 
 

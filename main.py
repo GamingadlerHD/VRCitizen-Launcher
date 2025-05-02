@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 import shutil
-from config import save_config, load_config
+from config import save_input_configs, load_input_config
 from xml_editor import update_xml_by_dict
 from utilities import *
 from GUI.gui import setup_gui
@@ -25,13 +25,6 @@ def launch():
     # Pre-Validation
     script_dir = os.getcwd()
     dxgi_path = os.path.join(script_dir, "dxgi.dll")
-
-    if not os.path.isfile(dxgi_path):
-        messagebox.showerror(
-            translate("error_title"), 
-            translate("hook_file_not_found").format(dxgi_path=dxgi_path)
-        )
-        exit(1)
 
     if not all([sc_folder_path, vorpx_path]):
         messagebox.showerror(
@@ -101,12 +94,20 @@ def launch():
             modify_hosts(add=True)
             doneStepID += 1
 
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("pasting_dxgi")
-            )
-            shutil.copy2(dxgi_path, dxgi_dest_path)
-            doneStepID += 1
+            if (gui_components['use_dxgi']):
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("pasting_dxgi")
+                )
+
+                if not os.path.isfile(dxgi_path):
+                    messagebox.showerror(
+                        translate("error_title"), 
+                        translate("hook_file_not_found").format(dxgi_path=dxgi_path)
+                    )
+                    raise()
+                shutil.copy2(dxgi_path, dxgi_dest_path)
+                doneStepID += 1
 
             messagebox.showinfo(
                 translate("info_title"), 
@@ -222,20 +223,14 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    gui_components, settings = setup_gui(root)
+    gui_components, settings, interaction = setup_gui(root)
     
     # Assign button commands
-    gui_components['save_button']['command'] = lambda: save_config(
-        gui_components['sc_entry'].get(),
-        gui_components['vorpx_entry'].get(),
-        gui_components['launcher_entry'].get(),
-        gui_components['fov_entry'].get(),
-        gui_components['width_entry'].get(),
-        gui_components['height_entry'].get(),
-        settings
+    interaction['save_button']['command'] = lambda: save_input_configs(
+        [gui_components, settings]
     )
-    gui_components['launch_button']['command'] = launch
-    gui_components['res_button']['command'] = lambda: quit_vr_mode(
+    interaction['launch_button']['command'] = launch
+    interaction['res_button']['command'] = lambda: quit_vr_mode(
         gui_components['vorpx_entry'].get(),
         os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
@@ -243,14 +238,24 @@ if __name__ == "__main__":
     )
 
     # Load config
-    config = load_config()
+    config = load_input_config()
     if config:
-        gui_components['sc_entry'].insert(0, config.get('sc_path', ''))
-        gui_components['vorpx_entry'].insert(0, config.get('vorpx_path', ''))
-        gui_components['fov_entry'].insert(0, config.get('fov', ''))
-        gui_components['width_entry'].insert(0, config.get('width', ''))
-        gui_components['height_entry'].insert(0, config.get('height', ''))
-        gui_components['launcher_entry'].insert(0, config.get('launcher_path', ''))
+        for key, value in config.items():
+            # if key exists in gui_components, set its value
+            entry_name = key.replace("_val", "")
+            if entry_name in gui_components:
+                try:
+                    gui_components[entry_name].insert(0, config.get(key, ''))
+                except AttributeError:
+                    # if the component is not an Entry, set its value directly
+                    gui_components[entry_name].set(config.get(key))
+            elif (entry_name in settings):
+                try:
+                    settings[entry_name].insert(0, config.get(key, ''))
+                except AttributeError:
+                    # if the component is not an Entry, set its value directly
+                    settings[entry_name].set(config.get(key))
+
 
     else:
         if os.path.exists(STARCITIZEN_DEFAULT):

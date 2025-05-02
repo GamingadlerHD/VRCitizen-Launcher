@@ -9,8 +9,5 @@ def create_settings_frame(container):
     tk.Checkbutton(frame, text="Enable Feature X").pack(pady=5)
 
     data = {
-        "setting1": True,
-        "setting2": False,
-        "setting3": 50
     }
     return frame, data

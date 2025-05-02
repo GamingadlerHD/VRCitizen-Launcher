@@ -92,13 +92,13 @@ def create_main_window(container):
     ttk.Separator(frame, orient="horizontal").grid(row=6, column=0, columnspan=6, sticky="ew", pady=10)
 
     # Hook Checkbox
-    use_dxgi = tk.IntVar()
+    use_dxgi = tk.BooleanVar()
     use_dxgi_check = tk.Checkbutton(frame, text=translate("use_dxgi"), variable=use_dxgi)
     use_dxgi_check.grid(row=7, column=0, columnspan=4, padx=5, pady=5, sticky="w")
 
 
     # Stay in VR Checkbox
-    stay_in_vr = tk.IntVar()
+    stay_in_vr = tk.BooleanVar()
     stay_in_vr_check = tk.Checkbutton(frame, text=translate("revert"), variable=stay_in_vr)
     stay_in_vr_check.grid(row=8, column=0, columnspan=4, padx=5, pady=5, sticky="w")
 
@@ -113,14 +113,17 @@ def create_main_window(container):
     components = {
         'sc_entry': sc_entry,
         'vorpx_entry': vorpx_entry,
-        'save_button': save_button,
-        'launch_button': launch_button,
-        'res_button': res_button,
         'fov_entry': fov_entry,
         'width_entry': width_entry,
         'height_entry': height_entry,
         'stay_in_vr': stay_in_vr,
+        'use_dxgi': use_dxgi,
         'launcher_entry': launcher_entry
     }
+    buttons = {
+        'save_button': save_button,
+        'launch_button': launch_button,
+        'res_button': res_button
+    }
 
-    return frame, components
+    return frame, components, buttons
