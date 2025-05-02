@@ -5,7 +5,7 @@ import shutil
 from config import save_config, load_config
 from xml_editor import update_xml_by_dict
 from utilities import *
-from gui import setup_gui
+from GUI.gui import setup_gui
 from validation import validate_resolution
 from i18n import set_language, translate
 

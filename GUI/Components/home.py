@@ -1,10 +1,8 @@
-# gui.py
-import json
 import tkinter as tk
 from tkinter import ttk  # Required for Combobox
-from tkinter import filedialog
-import webbrowser
 from i18n import translate
+from tkinter import filedialog
+import json
 
 def browse_file(entry, filetypes):
     filename = filedialog.askopenfilename(filetypes=filetypes)
@@ -17,6 +15,7 @@ def browse_folder(entry):
     if foldername:
         entry.delete(0, tk.END)
         entry.insert(0, foldername)
+
 
 #load templates from templates.json
 def load_templates():
@@ -42,6 +41,8 @@ def on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry):
         width_entry.insert(0, selected_item['width'])
         height_entry.delete(0, tk.END)
         height_entry.insert(0, selected_item['height'])
+
+
 
 def create_main_window(container):
     frame = tk.Frame(container)
@@ -123,109 +124,3 @@ def create_main_window(container):
     }
 
     return frame, components
-
-
-def create_info_frame(container):
-    frame = tk.Frame(container)
-
-    # Logos
-    logo1 = tk.PhotoImage(file="image.png") 
-    logo2 = tk.PhotoImage(file="image.png")
-    logo1 = logo1.subsample(logo1.width() // 150, logo1.height() // 150)
-    logo2 = logo2.subsample(logo2.width() // 150, logo2.height() // 150)
-    tk.Label(frame, image=logo1).pack(side="left", padx=10, pady=10)
-    tk.Label(frame, image=logo2).pack(side="right", padx=10, pady=10)
-
-    # Keep references to the images to prevent garbage collection
-    frame.logo1 = logo1
-    frame.logo2 = logo2
-
-
-    tk.Label(frame, text=translate("madeby"), font=("Arial", 14, "bold")).pack(pady=10)
-    tk.Label(frame, text=translate("donate"), font=("Arial", 12)).pack(pady=5)
-
-    # GitHub Link
-    github_link = tk.Label(frame, text=translate("github"), font=("Arial", 12), fg="blue", cursor="hand2")
-    github_link.pack(pady=5)
-    github_link.bind("<Button-1>", lambda e: open_url("https://github.com/GamingadlerHD"))
-
-    # Support Info
-    tk.Label(frame, text=translate("support"), font=("Arial", 12)).pack(pady=10)
-
-    # Discord Invite
-    discord_link = tk.Label(frame, text=translate("join"), font=("Arial", 12), fg="blue", cursor="hand2")
-    discord_link.pack(pady=5)
-    discord_link.bind("<Button-1>", lambda e: open_url("https://discord.gg/StarCitizen"))
-
-    # Display copyright notice
-    tk.Label(frame, text="© 2025 Gamingadler", font=("Arial", 10)).pack(pady=5)
-    tk.Label(frame, text=translate("coppyright"), font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
-    tk.Label(frame, text="http://creativecommons.org/licenses/by-nc-nd/4.0/", font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
-    frame.pack_propagate(False)
-
-    return frame
-
-def create_settings_frame(container):
-    frame = tk.Frame(container)
-    # Add settings widgets here
-    tk.Label(frame, text="Settings").pack(pady=10)
-    # Example setting
-    tk.Checkbutton(frame, text="Enable Feature X").pack(pady=5)
-
-    data = {
-        "setting1": True,
-        "setting2": False,
-        "setting3": 50
-    }
-    return frame, data
-
-def open_url(url):
-    webbrowser.open(url)
-
-def show_frame(frame):
-    frame.tkraise()
-    
-
-def setup_gui(root):
-    root.title(translate("title"))
-
-    # Top-level Menu
-    menu_bar = tk.Menu(root)
-
-    # Home Menu
-    home_menu = tk.Menu(menu_bar, tearoff=0)
-    home_menu.add_command(label=translate("home"), command=lambda: show_frame(home_frame))
-    menu_bar.add_cascade(label=translate("home"), menu=home_menu)
-
-    # Info Menu
-    setting_menu = tk.Menu(menu_bar, tearoff=0)
-    setting_menu.add_command(label=translate("setting"), command=lambda: show_frame(settings_frame))
-    menu_bar.add_cascade(label=translate("setting"), menu=setting_menu)
-
-    info_menu = tk.Menu(menu_bar, tearoff=0)
-    info_menu.add_command(label=translate("info"), command=lambda: show_frame(info_frame))
-    menu_bar.add_cascade(label=translate("info"), menu=info_menu)
-
-    root.config(menu=menu_bar)
-
-
-    # --- Pages container ---
-    container = tk.Frame(root)
-    container.pack(fill="both", expand=True)
-
-    home_frame, components = create_main_window(container)
-    info_frame = create_info_frame(container)
-    settings_frame, settings = create_settings_frame(container)
-
-    for frame in (home_frame, info_frame, settings_frame):
-        frame.grid(row=0, column=0, columnspan=6, rowspan=10, sticky="nsew")
-
-    # Show home frame by default
-    show_frame(home_frame)
-
-    return components, settings
-
-
-
-
-
