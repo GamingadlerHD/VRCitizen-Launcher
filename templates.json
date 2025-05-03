@@ -2,59 +2,81 @@
     "templates": [
       {
         "name": "Quest 2",
-        "fov": 90,
-        "ratio": 1.777,
-        "width": 1920,
-        "height": 1080
+        "presets": [
+          {
+            "name": "HD",
+            "fov": 90,
+            "ratio": 2,
+            "width": 1832,
+            "height": 1920
+          },
+          {
+            "name": "High Quality",
+            "fov": 90,
+            "ratio": 1,
+            "width": 2048,
+            "height": 1536
+          },
+          {
+            "name": "Small",
+            "fov": 90,
+            "ratio": 3,
+            "width": 2160,
+            "height": 2160
+          }
+        ]
       },
       {
         "name": "Quest Pro",
-        "fov": 90,
-        "ratio": 1.777,
-        "width": 2048,
-        "height": 1536
+        "presets": [
+          {
+            "name": "HD",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 1832,
+            "height": 1920
+          },
+          {
+            "name": "High Quality",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 2048,
+            "height": 1536
+          },
+          {
+            "name": "Small",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 2160,
+            "height": 2160
+          }
+        ]
       },
       {
         "name": "Pico 4",
-        "fov": 90,
-        "ratio": 1.777,
-        "width": 2160,
-        "height": 2160
-      },
-      {
-        "name": "Pimax Crystal",
-        "fov": 110,
-        "ratio": 1.777,
-        "width": 2560,
-        "height": 2560
-      },
-      {
-        "name": "Valve Index",
-        "fov": 110,
-        "ratio": 1.777,
-        "width": 1440,
-        "height": 1600
-      },
-      {
-        "name": "HTC Vive Pro",
-        "fov": 110,
-        "ratio": 1.777,
-        "width": 1440,
-        "height": 1600
-      },
-      {
-        "name": "HTC Vive Cosmos",
-        "fov": 110,
-        "ratio": 1.777,
-        "width": 1440,
-        "height": 1600
-      },
-      {
-        "name": "Meta Quest Pro",
-        "fov": 110,
-        "ratio": 1.777,
-        "width": 2048,
-        "height": 1536
+        "presets": [
+          {
+            "name": "HD",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 1832,
+            "height": 1920
+          },
+          {
+            "name": "High Quality",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 2048,
+            "height": 1536
+          },
+          {
+            "name": "Small",
+            "fov": 90,
+            "ratio": 1.777,
+            "width": 2160,
+            "height": 2160
+          }
+        ]
       }
     ]
   }

@@ -4,14 +4,36 @@ from i18n import translate
 from tkinter import filedialog
 import json
 
-def update_resolution(widht, heigh, height_changed, template_index):
-    print(f"Template Index: {template_index}")
+def update_resolution(widht, heigh, height_changed, template_index, preset_index):
+    numbers_only(widht)
+    numbers_only(heigh)
+
+    preset = None
     if template_index == 0:
         return
-    elif height_changed:
-        widht.insert(0, heigh.get()*load_templates()[template_index]['ratio'])
+    try:
+        template = load_templates()[template_index - 1]
+        preset = template['presets'][preset_index]
+    except IndexError:
+        return
+    
+    if height_changed:
+        num = (float(heigh.get())*float(preset['ratio']))
+        # round to int
+        widht.delete(0, tk.END)
+        widht.insert(0, int(num))
     else:
-        heigh.insert(0, widht.get()/load_templates()[template_index]['ratio'])
+        heigh.delete(0, tk.END)
+        heigh.insert(0, int(float(widht.get())/float(preset['ratio'])))
+
+def numbers_only(entry):
+    input = entry.get()
+    for char in entry.get():
+        if not char.isdigit():
+            entry.delete(0, tk.END)
+            corrected_input = input.replace(char, '')
+            entry.insert(0, corrected_input)
+            break
 
 
 def browse_file(entry, filetypes):
@@ -36,21 +58,43 @@ def load_templates():
     except FileNotFoundError:
         return {}
     
-def on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry):
+def on_dropdown_change(event, dropdown, preset):
     selected_index = dropdown.current()  # Get the selected index
+
     if selected_index == 0:  # No template selected
         print("No Template Selected")
+        preset["values"] = [translate("no_template")]
+        preset.current(0)
         return
     else:
-        selected_item = load_templates()[selected_index -1]  # Get the corresponding object
-        print(f"Selected: {selected_item['name']}")
-        # Update the FOV, Width, and Height entries with the selected template values
-        fov_entry.delete(0, tk.END)
-        fov_entry.insert(0, selected_item['fov'])
-        width_entry.delete(0, tk.END)
-        width_entry.insert(0, selected_item['width'])
-        height_entry.delete(0, tk.END)
-        height_entry.insert(0, selected_item['height'])
+        preset["values"] = [p['name'] for p in get_presets(selected_index)]
+
+def on_preset_change(event, dropdown, fov_entry, width_entry, height_entry, preset):
+    selected_index = dropdown.current()  # Get the selected index
+    selected_preset = preset.current()  # Get the selected preset index
+
+    if selected_index == 0:  # No template selected
+        return
+    selected_item = load_templates()[selected_index -1] 
+    selected_preset_values = selected_item['presets'][selected_preset]
+
+    print(selected_item)
+    fov_entry.delete(0, tk.END)
+    fov_entry.insert(0, selected_preset_values['fov'])
+    width_entry.delete(0, tk.END)
+    width_entry.insert(0, selected_preset_values['width'])
+    height_entry.delete(0, tk.END)
+    height_entry.insert(0, selected_preset_values['height'])
+
+def get_presets(template_index):
+    templates = load_templates()
+    if template_index == 0:
+        return []
+    else:
+        return templates[template_index - 1]['presets']
+    
+def on_text_change(event):
+    print("User typed:", event.widget.get())
 
 
 
@@ -81,9 +125,17 @@ def create_main_window(container):
     templates = load_templates()
     tk.Label(frame, text=translate("templates")).grid(row=4, column=0, padx=5, pady=5, sticky="w")
     dropdown = ttk.Combobox(frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
-    dropdown.grid(row=4, column=1, columnspan=2, padx=5, pady=5, sticky="ew")
-    dropdown.bind("<<ComboboxSelected>>", lambda event: on_dropdown_change(event, dropdown, fov_entry, width_entry, height_entry))
+    dropdown.grid(row=4, column=1, columnspan=1, padx=5, pady=5, sticky="ew")
     dropdown.current(0)
+
+
+    prs = get_presets(dropdown.current())
+    preset = ttk.Combobox(frame, values=[translate("no_template")] + [p['name'] for p in prs])
+    preset.grid(row=4, column=2, columnspan=1, padx=5, pady=5, sticky="ew")
+
+
+    preset.bind("<<ComboboxSelected>>", lambda event: on_preset_change(event, dropdown, fov_entry, width_entry, height_entry, preset))
+    dropdown.bind("<<ComboboxSelected>>", lambda event: on_dropdown_change(event, dropdown, preset))
 
     # FOV, Width, Height
     tk.Label(frame, text="FOV").grid(row=5, column=0, padx=5, pady=5, sticky="w")
@@ -97,6 +149,14 @@ def create_main_window(container):
     tk.Label(frame, text=translate("height")).grid(row=5, column=4, padx=5, pady=5, sticky="w")
     height_entry = tk.Entry(frame, width=10)
     height_entry.grid(row=5, column=5, padx=5, pady=5, sticky="w")
+
+    fov_entry.bind("<KeyRelease>",lambda event:  numbers_only(fov_entry))
+    width_entry.bind("<KeyRelease>",lambda event:  update_resolution(width_entry, height_entry, False, dropdown.current(), preset.current()))
+    height_entry.bind("<KeyRelease>",lambda event:  update_resolution(width_entry, height_entry, True, dropdown.current(), preset.current()))
+
+
+
+
 
     # Divider Line
     ttk.Separator(frame, orient="horizontal").grid(row=6, column=0, columnspan=6, sticky="ew", pady=10)
