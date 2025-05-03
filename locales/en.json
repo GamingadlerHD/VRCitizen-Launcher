@@ -52,5 +52,19 @@
     "restoring_attributes": "Restoring original attributes...",
     "restored_title": "Successfully Restored",
     "restored_message": "Everything has been restored to its original state.",
-    "error_quitting_vr": "An error occurred while quitting VR mode: {e}"
+    "error_quitting_vr": "An error occurred while quitting VR mode: {e}",
+
+    "MotionBlur": "Motion Blur",
+    "VSync": "VSync",
+    "AutoZoomOnSelectedTarget": "Auto Zoom on Selected Target",
+    "ChromaticAberration": "Chromatic Aberration",
+    "FilmGrain": "Film Grain",
+    "HeadtrackingToggle": "Headtracking Toggle",
+    "HeadtrackingDisableDuringADS": "Headtracking Disable During ADS",
+    "HeadtrackingDisableDuringMobiGlas": "Headtracking Disable During MobiGlas",
+    "HeadtrackingDisableDuringWalking": "Headtracking Disable During Walking",
+    "HeadtrackingEnableRollFPS": "Headtracking Enable Roll FPS",
+    "HeadtrackingThirdPersonCameraToggle": "Headtracking Third Person Camera Toggle",
+    "HeadtrackingThirdPersonDisableDuringInventory": "Headtracking Third Person Disable During Inventory"
 }
+

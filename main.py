@@ -123,6 +123,7 @@ def launch():
             backup_file(attr_orig_path)
             view_attr = {'width': gui_components['width_entry'].get(), 'height': gui_components['height_entry'].get(), 'FOV': gui_components['fov_entry'].get()}
             update_xml_by_dict(attr_orig_path, view_attr)
+            update_xml_by_dict(attr_orig_path, settings)
             doneStepID += 1
 
             messagebox.showinfo(

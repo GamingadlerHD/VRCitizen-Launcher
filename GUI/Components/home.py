@@ -75,7 +75,7 @@ def create_main_window(container):
     tk.Button(frame, text=translate("Browse"), command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2, padx=5, pady=5)
 
     # Divider Line
-    ttk.Separator(frame, orient="horizontal").grid(row=3, column=0, columnspan=3, sticky="ew", pady=10)
+    ttk.Separator(frame, orient="horizontal").grid(row=3, column=0, columnspan=6, sticky="ew", pady=10)
 
     # Templates Dropdown
     templates = load_templates()
@@ -116,9 +116,9 @@ def create_main_window(container):
     save_button = tk.Button(frame, text=translate("save"))
     save_button.grid(row=9, column=0, padx=5, pady=5)
     launch_button = tk.Button(frame, text=translate("launch"))
-    launch_button.grid(row=9, column=1, padx=5, pady=5)
+    launch_button.grid(row=9, column=2, padx=5, pady=5)
     res_button = tk.Button(frame, text=translate("restore"))
-    res_button.grid(row=9, column=2, padx=5, pady=5)
+    res_button.grid(row=9, column=5, padx=5, pady=5)
 
     components = {
         'sc_entry': sc_entry,
