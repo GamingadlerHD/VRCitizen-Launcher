@@ -60,6 +60,9 @@ def create_settings_frame(container):
     spring_check = tk.Checkbutton(frame, text=translate("SpringMovment"), variable=sp)
     spring_check.grid(row=6, column=0, columnspan=1, padx=5, pady=5, sticky="w")
 
+    headtracking_label = tk.Label(frame, text=translate("Headtracking"))
+    headtracking_label.grid(row=0, column=2, padx=5, pady=5, sticky="w")
+
     # HeadtrackingToggle Checkbox
     headtracking_toggle = tk.BooleanVar()
     headtracking_toggle_check = tk.Checkbutton(frame, text=translate("HeadtrackingToggle"), variable=headtracking_toggle)
