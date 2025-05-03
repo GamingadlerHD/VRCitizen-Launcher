@@ -1,3 +1,5 @@
+import ctypes
+import sys
 import tkinter as tk
 from tkinter import messagebox
 import os
@@ -229,6 +231,19 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
         )
 
 if __name__ == "__main__":
+    if not is_admin():
+        params = " ".join([f'"{arg}"' for arg in sys.argv])
+        ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", sys.executable, params, None, 1)
+        sys.exit()
+
+    # Load config
+    config = load_input_config()
+    try:
+        set_language(config['language'])
+    except KeyError:
+        set_language('en')
+
     root = tk.Tk()
     gui_components, settings, interaction = setup_gui(root)
     
@@ -243,9 +258,6 @@ if __name__ == "__main__":
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
         99999
     )
-
-    # Load config
-    config = load_input_config()
     if config:
         for key, value in config.items():
             # if key exists in gui_components, set its value

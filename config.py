@@ -20,3 +20,11 @@ def save_input_configs(ui_components: list[dict]):
                 config[config_name] = value
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
+
+def add_or_change_value_in_config(key: str, value: str):
+    config = load_input_config()
+    if config is None:
+        config = {}
+    config[key] = value
+    with open(CONFIG_FILE, 'w') as f:
+        json.dump(config, f)
