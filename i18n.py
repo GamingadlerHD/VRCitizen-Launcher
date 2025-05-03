@@ -17,7 +17,8 @@ def translate(tag, lang_code=None):
 
 def get_translations(lang_code):
     _translations = {}
-    path = os.path.join(os.path.dirname(__file__), 'locales', f'{lang_code}.json')
+    path = os.path.join('locales', f'{lang_code}.json')
+    print(f"[i18n] Loading language file: {path}")
     try:
         with open(path, 'r', encoding='utf-8') as f:
             _translations = json.load(f)
