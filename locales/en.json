@@ -59,12 +59,14 @@
     "AutoZoomOnSelectedTarget": "Auto Zoom on Selected Target",
     "ChromaticAberration": "Chromatic Aberration",
     "FilmGrain": "Film Grain",
-    "HeadtrackingToggle": "Headtracking Toggle",
-    "HeadtrackingDisableDuringADS": "Headtracking Disable During ADS",
-    "HeadtrackingDisableDuringMobiGlas": "Headtracking Disable During MobiGlas",
-    "HeadtrackingDisableDuringWalking": "Headtracking Disable During Walking",
-    "HeadtrackingEnableRollFPS": "Headtracking Enable Roll FPS",
-    "HeadtrackingThirdPersonCameraToggle": "Headtracking Third Person Camera Toggle",
-    "HeadtrackingThirdPersonDisableDuringInventory": "Headtracking Third Person Disable During Inventory"
+    "HeadtrackingToggle": "Toggle",
+    "HeadtrackingDisableDuringADS": "Disable During ADS",
+    "HeadtrackingDisableDuringMobiGlas": "Disable During MobiGlas",
+    "HeadtrackingDisableDuringWalking": "Disable During Walking",
+    "HeadtrackingEnableRollFPS": "Enable Roll FPS",
+    "HeadtrackingThirdPersonCameraToggle": "Third Person Camera Toggle",
+    "HeadtrackingThirdPersonDisableDuringInventory": "Third Person Disable During Inventory",
+    "change_language": "You are about to chage the language to English. This will restart the application.",
+    "Headtracking": "Headtracking"
 }
 
