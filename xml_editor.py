@@ -47,6 +47,7 @@ def update_xml_by_dict(file_path : str, attributes : dict):
 
 vr_settings : list[str]  = [
     "MotionBlur",
+    "MaxAutoZoom",
     "ShakeScale",
     "VSync",
     "AutoZoomOnSelectedTarget",
@@ -72,18 +73,28 @@ def update_vr_settings_from_xml_to_xml(from_xml_path : str, to_xml_path : str):
     Update the VR settings from one XML file to another.
     """
     # Parse the XML file
-    tree = ET.parse(from_xml_path)
+    tree = ET.parse(to_xml_path)
     root = tree.getroot()
     
     # Create a dictionary to store the attributes
     attributes = {}
     
     # Iterate through the XML elements and add them to the dictionary
+    from_tree = ET.parse(from_xml_path)
+    from_root = from_tree.getroot()
+    from_attributes = {attr.get('name') for attr in from_root.findall('Attr')}
+
     for attr in root.findall('Attr'):
         name = attr.get('name')
         value = attr.get('value')
         if name in vr_settings:
-            attributes[name] = value
+            if name in from_attributes:
+                attributes[name] = value
+            else:
+                root.remove(attr)
+
+    tree.write(to_xml_path, encoding="utf-8", xml_declaration=False)
+
     
     # Update the XML file with the new values
     update_xml_by_dict(to_xml_path, attributes)

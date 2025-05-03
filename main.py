@@ -191,8 +191,9 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
                 translate("info_title"), 
                 translate("restoring_hosts")
             )
-            shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
-            os.remove(HOSTS_FILE + ".backup")
+            if os.path.exists(HOSTS_FILE + ".backup"):
+                shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
+                os.remove(HOSTS_FILE + ".backup")
 
         if doneStepID > 1:
             messagebox.showinfo(
