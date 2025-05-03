@@ -3,7 +3,7 @@ from tkinter import messagebox
 import os
 import shutil
 from config import save_input_configs, load_input_config
-from xml_editor import update_xml_by_dict
+from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
 from utilities import *
 from GUI.gui import setup_gui
 from validation import validate_resolution
@@ -121,10 +121,15 @@ def launch():
                 translate("updating_attributes")
             )
             backup_file(attr_orig_path)
-            view_attr = {'width': gui_components['width_entry'].get(), 'height': gui_components['height_entry'].get(), 'FOV': gui_components['fov_entry'].get()}
-            update_xml_by_dict(attr_orig_path, view_attr)
-            update_xml_by_dict(attr_orig_path, settings)
+            view_attr = {'Width': gui_components['width_entry'].get(), 'Height': gui_components['height_entry'].get(), 'FOV': gui_components['fov_entry'].get()}
             doneStepID += 1
+            update_xml_by_dict(attr_orig_path, view_attr)
+
+            stVal = {}
+            for key, value in settings.items():
+                stVal[key] = value.get()
+            update_xml_by_dict(attr_orig_path, stVal)
+
 
             messagebox.showinfo(
                 translate("info_title"), 
@@ -208,7 +213,8 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
                 translate("restoring_attributes")
             )
             if os.path.exists(attr_orig_path + ".backup"):
-                shutil.copy2(attr_orig_path + ".backup", attr_orig_path)
+                update_vr_settings_from_xml_to_xml(
+                    attr_orig_path + ".backup", attr_orig_path)
                 os.remove(attr_orig_path + ".backup")
 
         messagebox.showinfo(

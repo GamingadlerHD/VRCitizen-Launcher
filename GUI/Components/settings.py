@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from typing import List
 from i18n import translate
 
@@ -16,6 +17,12 @@ def set_standard_settings(settings :List[dict]):
     settings['HeadtrackingEnableRollFPS'].set(1)
     settings['HeadtrackingThirdPersonCameraToggle'].set(1)
     settings['HeadtrackingThirdPersonDisableDuringInventory'].set(0)
+    settings['ShakeScale'].set(0)
+    settings['GForceBoostZoomScale'].set(0)
+    settings['MaxAutoZoom'].set(0)
+    settings['HeadtrackingSource'].set("TrackIR") 
+    settings['CameraSpringMovement'].set(0)
+    settings['GForceHeadBobScale'].set(0)
 
     return settings
 
@@ -47,6 +54,11 @@ def create_settings_frame(container):
     fg = tk.BooleanVar()
     film_grain_check = tk.Checkbutton(frame, text=translate("FilmGrain"), variable=fg)
     film_grain_check.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="w")
+
+    # SpringMovment Checkbox
+    sp = tk.BooleanVar()
+    spring_check = tk.Checkbutton(frame, text=translate("SpringMovment"), variable=sp)
+    spring_check.grid(row=6, column=0, columnspan=1, padx=5, pady=5, sticky="w")
 
     # HeadtrackingToggle Checkbox
     headtracking_toggle = tk.BooleanVar()
@@ -83,6 +95,38 @@ def create_settings_frame(container):
     headtracking_inventory_check = tk.Checkbutton(frame, text=translate("HeadtrackingThirdPersonDisableDuringInventory"), variable=headtracking_inventory)
     headtracking_inventory_check.grid(row=7, column=2, columnspan=1, padx=5, pady=5, sticky="w")
 
+    gforce_label = tk.Label(frame, text=translate("GForceBoostZoomScale"))
+    gforce_label.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+    gforce_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
+    gforce_slider.grid(row=1, column=4, padx=5, pady=5, sticky="ew")
+
+    # GForceHeadBobScale Slider
+    gforce_headbob_label = tk.Label(frame, text=translate("GForceHeadBobScale"))
+    gforce_headbob_label.grid(row=2, column=3, padx=5, pady=5, sticky="w")
+    gforce_headbob_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
+    gforce_headbob_slider.grid(row=2, column=4, padx=5, pady=5, sticky="ew")
+
+    # ShakeScale Slider
+    shake_scale_label = tk.Label(frame, text=translate("ShakeScale"))
+    shake_scale_label.grid(row=3, column=3, padx=5, pady=5, sticky="w")
+    shake_scale_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
+    shake_scale_slider.grid(row=3, column=4, padx=5, pady=5, sticky="ew")
+
+    max_autozoom_label = tk.Label(frame, text=translate("MaxAutoZoom"))
+    max_autozoom_label.grid(row=4, column=3, padx=5, pady=5, sticky="w")
+    max_autozoom_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=1)
+    max_autozoom_slider.grid(row=4, column=4, padx=5, pady=5, sticky="ew")
+
+    # combobox for HeadtrackingSource, with options "Faceware FOIP" and "TrackIR" and "Tobi", should be saved as a int
+    # 0 = Faceware FOIP, 1 = TrackIR, 2 = Tobi
+    tk.Label(frame, text=translate("HeadtrackingSource")).grid(row=5, column=3, padx=5, pady=5, sticky="w")
+    headtracking_source = tk.StringVar()
+    headtracking_source_combobox = ttk.Combobox(frame, textvariable=headtracking_source)
+    headtracking_source_combobox['values'] = ("Faceware FOIP", "TrackIR", "Tobi")
+    headtracking_source_combobox.grid(row=5, column=4, padx=5, pady=5, sticky="ew")
+
+
+
 
     data = {
         "MotionBlur": mb,
@@ -96,10 +140,20 @@ def create_settings_frame(container):
         "HeadtrackingDisableDuringWalking": headtracking_walk,
         "HeadtrackingEnableRollFPS": headtracking_roll,
         "HeadtrackingThirdPersonCameraToggle": headtracking_third_person,
-        "HeadtrackingThirdPersonDisableDuringInventory": headtracking_inventory
+        "HeadtrackingThirdPersonDisableDuringInventory": headtracking_inventory,
+        "ShakeScale": shake_scale_slider,
+        "GForceBoostZoomScale": gforce_slider,
+        "MaxAutoZoom": max_autozoom_slider,
+        "HeadtrackingSource": headtracking_source,
+        "CameraSpringMovement": sp,
+        "GForceHeadBobScale": gforce_headbob_slider,
 
     }
 
     set_standard_settings(data)
+
+    # reset button
+    reset_button = tk.Button(frame, text=translate("reset"), command=lambda: set_standard_settings(data))
+    reset_button.grid(row=9, column=3, padx=5, pady=5)
 
     return frame, data
