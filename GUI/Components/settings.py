@@ -28,135 +28,101 @@ def set_standard_settings(settings :List[dict]):
 
 def create_settings_frame(container):
     frame = tk.Frame(container)
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_columnconfigure(0, weight=1)
 
+    # Main content container
+    content_frame = tk.Frame(frame)
+    content_frame.grid(row=0, column=0, sticky="nsew")
 
+    # Configure columns with equal width
+    content_frame.columnconfigure(0, weight=1, uniform='cols')
+    content_frame.columnconfigure(2, weight=1, uniform='cols')
+    content_frame.columnconfigure(4, weight=1, uniform='cols')
+
+    # Create section frames
+    left_frame = tk.Frame(content_frame)
+    middle_frame = tk.Frame(content_frame)
+    right_frame = tk.Frame(content_frame)
+
+    # Grid layout for content
+    left_frame.grid(row=0, column=0, sticky="nsew", padx=5)
+    middle_frame.grid(row=0, column=2, sticky="nsew", padx=5)
+    right_frame.grid(row=0, column=4, sticky="nsew", padx=5)
+
+    # Shortened separators
+    sep_style = ttk.Style()
+    sep_style.configure('Short.TSeparator', background='#c0c0c0')
     
-    # Hook Checkbox
-    mb = tk.BooleanVar()
-    mb_check = tk.Checkbutton(frame, text=translate("MotionBlur"), variable=mb)
-    mb_check.grid(row=1, column=0, columnspan=1, padx=5, pady=5, sticky="w")
+    sep1 = ttk.Separator(content_frame, orient='vertical', style='Short.TSeparator')
+    sep2 = ttk.Separator(content_frame, orient='vertical', style='Short.TSeparator')
+    
+    sep1.grid(row=0, column=1, sticky="ns", padx=5, rowspan=3)
+    sep2.grid(row=0, column=3, sticky="ns", padx=5, rowspan=3)
 
-    vs = tk.BooleanVar()
-    vs_check = tk.Checkbutton(frame, text=translate("VSync"), variable=vs)
-    vs_check.grid(row=2, column=0, columnspan=1, padx=5, pady=5, sticky="w")
+    # Left Column - General Settings
+    tk.Label(left_frame, text=translate("GeneralSettings"), font='bold').grid(row=0, column=0, sticky="w", pady=5)
+    checkboxes = [
+        ("MotionBlur", 1), ("VSync", 2), ("AutoZoomOnSelectedTarget", 3),
+        ("ChromaticAberration", 4), ("FilmGrain", 5), ("SpringMovment", 6)
+    ]
+    vars_left = {}
+    for text, row in checkboxes:
+        var = tk.BooleanVar()
+        tk.Checkbutton(left_frame, text=translate(text), variable=var).grid(
+            row=row, column=0, sticky="w", padx=5, pady=2)
+        vars_left[text] = var
 
-    # AutoZoomOnSelectedTarget Checkbox
-    auto_zoom = tk.BooleanVar()
-    auto_zoom_check = tk.Checkbutton(frame, text=translate("AutoZoomOnSelectedTarget"), variable=auto_zoom)
-    auto_zoom_check.grid(row=3, column=0, columnspan=1, padx=5, pady=5, sticky="w")
+    # Middle Column - Headtracking
+    tk.Label(middle_frame, text=translate("Headtracking"), font='bold').grid(row=0, column=0, sticky="w", pady=5)
+    headtracking_checkboxes = [
+        ("HeadtrackingToggle", 1), ("HeadtrackingDisableDuringADS", 2),
+        ("HeadtrackingDisableDuringMobiGlas", 3), ("HeadtrackingDisableDuringWalking", 4),
+        ("HeadtrackingEnableRollFPS", 5), ("HeadtrackingThirdPersonCameraToggle", 6),
+        ("HeadtrackingThirdPersonDisableDuringInventory", 7)
+    ]
+    vars_middle = {}
+    for text, row in headtracking_checkboxes:
+        var = tk.BooleanVar()
+        tk.Checkbutton(middle_frame, text=translate(text), variable=var).grid(
+            row=row, column=0, sticky="w", padx=5, pady=2)
+        vars_middle[text] = var
 
-    # ChromaticAberration Checkbox
-    ca = tk.BooleanVar()
-    chromatic_aberration_check = tk.Checkbutton(frame, text=translate("ChromaticAberration"), variable=ca)
-    chromatic_aberration_check.grid(row=4, column=0, columnspan=1, padx=5, pady=5, sticky="w")
+    # Right Column - Advanced Settings
+    tk.Label(right_frame, text=translate("AdvancedSettings"), font='bold').grid(row=0, column=0, sticky="w", pady=5)
+    right_frame.columnconfigure(1, weight=1)
+    
+    slider_widgets = [
+        ("GForceBoostZoomScale", 1), ("GForceHeadBobScale", 2),
+        ("ShakeScale", 3), ("MaxAutoZoom", 4)
+    ]
+    vars_right = {}
+    for text, row in slider_widgets:
+        tk.Label(right_frame, text=translate(text)).grid(row=row, column=0, sticky="w", padx=5)
+        slider = tk.Scale(right_frame, from_=0, to=100, orient="horizontal", resolution=5)
+        slider.grid(row=row, column=1, sticky="ew", padx=5)
+        vars_right[text] = slider
 
-    # FilmGrain Checkbox
-    fg = tk.BooleanVar()
-    film_grain_check = tk.Checkbutton(frame, text=translate("FilmGrain"), variable=fg)
-    film_grain_check.grid(row=5, column=0, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # SpringMovment Checkbox
-    sp = tk.BooleanVar()
-    spring_check = tk.Checkbutton(frame, text=translate("SpringMovment"), variable=sp)
-    spring_check.grid(row=6, column=0, columnspan=1, padx=5, pady=5, sticky="w")
-
-    headtracking_label = tk.Label(frame, text=translate("Headtracking"))
-    headtracking_label.grid(row=0, column=2, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingToggle Checkbox
-    headtracking_toggle = tk.BooleanVar()
-    headtracking_toggle_check = tk.Checkbutton(frame, text=translate("HeadtrackingToggle"), variable=headtracking_toggle)
-    headtracking_toggle_check.grid(row=1, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingDisableDuringADS Checkbox
-    headtracking_ads = tk.BooleanVar()
-    headtracking_ads_check = tk.Checkbutton(frame, text=translate("HeadtrackingDisableDuringADS"), variable=headtracking_ads)
-    headtracking_ads_check.grid(row=2, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingDisableDuringMobiGlas Checkbox
-    headtracking_mobi = tk.BooleanVar()
-    headtracking_mobi_check = tk.Checkbutton(frame, text=translate("HeadtrackingDisableDuringMobiGlas"), variable=headtracking_mobi)
-    headtracking_mobi_check.grid(row=3, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingDisableDuringWalking Checkbox
-    headtracking_walk = tk.BooleanVar()
-    headtracking_walk_check = tk.Checkbutton(frame, text=translate("HeadtrackingDisableDuringWalking"), variable=headtracking_walk)
-    headtracking_walk_check.grid(row=4, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingEnableRollFPS Checkbox
-    headtracking_roll = tk.BooleanVar()
-    headtracking_roll_check = tk.Checkbutton(frame, text=translate("HeadtrackingEnableRollFPS"), variable=headtracking_roll)
-    headtracking_roll_check.grid(row=5, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingThirdPersonCameraToggle Checkbox
-    headtracking_third_person = tk.BooleanVar()
-    headtracking_third_person_check = tk.Checkbutton(frame, text=translate("HeadtrackingThirdPersonCameraToggle"), variable=headtracking_third_person)
-    headtracking_third_person_check.grid(row=6, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    # HeadtrackingThirdPersonDisableDuringInventory Checkbox
-    headtracking_inventory = tk.BooleanVar()
-    headtracking_inventory_check = tk.Checkbutton(frame, text=translate("HeadtrackingThirdPersonDisableDuringInventory"), variable=headtracking_inventory)
-    headtracking_inventory_check.grid(row=7, column=2, columnspan=1, padx=5, pady=5, sticky="w")
-
-    gforce_label = tk.Label(frame, text=translate("GForceBoostZoomScale"))
-    gforce_label.grid(row=1, column=3, padx=5, pady=5, sticky="w")
-    gforce_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
-    gforce_slider.grid(row=1, column=4, padx=5, pady=5, sticky="ew")
-
-    # GForceHeadBobScale Slider
-    gforce_headbob_label = tk.Label(frame, text=translate("GForceHeadBobScale"))
-    gforce_headbob_label.grid(row=2, column=3, padx=5, pady=5, sticky="w")
-    gforce_headbob_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
-    gforce_headbob_slider.grid(row=2, column=4, padx=5, pady=5, sticky="ew")
-
-    # ShakeScale Slider
-    shake_scale_label = tk.Label(frame, text=translate("ShakeScale"))
-    shake_scale_label.grid(row=3, column=3, padx=5, pady=5, sticky="w")
-    shake_scale_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=5)
-    shake_scale_slider.grid(row=3, column=4, padx=5, pady=5, sticky="ew")
-
-    max_autozoom_label = tk.Label(frame, text=translate("MaxAutoZoom"))
-    max_autozoom_label.grid(row=4, column=3, padx=5, pady=5, sticky="w")
-    max_autozoom_slider = tk.Scale(frame, from_=0, to=100, orient="horizontal", resolution=1)
-    max_autozoom_slider.grid(row=4, column=4, padx=5, pady=5, sticky="ew")
-
-    # combobox for HeadtrackingSource, with options "Faceware FOIP" and "TrackIR" and "Tobi", should be saved as a int
-    # 0 = Faceware FOIP, 1 = TrackIR, 2 = Tobi
-    tk.Label(frame, text=translate("HeadtrackingSource")).grid(row=5, column=3, padx=5, pady=5, sticky="w")
+    # Headtracking Source Combobox
+    tk.Label(right_frame, text=translate("HeadtrackingSource")).grid(row=5, column=0, sticky="w", padx=5)
     headtracking_source = tk.StringVar()
-    headtracking_source_combobox = ttk.Combobox(frame, textvariable=headtracking_source)
-    headtracking_source_combobox['values'] = ("Faceware FOIP", "TrackIR", "Tobi")
-    headtracking_source_combobox.grid(row=5, column=4, padx=5, pady=5, sticky="ew")
+    ttk.Combobox(right_frame, textvariable=headtracking_source, 
+                values=["Faceware FOIP", "TrackIR", "Tobi"]).grid(
+                    row=5, column=1, sticky="ew", padx=5)
+    vars_right["HeadtrackingSource"] = headtracking_source
 
-
-
-
+    # Reset Button (centered below content)
+    reset_button = tk.Button(frame, text=translate("reset"))
+    reset_button.grid(row=1, column=0, pady=15, sticky="")
+    
+    # Combine settings data
     data = {
-        "MotionBlur": mb,
-        "VSync": vs,
-        "AutoZoomOnSelectedTarget": auto_zoom,
-        "ChromaticAberration": ca,
-        "FilmGrain": fg,
-        "HeadtrackingToggle": headtracking_toggle,
-        "HeadtrackingDisableDuringADS": headtracking_ads,
-        "HeadtrackingDisableDuringMobiGlas": headtracking_mobi,
-        "HeadtrackingDisableDuringWalking": headtracking_walk,
-        "HeadtrackingEnableRollFPS": headtracking_roll,
-        "HeadtrackingThirdPersonCameraToggle": headtracking_third_person,
-        "HeadtrackingThirdPersonDisableDuringInventory": headtracking_inventory,
-        "ShakeScale": shake_scale_slider,
-        "GForceBoostZoomScale": gforce_slider,
-        "MaxAutoZoom": max_autozoom_slider,
-        "HeadtrackingSource": headtracking_source,
-        "CameraSpringMovement": sp,
-        "GForceHeadBobScale": gforce_headbob_slider,
-
+        **vars_left,
+        **vars_middle,
+        **vars_right,
+        "CameraSpringMovement": vars_left["SpringMovment"]
     }
-
     set_standard_settings(data)
-
-    # reset button
-    reset_button = tk.Button(frame, text=translate("reset"), command=lambda: set_standard_settings(data))
-    reset_button.grid(row=9, column=3, padx=5, pady=5)
+    reset_button.config(command=lambda: set_standard_settings(data))
 
     return frame, data

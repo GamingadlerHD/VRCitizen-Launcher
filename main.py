@@ -242,7 +242,7 @@ if __name__ == "__main__":
     config = load_input_config()
     try:
         set_language(config['language'])
-    except KeyError:
+    except:
         set_language('en')
 
     root = tk.Tk()

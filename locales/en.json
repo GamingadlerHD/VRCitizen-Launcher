@@ -67,6 +67,16 @@
     "HeadtrackingThirdPersonCameraToggle": "Third Person Camera Toggle",
     "HeadtrackingThirdPersonDisableDuringInventory": "Third Person Disable During Inventory",
     "change_language": "You are about to chage the language to English. This will restart the application.",
-    "Headtracking": "Headtracking"
+    "Headtracking": "Headtracking",
+
+    "SpringMovement": "Spring Movement",
+    "GForceBoostZoomScale": "G-Force Boost Zoom Scale",
+    "GForceHeadBobScale": "G-Force Head Bob Scale",
+    "ShakeScale": "Shake Scale",
+    "MaxAutoZoom": "Max Auto Zoom",
+    "HeadtrackingSource": "Headtracking Source",
+    "Language": "Language",
+    "GeneralSettings": "General Settings",
+    "AdvancedSettings": "Advanced Settings"
 }
 
