@@ -69,11 +69,12 @@ def launch():
         return
     
     if not validate_resolution(int(gui_components['width_entry'].get()), int(gui_components['height_entry'].get())):
-        messagebox.showerror(
-            translate("error_title"), 
-            translate("resolution_too_small")
-        )
-        return
+        if not gui_components['ign_res_warning'].get():
+            messagebox.showerror(
+                translate("error_title"), 
+                translate("resolution_too_small")
+            )
+            return
     
     try:
         doneStepID = 0
