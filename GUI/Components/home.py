@@ -92,108 +92,123 @@ def get_presets(template_index):
         return []
     else:
         return templates[template_index - 1]['presets']
-    
-def on_text_change(event):
-    print("User typed:", event.widget.get())
-
-
 
 def create_main_window(container):
-    frame = tk.Frame(container)
-    # Star Citizen Folder
-    tk.Label(frame, text=translate("sc_folder")).grid(row=0, column=0, padx=5, pady=5, sticky="w")
-    sc_entry = tk.Entry(frame, width=50)
-    sc_entry.grid(row=0, column=1, padx=5, pady=5)
-    tk.Button(frame, text=translate("Browse"), command=lambda: browse_folder(sc_entry)).grid(row=0, column=2, padx=5, pady=5)
-
-    # VorpX Exe
-    tk.Label(frame, text=translate("vorpX_exe")).grid(row=1, column=0, padx=5, pady=5, sticky="w")
-    vorpx_entry = tk.Entry(frame, width=50)
-    vorpx_entry.grid(row=1, column=1, padx=5, pady=5)
-    tk.Button(frame, text=translate("Browse"), command=lambda: browse_file(vorpx_entry, [('Executables', '*.exe')])).grid(row=1, column=2, padx=5, pady=5)
-
-    # Launcher Exe
-    tk.Label(frame, text=translate("Launcher_Exe")).grid(row=2, column=0, padx=5, pady=5, sticky="w")
-    launcher_entry = tk.Entry(frame, width=50)
-    launcher_entry.grid(row=2, column=1, padx=5, pady=5)
-    tk.Button(frame, text=translate("Browse"), command=lambda: browse_file(launcher_entry, [('Executables', '*.exe')])).grid(row=2, column=2, padx=5, pady=5)
-
-    # Divider Line
-    ttk.Separator(frame, orient="horizontal").grid(row=3, column=0, columnspan=6, sticky="ew", pady=10)
-
-    # Templates Dropdown
+    frame = tk.Frame(container, padx=10, pady=10)
+    
+    # Configure main columns (60-40 split)
+    frame.columnconfigure(0, weight=6)  # Left side (60%)
+    frame.columnconfigure(1, weight=4)  # Right side (40%)
+    
+    # ===== LEFT PANEL CONTENT =====
+    # File Paths Section
+    paths_frame = ttk.LabelFrame(frame, text=translate("file_paths"), padding=10)
+    paths_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    
+    def create_path_row(parent, label_text, entry_var, row, file_types=None):
+        ttk.Label(parent, text=translate(label_text)).grid(row=row, column=0, sticky="w", padx=5)
+        entry = ttk.Entry(parent, width=35)
+        entry.grid(row=row, column=1, padx=5, sticky="ew")
+        btn = ttk.Button(parent, text=translate("Browse"), 
+                        command=lambda: browse_file(entry, file_types) if file_types 
+                        else browse_folder(entry))
+        btn.grid(row=row, column=2, padx=5)
+        return entry
+    
+    sc_entry = create_path_row(paths_frame, "sc_folder", None, 0)
+    vorpx_entry = create_path_row(paths_frame, "vorpX_exe", None, 1, [('Executables', '*.exe')])
+    launcher_entry = create_path_row(paths_frame, "Launcher_Exe", None, 2, [('Executables', '*.exe')])
+    
+    # Combined Templates/Resolution Section
+    template_res_frame = ttk.LabelFrame(frame, text=translate("template_resolution_settings"), padding=10)
+    template_res_frame.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+    
+    # Template/Preset Selection
+    ttk.Label(template_res_frame, text=translate("template")).grid(row=0, column=0, sticky="w")
     templates = load_templates()
-    tk.Label(frame, text=translate("templates")).grid(row=4, column=0, padx=5, pady=5, sticky="w")
-    dropdown = ttk.Combobox(frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
-    dropdown.grid(row=4, column=1, columnspan=1, padx=5, pady=5, sticky="ew")
+    dropdown = ttk.Combobox(template_res_frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
+    dropdown.grid(row=0, column=1, padx=5, sticky="ew")
     dropdown.current(0)
-
-
+    
+    ttk.Label(template_res_frame, text=translate("preset")).grid(row=0, column=2, padx=(20,5), sticky="w")
     prs = get_presets(dropdown.current())
-    preset = ttk.Combobox(frame, values=[translate("no_template")] + [p['name'] for p in prs])
-    preset.grid(row=4, column=2, columnspan=1, padx=5, pady=5, sticky="ew")
-
-
-    preset.bind("<<ComboboxSelected>>", lambda event: on_preset_change(event, dropdown, fov_entry, width_entry, height_entry, preset))
-    dropdown.bind("<<ComboboxSelected>>", lambda event: on_dropdown_change(event, dropdown, preset))
-
-    # FOV, Width, Height
-    tk.Label(frame, text="FOV").grid(row=5, column=0, padx=5, pady=5, sticky="w")
-    fov_entry = tk.Entry(frame, width=10)
-    fov_entry.grid(row=5, column=1, padx=5, pady=5, sticky="w")
-
-    tk.Label(frame, text=translate("width")).grid(row=5, column=2, padx=5, pady=5, sticky="w")
-    width_entry = tk.Entry(frame, width=10)
-    width_entry.grid(row=5, column=3, padx=5, pady=5, sticky="w")
-
-    tk.Label(frame, text=translate("height")).grid(row=5, column=4, padx=5, pady=5, sticky="w")
-    height_entry = tk.Entry(frame, width=10)
-    height_entry.grid(row=5, column=5, padx=5, pady=5, sticky="w")
-
-    fov_entry.bind("<KeyRelease>",lambda event:  numbers_only(fov_entry))
-    width_entry.bind("<KeyRelease>",lambda event:  update_resolution(width_entry, height_entry, False, dropdown.current(), preset.current()))
-    height_entry.bind("<KeyRelease>",lambda event:  update_resolution(width_entry, height_entry, True, dropdown.current(), preset.current()))
-
-
-
-
-
-    # Divider Line
-    ttk.Separator(frame, orient="horizontal").grid(row=6, column=0, columnspan=6, sticky="ew", pady=10)
-
-    # Hook Checkbox
+    preset = ttk.Combobox(template_res_frame, values=[translate("no_preset")] + [p['name'] for p in prs])
+    preset.grid(row=0, column=3, padx=5, sticky="ew")
+    
+    # Resolution Inputs
+    ttk.Label(template_res_frame, text="FOV").grid(row=1, column=0, padx=5, pady=10, sticky="w")
+    fov_entry = ttk.Entry(template_res_frame, width=8)
+    fov_entry.grid(row=1, column=1, padx=5, sticky="w")
+    fov_entry.bind("<KeyRelease>", lambda e: numbers_only(fov_entry))
+    
+    ttk.Label(template_res_frame, text=translate("resolution")).grid(row=1, column=2, padx=(20,5), sticky="e")
+    width_entry = ttk.Entry(template_res_frame, width=6)
+    width_entry.grid(row=1, column=3, padx=5, sticky="w")
+    ttk.Label(template_res_frame, text="x").grid(row=1, column=4, padx=2)
+    height_entry = ttk.Entry(template_res_frame, width=6)
+    height_entry.grid(row=1, column=5, padx=5, sticky="w")
+    
+    # Event bindings
+    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_change(e, dropdown, fov_entry, width_entry, height_entry, preset))
+    dropdown.bind("<<ComboboxSelected>>", lambda e: on_dropdown_change(e, dropdown, preset))
+    width_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, False, dropdown.current(), preset.current()))
+    height_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, True, dropdown.current(), preset.current()))
+    
+    # ===== RIGHT PANEL CONTENT =====
+    right_frame = ttk.LabelFrame(frame, text=translate("additional_settings"), padding=10)
+    right_frame.grid(row=0, column=1, rowspan=2, sticky="nsew", padx=5, pady=5)
+    
+    # Add additional components here (example)
+    ign_res_warning = tk.BooleanVar()
+    ttk.Checkbutton(right_frame, text=translate("ov_resolution"), variable=ign_res_warning).pack(anchor="w", pady=5)
+    # Add more components as needed...
+    
+    # ===== BOTTOM SECTION =====
+    # Checkboxes
+    check_frame = ttk.Frame(frame)
+    check_frame.grid(row=2, column=0, columnspan=2, pady=10, sticky="w")
+    
     use_dxgi = tk.BooleanVar()
-    use_dxgi_check = tk.Checkbutton(frame, text=translate("use_dxgi"), variable=use_dxgi)
-    use_dxgi_check.grid(row=7, column=0, columnspan=4, padx=5, pady=5, sticky="w")
-
-
-    # Stay in VR Checkbox
+    ttk.Checkbutton(check_frame, text=translate("use_dxgi"), variable=use_dxgi).pack(side="left", padx=10)
+    
     stay_in_vr = tk.BooleanVar()
-    stay_in_vr_check = tk.Checkbutton(frame, text=translate("revert"), variable=stay_in_vr)
-    stay_in_vr_check.grid(row=8, column=0, columnspan=4, padx=5, pady=5, sticky="w")
-
-    # Buttons
-    save_button = tk.Button(frame, text=translate("save"))
-    save_button.grid(row=9, column=0, padx=5, pady=5)
-    launch_button = tk.Button(frame, text=translate("launch"))
-    launch_button.grid(row=9, column=2, padx=5, pady=5)
-    res_button = tk.Button(frame, text=translate("restore"))
-    res_button.grid(row=9, column=5, padx=5, pady=5)
-
+    ttk.Checkbutton(check_frame, text=translate("revert"), variable=stay_in_vr).pack(side="left", padx=10)
+    
+    # Action Buttons
+    btn_frame = ttk.Frame(frame)
+    btn_frame.grid(row=3, column=0, columnspan=2, sticky="e", pady=10)
+    
+    save_button = ttk.Button(btn_frame, text=translate("save"))
+    save_button.pack(side="left", padx=5)
+    
+    launch_button = ttk.Button(btn_frame, text=translate("launch"))
+    launch_button.pack(side="left", padx=5)
+    
+    res_button = ttk.Button(btn_frame, text=translate("restore"))
+    res_button.pack(side="left", padx=5)
+    
     components = {
         'sc_entry': sc_entry,
         'vorpx_entry': vorpx_entry,
+        'launcher_entry': launcher_entry,
         'fov_entry': fov_entry,
         'width_entry': width_entry,
         'height_entry': height_entry,
         'stay_in_vr': stay_in_vr,
         'use_dxgi': use_dxgi,
-        'launcher_entry': launcher_entry
+        'template_dropdown': dropdown,
+        'preset_dropdown': preset,
+        'ign_res_warning': ign_res_warning
     }
+    
     buttons = {
         'save_button': save_button,
         'launch_button': launch_button,
         'res_button': res_button
     }
-
+    
+    # Configure row weights for proper expansion
+    frame.rowconfigure(0, weight=1)
+    frame.rowconfigure(1, weight=1)
+    
     return frame, components, buttons

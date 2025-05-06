@@ -13,7 +13,7 @@
     "restore": "Restore Defaults",
     "title": "VR Citizen Launcher",
     "home": "Home",
-    "setting": "Settings",
+    "setting": "Game Settings",
     "info": "Info",
     "coppyright": "Licensed under CC BY-NC-ND 4.0",
     "join": "Join the VR Citizen Discord",
@@ -69,7 +69,7 @@
     "change_language": "You are about to chage the language to English. This will restart the application.",
     "Headtracking": "Headtracking",
 
-    "SpringMovement": "Spring Movement",
+    "SpringMovment": "Spring Movement",
     "GForceBoostZoomScale": "G-Force Boost Zoom Scale",
     "GForceHeadBobScale": "G-Force Head Bob Scale",
     "ShakeScale": "Shake Scale",
@@ -77,6 +77,14 @@
     "HeadtrackingSource": "Headtracking Source",
     "Language": "Language",
     "GeneralSettings": "General Settings",
-    "AdvancedSettings": "Advanced Settings"
+    "AdvancedSettings": "Advanced Settings",
+    "template": "Template",
+    "preset": "Preset",
+    "resolution": "Resolution",
+    "file_paths": "File Paths",
+    "template_resolution_settings": "Template Resolution Settings",
+    "additional_settings": "Additional Settings",
+    "ov_resolution": "Ignore Resolution Warning",
+    "launcher": "Launcher"
 }
 
