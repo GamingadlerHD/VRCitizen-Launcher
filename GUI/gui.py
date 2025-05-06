@@ -38,12 +38,11 @@ def setup_gui(root):
     # Home Menu
     home_menu = tk.Menu(menu_bar, tearoff=0)
     home_menu.add_command(label=translate("home"), command=lambda: show_frame(home_frame))
-    menu_bar.add_cascade(label=translate("home"), menu=home_menu)
+    home_menu.add_command(label=translate("setting"), command=lambda: show_frame(settings_frame))
 
-    # Info Menu
-    setting_menu = tk.Menu(menu_bar, tearoff=0)
-    setting_menu.add_command(label=translate("setting"), command=lambda: show_frame(settings_frame))
-    menu_bar.add_cascade(label=translate("setting"), menu=setting_menu)
+
+
+    menu_bar.add_cascade(label=translate("launcher"), menu=home_menu)
 
     language_menu = tk.Menu(menu_bar, tearoff=0)
     language_menu.add_command(label="English", command=lambda: change_language("en", root))
