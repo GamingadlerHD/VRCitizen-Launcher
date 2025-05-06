@@ -50,6 +50,9 @@ vr_settings : list[str]  = [
     "MaxAutoZoom",
     "ShakeScale",
     "VSync",
+    "Width",
+    "Height",
+    "FOV",
     "AutoZoomOnSelectedTarget",
     "AutoZoomOnSelectedTargetStrength",
     "ChromaticAberration",
@@ -83,13 +86,14 @@ def update_vr_settings_from_xml_to_xml(from_xml_path : str, to_xml_path : str):
     from_tree = ET.parse(from_xml_path)
     from_root = from_tree.getroot()
     from_attributes = {attr.get('name') for attr in from_root.findall('Attr')}
+    from_values = {attr.get('name'): attr.get('value') for attr in from_root.findall('Attr')}
 
     for attr in root.findall('Attr'):
         name = attr.get('name')
-        value = attr.get('value')
         if name in vr_settings:
+            print(f"Updating {name}")
             if name in from_attributes:
-                attributes[name] = value
+                attributes[name] = from_values[name]
             else:
                 root.remove(attr)
 
