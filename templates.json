@@ -1,83 +1,351 @@
 {
-    "templates": [
-      {
-        "name": "Quest 2",
-        "presets": [
-          {
-            "name": "HD",
-            "fov": 90,
-            "ratio": 2,
-            "width": 1832,
-            "height": 1920
-          },
-          {
-            "name": "High Quality",
-            "fov": 90,
-            "ratio": 1,
-            "width": 2048,
-            "height": 1536
-          },
-          {
-            "name": "Small",
-            "fov": 90,
-            "ratio": 3,
-            "width": 2160,
-            "height": 2160
-          }
-        ]
-      },
-      {
-        "name": "Quest Pro",
-        "presets": [
-          {
-            "name": "HD",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 1832,
-            "height": 1920
-          },
-          {
-            "name": "High Quality",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 2048,
-            "height": 1536
-          },
-          {
-            "name": "Small",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 2160,
-            "height": 2160
-          }
-        ]
-      },
-      {
-        "name": "Pico 4",
-        "presets": [
-          {
-            "name": "HD",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 1832,
-            "height": 1920
-          },
-          {
-            "name": "High Quality",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 2048,
-            "height": 1536
-          },
-          {
-            "name": "Small",
-            "fov": 90,
-            "ratio": 1.777,
-            "width": 2160,
-            "height": 2160
-          }
-        ]
-      }
-    ]
-  }
-  
+  "templates": [
+    {
+      "name": "Bigscreen Beyond",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 89,
+          "width": 2688,
+          "height": 2688
+        }
+      ]
+    },
+    {
+      "name": "DPVR E4",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 96,
+          "width": 2204,
+          "height": 2204
+        }
+      ]
+    },
+    {
+      "name": "HP Reverb",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 90,
+          "width": 1608,
+          "height": 1576
+        }
+      ]
+    },
+    {
+      "name": "HP Reverb G2",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 91,
+          "width": 2248,
+          "height": 2192
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 112,
+          "width": 1852,
+          "height": 2056
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Elite",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 103,
+          "width": 1912,
+          "height": 2256
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Focus 3",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 97,
+          "width": 3760,
+          "height": 3760
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 108,
+          "width": 2468,
+          "height": 2740
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro 2",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 96,
+          "width": 3224,
+          "height": 3224
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive XR Streaming",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 91,
+          "width": 1728,
+          "height": 1728
+        }
+      ]
+    },
+    {
+      "name": "Lenovo Explorer",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 101,
+          "width": 1856,
+          "height": 1852
+        }
+      ]
+    },
+    {
+      "name": "Oculus Meta Quest Pro",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 96,
+          "width": 2160,
+          "height": 2224
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 100,
+          "width": 1808,
+          "height": 2000
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 2",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 98,
+          "width": 2352,
+          "height": 2368
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 3",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 98,
+          "width": 2064,
+          "height": 2240
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift CV1",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 90,
+          "width": 1344,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift S",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 94,
+          "width": 1648,
+          "height": 1776
+        }
+      ]
+    },
+    {
+      "name": "Pico 4",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 104,
+          "width": 2160,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 3",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 94,
+          "width": 2748,
+          "height": 2880
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 2",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 101,
+          "width": 2352,
+          "height": 2352
+        }
+      ]
+    },
+    {
+      "name": "Pimax 5K Plus",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 103,
+          "width": 3412,
+          "height": 2104
+        }
+      ]
+    },
+    {
+      "name": "StarVR One",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 117,
+          "width": 5720,
+          "height": 4304
+        }
+      ]
+    },
+    {
+      "name": "Pimax 8K",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 104,
+          "width": 3024,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Valve Index",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 109,
+          "width": 2468,
+          "height": 2740
+        },
+        {
+          "name": "Alternative",
+          "fov": 108,
+          "width": 2468,
+          "height": 2740
+        }
+      ]
+    },
+    {
+      "name": "Pimax Artisan",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 103,
+          "width": 2336,
+          "height": 2104
+        }
+      ]
+    },
+    {
+      "name": "Varjo Aero",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 86,
+          "width": 4148,
+          "height": 3556
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K Plus",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 103,
+          "width": 3348,
+          "height": 2104
+        }
+      ]
+    },
+    {
+      "name": "Varjo VR-2",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 89,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K X",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 103,
+          "width": 5008,
+          "height": 3160
+        }
+      ]
+    },
+    {
+      "name": "Varjo XR-1",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 89,
+          "width": 2048,
+          "height": 2048
+        }
+      ]
+    },
+    {
+      "name": "Pimax Crystal",
+      "presets": [
+        {
+          "name": "Default",
+          "fov": 104,
+          "width": 4312,
+          "height": 5100
+        }
+      ]
+    }
+  ]
+}
