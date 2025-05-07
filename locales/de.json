@@ -1,5 +1,5 @@
 {
-    "sc_folder": "Star Citizen Ordner",
+    "sc_folder": "Star Citizen LIVE Ordner",
     "Browse": "Durchsuchen",
     "vorpX_exe": "vorpX exe",
     "Launcher_Exe": "Launcher exe",
@@ -86,5 +86,6 @@
     "additional_settings": "Erweiterte Einstellungen",
     "ov_resolution": "Auflösungswarnung ignorieren",
     "launcher": "Launcher",
-    "ad_popup": "Zusäzliche Informationen erhalten"
+    "ad_popup": "Zusäzliche Informationen erhalten",
+    "reset": "Zurücksetzen"
 }

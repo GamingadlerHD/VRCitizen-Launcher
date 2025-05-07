@@ -1,5 +1,5 @@
 {
-    "sc_folder": "Папка Star Citizen",
+    "sc_folder": "LIVE Папка Star Citizen",
     "Browse": "Обзор",
     "vorpX_exe": "vorpX exe",
     "Launcher_Exe": "Launcher exe",
@@ -86,5 +86,6 @@
     "additional_settings": "Дополнительные настройки",
     "ov_resolution": "Игнорировать предупреждение о разрешении",
     "launcher": "Лаунчер",
-    "ad_popup": "Получать дополнительные уведомления"
+    "ad_popup": "Получать дополнительные уведомления",
+    "reset": "Сбросить настройки"
 }

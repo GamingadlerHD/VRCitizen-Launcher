@@ -1,5 +1,5 @@
 {
-    "sc_folder": "Carpeta de Star Citizen",
+    "sc_folder": "LIVE Carpeta de Star Citizen",
     "Browse": "Examinar",
     "vorpX_exe": "Ejecutable de vorpX",
     "Launcher_Exe": "Ejecutable del Launcher",
@@ -86,5 +86,6 @@
     "additional_settings": "Configuraciones Adicionales",
     "ov_resolution": "Ignorar Advertencia de Resolución",
     "launcher": "Launcher",
-    "ad_popup": "Recibir notificaciones adicionales"
+    "ad_popup": "Recibir notificaciones adicionales",
+    "reset": "Restablecer Configuración"
 }
