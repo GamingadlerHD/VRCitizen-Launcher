@@ -48,24 +48,8 @@ jobs:
           path: VRCitizenLauncher-Debug.zip
           retention-days: 7
 
-      - name: Comment with download info
+      - name: Comment on PR with download link
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            ✅ Build complete! You can download the build artifact [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-
-
-  post-comment:
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: VRCitizenLauncher-Debug
-          path: artifact
-
-      - name: Create comment content
-        run: |
-          echo "✅ Build complete! Download the [zip artifact](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" > artifact-comment.md
+            ✅ Build complete! You can download the build artifact from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
