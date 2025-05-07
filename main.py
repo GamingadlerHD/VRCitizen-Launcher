@@ -108,7 +108,9 @@ def launch():
                         translate("error_title"), 
                         translate("hook_file_not_found").format(dxgi_path=dxgi_path)
                     )
-                    raise()
+                    raise FileNotFoundError(
+                        translate("hook_file_not_found").format(dxgi_path=dxgi_path)
+                    )
                 shutil.copy2(dxgi_path, dxgi_dest_path)
                 doneStepID += 1
 
@@ -183,7 +185,7 @@ def launch():
                 translate("error_title"), 
                 translate("error_occurred_revert").format(e=e)
             )
-            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
+            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, addidional_popups, doneStepID)
 
     except Exception as e:
         messagebox.showerror(
@@ -256,6 +258,7 @@ if __name__ == "__main__":
         gui_components['vorpx_entry'].get(),
         os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
+        gui_components['addidional_popup'].get(),
         99999
     )
     if config:

@@ -32,7 +32,7 @@ jobs:
       - name: Prepare zip content
         run: |
           mkdir -p build_output/VRCitizenLauncher-Debug
-          cp dist/VRCitizenLauncher-Debug build_output/VRCitizenLauncher-Debug/
+          cp dist/VRCitizenLauncher-Debug build_output/VRCitizenLauncher-Debug/VRCitizenLauncher-Debug.exe
           cp image.png build_output/VRCitizenLauncher-Debug/
           cp -r locales build_output/VRCitizenLauncher-Debug/
 
