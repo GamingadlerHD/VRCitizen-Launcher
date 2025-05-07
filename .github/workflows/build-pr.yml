@@ -31,15 +31,16 @@ jobs:
 
       - name: Prepare zip content
         run: |
-          mkdir build_output
-          cp dist/VRCitizenLauncher-Debug build_output/
-          cp image.png build_output/
-          cp -r locales build_output/
+          mkdir -p build_output/VRCitizenLauncher-Debug
+          cp dist/VRCitizenLauncher-Debug build_output/VRCitizenLauncher-Debug/
+          cp image.png build_output/VRCitizenLauncher-Debug/
+          cp -r locales build_output/VRCitizenLauncher-Debug/
 
       - name: Create zip archive
         run: |
           cd build_output
-          zip -r ../VRCitizenLauncher-Debug.zip .
+          zip -r ../VRCitizenLauncher-Debug.zip VRCitizenLauncher-Debug
+
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
