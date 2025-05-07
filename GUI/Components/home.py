@@ -15,16 +15,26 @@ def update_resolution(widht, heigh, height_changed, template_index, preset_index
         template = load_templates()[template_index - 1]
         preset = template['presets'][preset_index]
     except IndexError:
+        print("Invalid template or preset index.")
         return
     
+    ratio = float(float(preset['width'])/float(preset['height']))
+
     if height_changed:
-        num = (float(heigh.get())*float(preset['ratio']))
+        if heigh.get() == "":
+            print("height is empty")
+            return
+        
+        num = float(heigh.get())*ratio
         # round to int
         widht.delete(0, tk.END)
         widht.insert(0, int(num))
     else:
+        if widht.get() == "":
+            print("width is empty")
+            return
         heigh.delete(0, tk.END)
-        heigh.insert(0, int(float(widht.get())/float(preset['ratio'])))
+        heigh.insert(0, int(float(widht.get())/ratio))
 
 def numbers_only(entry):
     input = entry.get()
@@ -143,10 +153,10 @@ def create_main_window(container):
     
     ttk.Label(template_res_frame, text=translate("resolution")).grid(row=1, column=2, padx=(20,5), sticky="e")
     width_entry = ttk.Entry(template_res_frame, width=6)
-    width_entry.grid(row=1, column=3, padx=5, sticky="w")
-    ttk.Label(template_res_frame, text="x").grid(row=1, column=4, padx=2)
+    width_entry.grid(row=1, column=3, padx=(5, 5), sticky="w")
+    ttk.Label(template_res_frame, text="x").grid(row=1, column=3, padx=(55, 5), sticky="w")
     height_entry = ttk.Entry(template_res_frame, width=6)
-    height_entry.grid(row=1, column=5, padx=5, sticky="w")
+    height_entry.grid(row=1, column=3, padx=(75, 0), sticky="w")
     
     # Event bindings
     preset.bind("<<ComboboxSelected>>", lambda e: on_preset_change(e, dropdown, fov_entry, width_entry, height_entry, preset))
@@ -161,7 +171,9 @@ def create_main_window(container):
     # Add additional components here (example)
     ign_res_warning = tk.BooleanVar()
     ttk.Checkbutton(right_frame, text=translate("ov_resolution"), variable=ign_res_warning).pack(anchor="w", pady=5)
-    # Add more components as needed...
+        
+    addidional_popup = tk.BooleanVar()
+    ttk.Checkbutton(right_frame, text=translate("ad_popup"), variable=addidional_popup).pack(anchor="w", pady=5)
     
     # ===== BOTTOM SECTION =====
     # Checkboxes
@@ -198,7 +210,8 @@ def create_main_window(container):
         'use_dxgi': use_dxgi,
         'template_dropdown': dropdown,
         'preset_dropdown': preset,
-        'ign_res_warning': ign_res_warning
+        'ign_res_warning': ign_res_warning,
+        'addidional_popup': addidional_popup
     }
     
     buttons = {
