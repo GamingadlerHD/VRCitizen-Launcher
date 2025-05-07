@@ -17,6 +17,7 @@ def launch():
     vorpx_path = gui_components['vorpx_entry'].get()
     launcher_path = gui_components['launcher_entry'].get()
     stay_in_vr = gui_components['stay_in_vr'].get()
+    addidional_popups = gui_components['addidional_popup'].get()
 
     # Derived paths
     eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
@@ -69,11 +70,12 @@ def launch():
         return
     
     if not validate_resolution(int(gui_components['width_entry'].get()), int(gui_components['height_entry'].get())):
-        messagebox.showerror(
-            translate("error_title"), 
-            translate("resolution_too_small")
-        )
-        return
+        if not gui_components['ign_res_warning'].get():
+            messagebox.showerror(
+                translate("error_title"), 
+                translate("resolution_too_small")
+            )
+            return
     
     try:
         doneStepID = 0
@@ -88,40 +90,43 @@ def launch():
         vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("modifying_hosts")
-            )
+            if (addidional_popups):
+                messagebox.showinfo(translate("info_title"), translate("modifying_hosts"))
             backup_file(HOSTS_FILE)
             modify_hosts(add=True)
             doneStepID += 1
 
             if (gui_components['use_dxgi']):
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("pasting_dxgi")
-                )
+                if (addidional_popups):
+                    messagebox.showinfo(
+                        translate("info_title"), 
+                        translate("pasting_dxgi")
+                    )
 
                 if not os.path.isfile(dxgi_path):
                     messagebox.showerror(
                         translate("error_title"), 
                         translate("hook_file_not_found").format(dxgi_path=dxgi_path)
                     )
-                    raise()
+                    raise FileNotFoundError(
+                        translate("hook_file_not_found").format(dxgi_path=dxgi_path)
+                    )
                 shutil.copy2(dxgi_path, dxgi_dest_path)
                 doneStepID += 1
 
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("starting_vorpx")
-            )
+            if (addidional_popups):
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("vorpx_start")
+                )
             launch_process(vorpx_path)
             doneStepID += 1
 
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("updating_attributes")
-            )
+            if (addidional_popups):
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("waiting_vorpx_start")
+                )
             backup_file(attr_orig_path)
             view_attr = {'Width': gui_components['width_entry'].get(), 'Height': gui_components['height_entry'].get(), 'FOV': gui_components['fov_entry'].get()}
             doneStepID += 1
@@ -132,51 +137,55 @@ def launch():
                 stVal[key] = value.get()
             update_xml_by_dict(attr_orig_path, stVal)
 
-
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("waiting_vorpx_start")
-            )
+            if (addidional_popups):
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("waiting_vorpx_start")
+                )
             wait_for_process(vorpx_proc_name)
 
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("deleting_eac")
-            )
-            if not os.path.isdir(eac_folder_path):
+            if (addidional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
-                    translate("eac_already_removed")
+                    translate("deleting_eac")
                 )
+        
+            if not os.path.isdir(eac_folder_path):
+                if (addidional_popups):
+                    messagebox.showinfo(
+                        translate("info_title"), 
+                        translate("eac_already_removed")
+                    )
             else:
                 shutil.rmtree(eac_folder_path, ignore_errors=True)
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("eac_removed")
-                )
+                if (addidional_popups):
+                    messagebox.showinfo(translate("info_title"), translate("eac_removed"))
             doneStepID += 1
             
             launch_process(launcher_path)
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("waiting_launcher_start")
-            )
+            if (addidional_popups):
+                messagebox.showinfo(
+                    translate("info_title"), 
+                    translate("waiting_launcher_start")
+                )
 
             if (stay_in_vr):
                 wait_for_process("StarCitizen")
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("launching_sc")
-                )
+                if (addidional_popups):
+                    messagebox.showinfo(
+                        translate("info_title"), 
+                        translate("waiting_sc_start")
+                    )
+
                 wait_for_exit(sc_proc_name)
-                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
+                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, addidional_popups, doneStepID)
 
         except Exception as e:
             messagebox.showerror(
                 translate("error_title"), 
                 translate("error_occurred_revert").format(e=e)
             )
-            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID)
+            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, addidional_popups, doneStepID)
 
     except Exception as e:
         messagebox.showerror(
@@ -184,37 +193,29 @@ def launch():
             translate("operation_failed").format(e=e)
         )
 
-def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, doneStepID):
+def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID):
     try:
         if doneStepID > 0:
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("restoring_hosts")
-            )
+            if additional_popups:
+                messagebox.showinfo(translate("info_title"), translate("restoring_hosts"))
             if os.path.exists(HOSTS_FILE + ".backup"):
                 shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
                 os.remove(HOSTS_FILE + ".backup")
 
         if doneStepID > 1:
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("removing_dxgi")
-            )
+            if additional_popups:
+                messagebox.showinfo(translate("info_title"), translate("removing_dxgi"))
             if os.path.exists(dxgi_dest_path):
                 os.remove(dxgi_dest_path)
 
         if doneStepID > 2:
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("killing_vorpx")
-            )
+            if additional_popups:
+                messagebox.showinfo(translate("info_title"), translate("killing_vorpx"))
             kill_process_by_name(vorpx_proc_name)
 
         if doneStepID > 3:
-            messagebox.showinfo(
-                translate("info_title"), 
-                translate("restoring_attributes")
-            )
+            if additional_popups:
+                messagebox.showinfo(translate("info_title"), translate("restoring_attributes"))
             if os.path.exists(attr_orig_path + ".backup"):
                 update_vr_settings_from_xml_to_xml(
                     attr_orig_path + ".backup", attr_orig_path)
@@ -242,7 +243,7 @@ if __name__ == "__main__":
     config = load_input_config()
     try:
         set_language(config['language'])
-    except KeyError:
+    except:
         set_language('en')
 
     root = tk.Tk()
@@ -257,6 +258,7 @@ if __name__ == "__main__":
         gui_components['vorpx_entry'].get(),
         os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
+        gui_components['addidional_popup'].get(),
         99999
     )
     if config:
