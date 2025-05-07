@@ -1,5 +1,6 @@
 import PyInstaller.__main__
 import os
+import shutil
 
 PyInstaller.__main__.run([
     '--name', 'VRCitizenLauncher',
@@ -13,3 +14,11 @@ PyInstaller.__main__.run([
     '--onefile',
     'main.py',
 ])
+
+# coppy files dist folder
+shutil.copy2('templates.json', 'dist/templates.json')
+shutil.copy2('logo.png', 'dist/logo.png')
+
+# coppy locales folder to dist folder
+shutil.copytree('locales', 'dist/locales', dirs_exist_ok=True)
+ 
