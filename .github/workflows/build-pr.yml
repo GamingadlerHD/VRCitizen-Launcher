@@ -7,12 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -38,15 +42,18 @@ jobs:
           zip -r ../VRCitizenLauncher-Debug.zip .
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: VRCitizenLauncher-Debug
           path: VRCitizenLauncher-Debug.zip
+          retention-days: 7
 
-      - name: Comment with artifact link
+      - name: Comment with download info
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: artifact-comment.md
+          message: |
+            ✅ Build complete! You can download the build artifact [here](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
 
   post-comment:
     if: ${{ github.event_name == 'pull_request' }}
