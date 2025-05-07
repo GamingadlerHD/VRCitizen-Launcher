@@ -48,6 +48,8 @@ def setup_gui(root):
     language_menu.add_command(label="English", command=lambda: change_language("en", root))
     language_menu.add_command(label="Deutsch", command=lambda: change_language("de", root))
     language_menu.add_command(label="Italiano", command=lambda: change_language("it", root))
+    language_menu.add_command(label="Español", command=lambda: change_language("es", root))
+    language_menu.add_command(label="русский", command=lambda: change_language("ru", root))
     menu_bar.add_cascade(label=translate("Language"), menu=language_menu)
 
     info_menu = tk.Menu(menu_bar, tearoff=0)
