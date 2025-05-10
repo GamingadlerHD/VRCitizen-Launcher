@@ -36,10 +36,11 @@ jobs:
           cp image.png build_output/VRCitizenLauncher-Debug/
           cp -r locales build_output/VRCitizenLauncher-Debug/
 
-      - name: Create zip archive
+      - name: Create zip archive (Windows)
         run: |
-          cd build_output
-          zip -r ../VRCitizenLauncher-Debug.zip VRCitizenLauncher-Debug
+          Compress-Archive -Path VRCitizenLauncher-Debug -DestinationPath ../VRCitizenLauncher-Debug.zip
+        shell: pwsh
+        working-directory: build_output
 
 
       - name: Upload build artifact
