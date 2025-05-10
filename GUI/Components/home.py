@@ -4,18 +4,39 @@ from i18n import translate
 from tkinter import filedialog
 import json
 
-def update_resolution(widht, heigh, height_changed, template_index, preset_index):
+def update_resolution(widht, heigh, height_changed, template, preset):
     numbers_only(widht)
     numbers_only(heigh)
+
+    try:
+        template_index = template.current() 
+    except:
+        # get the template from the entered text in the combobox
+        template_index = 0
+        for i, t in enumerate(load_templates()):
+            if t['name'] == template.get():
+                template_index = i + 1
+                break
+    try:
+        preset_index = preset.current()
+    except:
+        # get the preset from the entered text in the combobox
+        preset_index = 0
+        for i, p in enumerate(get_presets(template_index)):
+            if p['name'] == preset.get():
+                preset_index = i + 1
+                break
+
+
 
     preset = None
     if template_index == 0:
         return
     try:
         template = load_templates()[template_index - 1]
-        preset = template['presets'][preset_index]
+        preset = template['presets'][preset_index -1]
     except IndexError:
-        print("Invalid template or preset index.")
+        print(f"Invalid template or preset index. {template_index}:{preset_index}")
         return
     
     ratio = float(float(preset['width'])/float(preset['height']))
@@ -138,7 +159,6 @@ def create_main_window(container):
     templates = load_templates()
     dropdown = ttk.Combobox(template_res_frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
     dropdown.grid(row=0, column=1, padx=5, sticky="ew")
-    dropdown.current(0)
     
     ttk.Label(template_res_frame, text=translate("preset")).grid(row=0, column=2, padx=(20,5), sticky="w")
     prs = get_presets(dropdown.current())
@@ -161,8 +181,8 @@ def create_main_window(container):
     # Event bindings
     preset.bind("<<ComboboxSelected>>", lambda e: on_preset_change(e, dropdown, fov_entry, width_entry, height_entry, preset))
     dropdown.bind("<<ComboboxSelected>>", lambda e: on_dropdown_change(e, dropdown, preset))
-    width_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, False, dropdown.current(), preset.current()))
-    height_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, True, dropdown.current(), preset.current()))
+    width_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, False, dropdown, preset))
+    height_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, True, dropdown, preset))
     
     # ===== RIGHT PANEL CONTENT =====
     right_frame = ttk.LabelFrame(frame, text=translate("additional_settings"), padding=10)

@@ -261,12 +261,6 @@
           "fov": 109,
           "width": 2468,
           "height": 2740
-        },
-        {
-          "name": "Alternative",
-          "fov": 108,
-          "width": 2468,
-          "height": 2740
         }
       ]
     },

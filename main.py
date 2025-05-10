@@ -13,6 +13,8 @@ from i18n import set_language, translate
 from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT
 
 def launch():
+    for key, value in gui_components.items():
+        print(f"{key} {value.get()}")
     sc_folder_path = gui_components['sc_entry'].get()
     vorpx_path = gui_components['vorpx_entry'].get()
     launcher_path = gui_components['launcher_entry'].get()
@@ -37,6 +39,15 @@ def launch():
         return
 
     # Path validations
+    if gui_components['use_dxgi'] == True and not os.path.isfile(dxgi_path) == False:
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("hook_file_not_found").format(dxgi_path=dxgi_path)
+        )
+        return
+
+
+
     if not os.path.isdir(sc_folder_path):
         messagebox.showerror(
             translate("error_title"), 
@@ -102,17 +113,8 @@ def launch():
                         translate("info_title"), 
                         translate("pasting_dxgi")
                     )
-
-                if not os.path.isfile(dxgi_path):
-                    messagebox.showerror(
-                        translate("error_title"), 
-                        translate("hook_file_not_found").format(dxgi_path=dxgi_path)
-                    )
-                    raise FileNotFoundError(
-                        translate("hook_file_not_found").format(dxgi_path=dxgi_path)
-                    )
-                shutil.copy2(dxgi_path, dxgi_dest_path)
-                doneStepID += 1
+                    shutil.copy2(dxgi_path, dxgi_dest_path)
+                    doneStepID += 1
 
             if (addidional_popups):
                 messagebox.showinfo(
