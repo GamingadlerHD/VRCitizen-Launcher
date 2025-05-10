@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Windows EXE with PyInstaller (no console)
         run: |
-          python -m PyInstaller --name VRCitizenLauncher-Debug --onefile --noconsole main.py
+          python -m PyInstaller --name VRCitizenLauncher-Debug --hidden-import=psutil --hidden-import=screeninfo --onefile --noconsole main.py
 
       - name: Prepare folder structure for ZIP
         run: |

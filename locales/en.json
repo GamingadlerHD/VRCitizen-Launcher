@@ -22,6 +22,7 @@
     "madeby": "Made by Gamingadler",
     "donate": "You can donate me a ingame",
     "use_dxgi": "Add dxgi.dll to Star Citizen folder",
+    "no_preset": "Custom",
     
     "error_title": "Error",
     "hook_file_not_found": "Required vorpX hook file not found:\\n{dxgi_path}",
@@ -78,7 +79,7 @@
     "Language": "Language",
     "GeneralSettings": "General Settings",
     "AdvancedSettings": "Advanced Settings",
-    "template": "Template",
+    "template": "Headset",
     "preset": "Ratio Preset",
     "resolution": "Resolution",
     "file_paths": "File Paths",

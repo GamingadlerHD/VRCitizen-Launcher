@@ -4,58 +4,77 @@ from i18n import translate
 from tkinter import filedialog
 import json
 
-def update_resolution(widht, heigh, height_changed, template, preset):
-    numbers_only(widht)
-    numbers_only(heigh)
-
+def get_templates():
     try:
-        template_index = template.current() 
-    except:
-        # get the template from the entered text in the combobox
-        template_index = 0
-        for i, t in enumerate(load_templates()):
-            if t['name'] == template.get():
-                template_index = i + 1
-                break
-    try:
-        preset_index = preset.current()
-    except:
-        # get the preset from the entered text in the combobox
-        preset_index = 0
-        for i, p in enumerate(get_presets(template_index)):
-            if p['name'] == preset.get():
-                preset_index = i + 1
-                break
+        with open('templates.json', 'r') as f:
+            templates = json.load(f)['templates']
+        return templates
+    except FileNotFoundError:
+        return {}
+    
+def get_presets(template_name):
+    templates = get_templates()
+    for template in templates:
+        if template['name'] == template_name:
+            return template['presets']
+    return []
 
+def on_template_selected(e, dropdown, preset):
+    presets :list[str] = [translate("no_preset")]
 
+    if dropdown.current() != 0:
+        template_presets = get_presets(dropdown.get())
+        presets.append([p['name'] for p in template_presets])
 
-    preset = None
-    if template_index == 0:
+    preset["values"] = presets
+    preset.current(0)
+
+def on_preset_selected(e, preset, template, fov_entry, width_entry, height_entry):
+    if preset.current() == 0:
         return
-    try:
-        template = load_templates()[template_index - 1]
-        preset = template['presets'][preset_index -1]
-    except IndexError:
-        print(f"Invalid template or preset index. {template_index}:{preset_index}")
-        return
+    
+    preset_values = get_presets(template.get())[preset.current() - 1]
+
+    fov_entry.delete(0, tk.END)
+    fov_entry.insert(0, preset_values['fov'])
+
+    width_entry.delete(0, tk.END)
+    width_entry.insert(0, preset_values['width'])
+
+    height_entry.delete(0, tk.END)
+    height_entry.insert(0, preset_values['height'])
+
+def on_wh_change(e, width_entry, height_entry, is_height_changed, template, preset):
+    template = get_presets(template.get())
+    # get preset by name to avoid index issues
+    for ps in template:
+        if ps['name'] == preset.get():
+            preset = ps
+            break
     
     ratio = float(float(preset['width'])/float(preset['height']))
 
-    if height_changed:
-        if heigh.get() == "":
+    if is_height_changed:
+        if height_entry.get() == "":
             print("height is empty")
             return
         
-        num = float(heigh.get())*ratio
+        num = float(height_entry.get())*ratio
         # round to int
-        widht.delete(0, tk.END)
-        widht.insert(0, int(num))
+        width_entry.delete(0, tk.END)
+        width_entry.insert(0, int(num))
     else:
-        if widht.get() == "":
+        if width_entry.get() == "":
             print("width is empty")
             return
-        heigh.delete(0, tk.END)
-        heigh.insert(0, int(float(widht.get())/ratio))
+        num = float(width_entry.get())/ratio
+        height_entry.delete(0, tk.END)
+        height_entry.insert(0, int(num))
+    
+
+
+
+# ====== GENERAL FUNCTIONS ======
 
 def numbers_only(entry):
     input = entry.get()
@@ -65,7 +84,6 @@ def numbers_only(entry):
             corrected_input = input.replace(char, '')
             entry.insert(0, corrected_input)
             break
-
 
 def browse_file(entry, filetypes):
     filename = filedialog.askopenfilename(filetypes=filetypes)
@@ -79,50 +97,6 @@ def browse_folder(entry):
         entry.delete(0, tk.END)
         entry.insert(0, foldername)
 
-
-#load templates from templates.json
-def load_templates():
-    try:
-        with open('templates.json', 'r') as f:
-            templates = json.load(f)['templates']
-        return templates
-    except FileNotFoundError:
-        return {}
-    
-def on_dropdown_change(event, dropdown, preset):
-    selected_index = dropdown.current()  # Get the selected index
-
-    if selected_index == 0:  # No template selected
-        print("No Template Selected")
-        preset["values"] = [translate("no_template")]
-        preset.current(0)
-        return
-    else:
-        preset["values"] = [p['name'] for p in get_presets(selected_index)]
-
-def on_preset_change(event, dropdown, fov_entry, width_entry, height_entry, preset):
-    selected_index = dropdown.current()  # Get the selected index
-    selected_preset = preset.current()  # Get the selected preset index
-
-    if selected_index == 0:  # No template selected
-        return
-    selected_item = load_templates()[selected_index -1] 
-    selected_preset_values = selected_item['presets'][selected_preset]
-
-    print(selected_item)
-    fov_entry.delete(0, tk.END)
-    fov_entry.insert(0, selected_preset_values['fov'])
-    width_entry.delete(0, tk.END)
-    width_entry.insert(0, selected_preset_values['width'])
-    height_entry.delete(0, tk.END)
-    height_entry.insert(0, selected_preset_values['height'])
-
-def get_presets(template_index):
-    templates = load_templates()
-    if template_index == 0:
-        return []
-    else:
-        return templates[template_index - 1]['presets']
 
 def create_main_window(container):
     frame = tk.Frame(container, padx=10, pady=10)
@@ -156,12 +130,12 @@ def create_main_window(container):
     
     # Template/Preset Selection
     ttk.Label(template_res_frame, text=translate("template")).grid(row=0, column=0, sticky="w")
-    templates = load_templates()
+    templates = get_templates()
     dropdown = ttk.Combobox(template_res_frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
     dropdown.grid(row=0, column=1, padx=5, sticky="ew")
     
     ttk.Label(template_res_frame, text=translate("preset")).grid(row=0, column=2, padx=(20,5), sticky="w")
-    prs = get_presets(dropdown.current())
+    prs = get_presets(dropdown.get())
     preset = ttk.Combobox(template_res_frame, values=[translate("no_preset")] + [p['name'] for p in prs])
     preset.grid(row=0, column=3, padx=5, sticky="ew")
     
@@ -179,10 +153,10 @@ def create_main_window(container):
     height_entry.grid(row=1, column=3, padx=(75, 0), sticky="w")
     
     # Event bindings
-    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_change(e, dropdown, fov_entry, width_entry, height_entry, preset))
-    dropdown.bind("<<ComboboxSelected>>", lambda e: on_dropdown_change(e, dropdown, preset))
-    width_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, False, dropdown, preset))
-    height_entry.bind("<KeyRelease>", lambda e: update_resolution(width_entry, height_entry, True, dropdown, preset))
+    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_selected(e, preset, dropdown, fov_entry, width_entry, height_entry))
+    dropdown.bind("<<ComboboxSelected>>", lambda e: on_template_selected(e, dropdown, preset))
+    width_entry.bind("<KeyRelease>", lambda e: on_wh_change(e, width_entry, height_entry, False, dropdown, preset))
+    height_entry.bind("<KeyRelease>", lambda e: on_wh_change(e, width_entry, height_entry, True, dropdown, preset))
     
     # ===== RIGHT PANEL CONTENT =====
     right_frame = ttk.LabelFrame(frame, text=translate("additional_settings"), padding=10)
