@@ -6,7 +6,7 @@ import json
 
 def get_templates():
     try:
-        with open('templates.json', 'r') as f:
+        with open('templates.json', 'r', encoding='utf-8') as f:
             templates = json.load(f)['templates']
         return templates
     except FileNotFoundError:
