@@ -64,7 +64,7 @@ def create_settings_frame(container):
     tk.Label(left_frame, text=translate("GeneralSettings"), font='bold').grid(row=0, column=0, sticky="w", pady=5)
     checkboxes = [
         ("MotionBlur", 1), ("VSync", 2), ("AutoZoomOnSelectedTarget", 3),
-        ("ChromaticAberration", 4), ("FilmGrain", 5), ("SpringMovment", 6)
+         ("FilmGrain", 4), ("SpringMovment", 5)
     ]
     vars_left = {}
     for text, row in checkboxes:
@@ -94,7 +94,7 @@ def create_settings_frame(container):
     
     slider_widgets = [
         ("GForceBoostZoomScale", 1), ("GForceHeadBobScale", 2),
-        ("ShakeScale", 3), ("MaxAutoZoom", 4)
+        ("ShakeScale", 3), ("MaxAutoZoom", 4), ("ChromaticAberration", 5)
     ]
     vars_right = {}
     for text, row in slider_widgets:
@@ -104,11 +104,11 @@ def create_settings_frame(container):
         vars_right[text] = slider
 
     # Headtracking Source Combobox
-    tk.Label(right_frame, text=translate("HeadtrackingSource")).grid(row=5, column=0, sticky="w", padx=5)
+    tk.Label(right_frame, text=translate("HeadtrackingSource")).grid(row=6, column=0, sticky="w", padx=5)
     headtracking_source = tk.StringVar()
     ttk.Combobox(right_frame, textvariable=headtracking_source, 
                 values=["Faceware FOIP", "TrackIR", "Tobi"]).grid(
-                    row=5, column=1, sticky="ew", padx=5)
+                    row=6, column=1, sticky="ew", padx=5)
     vars_right["HeadtrackingSource"] = headtracking_source
 
     # Reset Button (centered below content)

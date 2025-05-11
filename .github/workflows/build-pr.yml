@@ -1,4 +1,4 @@
-name: Build and Zip on PR
+name: Build Windows EXE and Zip on PR
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
       contents: read
       pull-requests: write
@@ -23,24 +23,26 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
+          pip install pyinstaller psutil screeninfo
 
-      - name: Build executable with PyInstaller
+      - name: Build Windows EXE with PyInstaller (no console)
         run: |
-          python -m PyInstaller --name VRCitizenLauncher-Debug --onefile main.py
+          python -m PyInstaller --name VRCitizenLauncher-Debug --hidden-import=psutil --hidden-import=screeninfo --onefile --noconsole main.py
 
-      - name: Prepare zip content
+      - name: Prepare folder structure for ZIP
         run: |
-          mkdir -p build_output/VRCitizenLauncher-Debug
-          cp dist/VRCitizenLauncher-Debug build_output/VRCitizenLauncher-Debug/VRCitizenLauncher-Debug.exe
-          cp image.png build_output/VRCitizenLauncher-Debug/
-          cp -r locales build_output/VRCitizenLauncher-Debug/
+          New-Item -ItemType Directory -Path build_output\VRCitizenLauncher-Debug | Out-Null
+          Copy-Item -Path dist\VRCitizenLauncher-Debug.exe -Destination build_output\VRCitizenLauncher-Debug\
+          Copy-Item -Path image.png -Destination build_output\VRCitizenLauncher-Debug\
+          Copy-Item -Path templates.json -Destination build_output\VRCitizenLauncher-Debug\
+          Copy-Item -Recurse -Path locales -Destination build_output\VRCitizenLauncher-Debug\
+        shell: pwsh
 
       - name: Create zip archive
         run: |
-          cd build_output
-          zip -r ../VRCitizenLauncher-Debug.zip VRCitizenLauncher-Debug
-
+          Compress-Archive -Path VRCitizenLauncher-Debug -DestinationPath ../VRCitizenLauncher-Debug.zip
+        shell: pwsh
+        working-directory: build_output
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -53,4 +55,4 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            ✅ Build complete! You can download the build artifact from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+            ✅ Windows build complete! You can download the ZIP file from the [Actions tab](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
