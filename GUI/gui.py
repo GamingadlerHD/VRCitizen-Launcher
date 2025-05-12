@@ -3,6 +3,7 @@ import ctypes
 import sys
 import tkinter as tk
 from tkinter import messagebox
+import customtkinter as ctk
 from i18n import set_language, translate
 from GUI.Components.info import create_info_frame
 from GUI.Components.settings import create_settings_frame
@@ -60,7 +61,7 @@ def setup_gui(root):
 
 
     # --- Pages container ---
-    container = tk.Frame(root)
+    container = ctk.CTkFrame(root)
     container.pack(fill="both", expand=True)
 
     home_frame, components, buttons = create_main_window(container)
