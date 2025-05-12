@@ -15,7 +15,7 @@ def show_frame(frame):
 def change_language(language :str, root):
 
     if messagebox.askyesno(translate("info", language), translate("change_language", language)):
-        # Change the language
+        # Change the language 
         set_language(language)
         # clear root
         for widget in root.winfo_children():

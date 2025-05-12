@@ -1,6 +1,6 @@
 import tkinter as tk
-from i18n import translate
 import webbrowser
+from i18n import translate
 
 def open_url(url):
     webbrowser.open(url)

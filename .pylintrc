@@ -107,6 +107,8 @@ disable=
     fixme,
     cyclic-import,
     import-error,
+    too-complex,
+    too-many-locals,
 
 
 [REPORTS]
@@ -518,7 +520,7 @@ preferred-modules=
 
 # Exceptions that will emit a warning when being caught. Defaults to
 # "Exception"
-#overgeneral-exceptions=
+overgeneral-exceptions=
 
 
 [TYPING]

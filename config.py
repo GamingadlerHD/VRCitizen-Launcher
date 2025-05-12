@@ -6,7 +6,7 @@ from constants import CONFIG_FILE
 def load_input_config():
     if not os.path.exists(CONFIG_FILE):
         return None
-    with open(CONFIG_FILE, 'r') as f:
+    with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
         return json.load(f)
     
 def save_input_configs(ui_components: list[dict]):
@@ -18,7 +18,7 @@ def save_input_configs(ui_components: list[dict]):
                 config[config_name] = value.get()
             except AttributeError:
                 config[config_name] = value
-    with open(CONFIG_FILE, 'w') as f:
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f)
 
 def add_or_change_value_in_config(key: str, value: str):
@@ -26,5 +26,5 @@ def add_or_change_value_in_config(key: str, value: str):
     if config is None:
         config = {}
     config[key] = value
-    with open(CONFIG_FILE, 'w') as f:
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f)

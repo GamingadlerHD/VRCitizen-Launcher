@@ -11,13 +11,14 @@ def update_xml(root, tag : str, value : str):
             
             if name == tag:
                 attr.set('value', str(value))
-                return
+                return True
             
         # If the tag is not found, create a new one
         new_attr = ET.Element('Attr')
         new_attr.set('name', tag)
         new_attr.set('value', str(value))
         root.append(new_attr)
+        return True
     except Exception as e:
         print(f"Error updating XML file: {e}")
         return False
@@ -31,9 +32,9 @@ def update_xml_by_dict(file_path : str, attributes : dict):
     root = tree.getroot()
     for key, value in attributes.items():
         print(f"Updating {key} to {value}")
-        if type(value) == bool:
+        if isinstance(value, bool):
             value = int(value)
-        elif type(value) == str:
+        elif isinstance(value, str):
             if value == "Faceware FOIP":
                 value = 2
             elif value == "TrackIR":

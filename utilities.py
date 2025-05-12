@@ -1,6 +1,7 @@
 # utilities.py
 import os
 import shutil
+import ctypes
 import subprocess
 import time
 import psutil
@@ -10,7 +11,6 @@ def is_admin():
     try:
         return os.getuid() == 0
     except AttributeError:
-        import ctypes
         return ctypes.windll.shell32.IsUserAnAdmin()
 
 def backup_file(src, backup_suffix=".backup"):
@@ -22,7 +22,7 @@ def replace_file(src, dst):
     shutil.copy2(src, dst)
 
 def modify_hosts(add=True):
-    with open(HOSTS_FILE, "r+") as f:
+    with open(HOSTS_FILE, "r+", encoding='utf-8') as f:
         lines = f.readlines()
         f.seek(0)
         if add:
