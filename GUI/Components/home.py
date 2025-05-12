@@ -56,8 +56,6 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template, preset)
 
     if is_height_changed:
         if height_entry.get() == "":
-    if is_height_changed:
-        if height_entry.get() == "":
             print("height is empty")
             return
         
@@ -69,7 +67,6 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template, preset)
         width_entry.delete(0, tk.END)
         width_entry.insert(0, int(num))
     else:
-        if width_entry.get() == "":
         if width_entry.get() == "":
             print("width is empty")
             return
