@@ -31,9 +31,9 @@ def update_xml_by_dict(file_path : str, attributes : dict):
     root = tree.getroot()
     for key, value in attributes.items():
         print(f"Updating {key} to {value}")
-        if type(value) == bool:
+        if isinstance(value, bool):
             value = int(value)
-        elif type(value) == str:
+        elif isinstance(value, str):
             if value == "Faceware FOIP":
                 value = 2
             elif value == "TrackIR":

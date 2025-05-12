@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
+import sys  # pylint: disable=unused-import
+import ctypes  # pylint: disable=unused-import
 import shutil
 from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
@@ -236,11 +238,11 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
         )
 
 if __name__ == "__main__":
-    if not is_admin():
-        params = " ".join([f'"{arg}"' for arg in sys.argv])
-        ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, params, None, 1)
-        sys.exit()
+    # if not is_admin():
+    #     params = " ".join([f'"{arg}"' for arg in sys.argv])
+    #     ctypes.windll.shell32.ShellExecuteW(
+    #         None, "runas", sys.executable, params, None, 1)
+    #     sys.exit()
 
     # Load config
     config = load_input_config()

@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import ttk  # Required for Combobox
-from i18n import translate
+from tkinter import ttk
 from tkinter import filedialog
 import json
+from i18n import translate
 
 def get_templates():
     try:
@@ -19,7 +19,7 @@ def get_presets(template_name):
             return template['presets']
     return []
 
-def on_template_selected(e, dropdown, preset):
+def on_template_selected(dropdown, preset):
     presets :list[str] = [translate("no_preset")]
 
     if dropdown.current() != 0:
@@ -29,7 +29,7 @@ def on_template_selected(e, dropdown, preset):
     preset["values"] = presets
     preset.current(0)
 
-def on_preset_selected(e, preset, template, fov_entry, width_entry, height_entry):
+def on_preset_selected(preset, template, fov_entry, width_entry, height_entry):
     if preset.current() == 0:
         return
     
@@ -44,7 +44,7 @@ def on_preset_selected(e, preset, template, fov_entry, width_entry, height_entry
     height_entry.delete(0, tk.END)
     height_entry.insert(0, preset_values['height'])
 
-def on_wh_change(e, width_entry, height_entry, is_height_changed, template, preset):
+def on_wh_change(width_entry, height_entry, is_height_changed, template, preset):
     template = get_presets(template.get())
     # get preset by name to avoid index issues
     for ps in template:
@@ -77,11 +77,11 @@ def on_wh_change(e, width_entry, height_entry, is_height_changed, template, pres
 # ====== GENERAL FUNCTIONS ======
 
 def numbers_only(entry):
-    input = entry.get()
+    user_input = entry.get()
     for char in entry.get():
         if not char.isdigit():
             entry.delete(0, tk.END)
-            corrected_input = input.replace(char, '')
+            corrected_input = user_input.replace(char, '')
             entry.insert(0, corrected_input)
             break
 
@@ -110,7 +110,7 @@ def create_main_window(container):
     paths_frame = ttk.LabelFrame(frame, text=translate("file_paths"), padding=10)
     paths_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
     
-    def create_path_row(parent, label_text, entry_var, row, file_types=None):
+    def create_path_row(parent, label_text, row, file_types=None):
         ttk.Label(parent, text=translate(label_text)).grid(row=row, column=0, sticky="w", padx=5)
         entry = ttk.Entry(parent, width=35)
         entry.grid(row=row, column=1, padx=5, sticky="ew")
@@ -120,9 +120,9 @@ def create_main_window(container):
         btn.grid(row=row, column=2, padx=5)
         return entry
     
-    sc_entry = create_path_row(paths_frame, "sc_folder", None, 0)
-    vorpx_entry = create_path_row(paths_frame, "vorpX_exe", None, 1, [('Executables', '*.exe')])
-    launcher_entry = create_path_row(paths_frame, "Launcher_Exe", None, 2, [('Executables', '*.exe')])
+    sc_entry = create_path_row(paths_frame, "sc_folder", 0)
+    vorpx_entry = create_path_row(paths_frame, "vorpX_exe", 1, [('Executables', '*.exe')])
+    launcher_entry = create_path_row(paths_frame, "Launcher_Exe", 2, [('Executables', '*.exe')])
     
     # Combined Templates/Resolution Section
     template_res_frame = ttk.LabelFrame(frame, text=translate("template_resolution_settings"), padding=10)
@@ -153,10 +153,10 @@ def create_main_window(container):
     height_entry.grid(row=1, column=3, padx=(75, 0), sticky="w")
     
     # Event bindings
-    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_selected(e, preset, dropdown, fov_entry, width_entry, height_entry))
-    dropdown.bind("<<ComboboxSelected>>", lambda e: on_template_selected(e, dropdown, preset))
-    width_entry.bind("<KeyRelease>", lambda e: on_wh_change(e, width_entry, height_entry, False, dropdown, preset))
-    height_entry.bind("<KeyRelease>", lambda e: on_wh_change(e, width_entry, height_entry, True, dropdown, preset))
+    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_selected(preset, dropdown, fov_entry, width_entry, height_entry))
+    dropdown.bind("<<ComboboxSelected>>", lambda e: on_template_selected(dropdown, preset))
+    width_entry.bind("<KeyRelease>", lambda e: on_wh_change(width_entry, height_entry, False, dropdown, preset))
+    height_entry.bind("<KeyRelease>", lambda e: on_wh_change(width_entry, height_entry, True, dropdown, preset))
     
     # ===== RIGHT PANEL CONTENT =====
     right_frame = ttk.LabelFrame(frame, text=translate("additional_settings"), padding=10)

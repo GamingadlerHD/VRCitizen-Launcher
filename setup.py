@@ -1,6 +1,5 @@
-import PyInstaller.__main__
-import os
 import shutil
+import PyInstaller.__main__
 
 PyInstaller.__main__.run([
     '--name', 'VRCitizenLauncher',
