@@ -56,17 +56,31 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template, preset)
 
     if is_height_changed:
         if height_entry.get() == "":
+    if is_height_changed:
+        if height_entry.get() == "":
             print("height is empty")
             return
         
         num = float(height_entry.get())*ratio
+        num = float(height_entry.get())*ratio
         # round to int
+        width_entry.delete(0, tk.END)
+        width_entry.insert(0, int(num))
         width_entry.delete(0, tk.END)
         width_entry.insert(0, int(num))
     else:
         if width_entry.get() == "":
+        if width_entry.get() == "":
             print("width is empty")
             return
+        num = float(width_entry.get())/ratio
+        height_entry.delete(0, tk.END)
+        height_entry.insert(0, int(num))
+    
+
+
+
+# ====== GENERAL FUNCTIONS ======
         num = float(width_entry.get())/ratio
         height_entry.delete(0, tk.END)
         height_entry.insert(0, int(num))
@@ -131,10 +145,12 @@ def create_main_window(container):
     # Template/Preset Selection
     ttk.Label(template_res_frame, text=translate("template")).grid(row=0, column=0, sticky="w")
     templates = get_templates()
+    templates = get_templates()
     dropdown = ttk.Combobox(template_res_frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
     dropdown.grid(row=0, column=1, padx=5, sticky="ew")
     
     ttk.Label(template_res_frame, text=translate("preset")).grid(row=0, column=2, padx=(20,5), sticky="w")
+    prs = get_presets(dropdown.get())
     prs = get_presets(dropdown.get())
     preset = ttk.Combobox(template_res_frame, values=[translate("no_preset")] + [p['name'] for p in prs])
     preset.grid(row=0, column=3, padx=5, sticky="ew")
