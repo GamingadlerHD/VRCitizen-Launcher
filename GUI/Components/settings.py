@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from typing import List
 from i18n import translate
 
-def set_standard_settings(settings :List[dict]):
+def set_standard_settings(settings :list[dict]):
     # Set default values for the checkboxes
     settings['MotionBlur'].set(0)
     settings['VSync'].set(0)
