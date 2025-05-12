@@ -33,8 +33,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Path build_output\VRCitizenLauncher-Debug | Out-Null
           Copy-Item -Path dist\VRCitizenLauncher-Debug.exe -Destination build_output\VRCitizenLauncher-Debug\
-          Copy-Item -Path image.png -Destination build_output\VRCitizenLauncher-Debug\
           Copy-Item -Path templates.json -Destination build_output\VRCitizenLauncher-Debug\
+          Copy-Item -Recurse -Path media -Destination build_output\VRCitizenLauncher-Debug\
           Copy-Item -Recurse -Path locales -Destination build_output\VRCitizenLauncher-Debug\
         shell: pwsh
 
