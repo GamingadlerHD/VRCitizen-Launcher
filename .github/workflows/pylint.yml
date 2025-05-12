@@ -23,4 +23,4 @@ jobs:
 
       - name: Run pylint
         run: |
-          pylint $(find . -name "*.py" ! -path "./venv/*") --fail-under=10
+          pylint $(find . -name "*.py" ! -path "./venv/*") --rcfile=.pylintrc --fail-under=10
