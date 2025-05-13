@@ -252,6 +252,7 @@ if __name__ == "__main__":
         set_language('en')
 
     root = tk.Tk()
+    root.iconbitmap("i.ico")
     gui_components, settings, interaction = setup_gui(root)
     
     # Assign button commands
