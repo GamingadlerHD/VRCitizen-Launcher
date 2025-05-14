@@ -1,8 +1,12 @@
-import tkinter as tk
-from tkinter import ttk
+import tkinter as tk  # For IntVar, StringVar etc.
 from tkinter import filedialog
 import json
+import customtkinter as ctk
 from i18n import translate
+
+# Set CustomTkinter appearance mode
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue") 
 
 def get_templates():
     try:
@@ -10,8 +14,8 @@ def get_templates():
             templates = json.load(f)['templates']
         return templates
     except FileNotFoundError:
-        return {}
-    
+        return []
+
 def get_presets(template_name):
     templates = get_templates()
     for template in templates:
@@ -19,191 +23,200 @@ def get_presets(template_name):
             return template['presets']
     return []
 
-def on_template_selected(dropdown, preset):
-    presets :list[str] = [translate("no_preset")]
+def on_template_selected(selected_template, preset_dropdown):
+    presets = [translate("no_preset")]
+    
+    if selected_template != translate("no_template"):
+        template_presets = get_presets(selected_template)
+        presets += [p['name'] for p in template_presets]
+    
+    preset_dropdown.configure(values=presets)
+    preset_dropdown.set(presets[0])
 
-    if dropdown.current() != 0:
-        template_presets = get_presets(dropdown.get())
-        presets.append([p['name'] for p in template_presets])
-
-    preset["values"] = presets
-    preset.current(0)
-
-def on_preset_selected(preset, template, fov_entry, width_entry, height_entry):
-    if preset.current() == 0:
+def on_preset_selected(selected_preset, template_dropdown, fov_entry, width_entry, height_entry):
+    if selected_preset == translate("no_preset"):
         return
     
-    preset_values = get_presets(template.get())[preset.current() - 1]
+    template_name = template_dropdown.get()
+    presets = get_presets(template_name)
+    
+    for preset in presets:
+        if preset['name'] == selected_preset:
+            fov_entry.delete(0, "end")
+            fov_entry.insert(0, preset['fov'])
+            
+            width_entry.delete(0, "end")
+            width_entry.insert(0, preset['width'])
+            
+            height_entry.delete(0, "end")
+            height_entry.insert(0, preset['height'])
+            break
 
-    fov_entry.delete(0, tk.END)
-    fov_entry.insert(0, preset_values['fov'])
-
-    width_entry.delete(0, tk.END)
-    width_entry.insert(0, preset_values['width'])
-
-    height_entry.delete(0, tk.END)
-    height_entry.insert(0, preset_values['height'])
-
-def on_wh_change(width_entry, height_entry, is_height_changed, template, preset):
-    template = get_presets(template.get())
-    # get preset by name to avoid index issues
-    for ps in template:
-        if ps['name'] == preset.get():
-            preset = ps
+def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown, preset_dropdown):
+    template_name = template_dropdown.get()
+    if not template_name or template_name == translate("no_template"):
+        return
+    
+    selected_preset = preset_dropdown.get()
+    presets = get_presets(template_name)
+    
+    preset = None
+    for p in presets:
+        if p['name'] == selected_preset:
+            preset = p
             break
     
-    ratio = float(float(preset['width'])/float(preset['height']))
-
+    if not preset:
+        return
+    
+    ratio = float(preset['width']) / float(preset['height'])
+    
     if is_height_changed:
-        if height_entry.get() == "":
-            print("height is empty")
+        if not height_entry.get():
             return
-        
-        num = float(height_entry.get())*ratio
-        num = float(height_entry.get())*ratio
-        # round to int
-        width_entry.delete(0, tk.END)
-        width_entry.insert(0, int(num))
-        width_entry.delete(0, tk.END)
-        width_entry.insert(0, int(num))
+        try:
+            num = float(height_entry.get()) * ratio
+            width_entry.delete(0, "end")
+            width_entry.insert(0, str(int(num)))
+        except ValueError:
+            pass
     else:
-        if width_entry.get() == "":
-            print("width is empty")
+        if not width_entry.get():
             return
-        num = float(width_entry.get())/ratio
-        height_entry.delete(0, tk.END)
-        height_entry.insert(0, int(num))
-    
-
-
-
-# ====== GENERAL FUNCTIONS ======
-        num = float(width_entry.get())/ratio
-        height_entry.delete(0, tk.END)
-        height_entry.insert(0, int(num))
-    
-
-
-
-# ====== GENERAL FUNCTIONS ======
+        try:
+            num = float(width_entry.get()) / ratio
+            height_entry.delete(0, "end")
+            height_entry.insert(0, str(int(num)))
+        except ValueError:
+            pass
 
 def numbers_only(entry):
     user_input = entry.get()
-    for char in entry.get():
-        if not char.isdigit():
-            entry.delete(0, tk.END)
-            corrected_input = user_input.replace(char, '')
-            entry.insert(0, corrected_input)
-            break
+    if not user_input.isdigit():
+        entry.delete(0, "end")
+        entry.insert(0, ''.join(filter(str.isdigit, user_input)))
 
 def browse_file(entry, filetypes):
     filename = filedialog.askopenfilename(filetypes=filetypes)
     if filename:
-        entry.delete(0, tk.END)
+        entry.delete(0, "end")
         entry.insert(0, filename)
 
 def browse_folder(entry):
     foldername = filedialog.askdirectory()
     if foldername:
-        entry.delete(0, tk.END)
+        entry.delete(0, "end")
         entry.insert(0, foldername)
 
-
 def create_main_window(container):
-    frame = tk.Frame(container, padx=10, pady=10)
+    frame = ctk.CTkFrame(container)
     
     # Configure main columns (60-40 split)
-    frame.columnconfigure(0, weight=6)  # Left side (60%)
-    frame.columnconfigure(1, weight=4)  # Right side (40%)
+    frame.grid_columnconfigure(0, weight=6)
+    frame.grid_columnconfigure(1, weight=4)
     
     # ===== LEFT PANEL CONTENT =====
     # File Paths Section
-    paths_frame = ttk.LabelFrame(frame, text=translate("file_paths"), padding=10)
+    paths_frame = ctk.CTkFrame(frame, corner_radius=5)
     paths_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    ctk.CTkLabel(paths_frame, text=translate("file_paths")).pack(pady=5)
     
     def create_path_row(parent, label_text, row, file_types=None):
-        ttk.Label(parent, text=translate(label_text)).grid(row=row, column=0, sticky="w", padx=5)
-        entry = ttk.Entry(parent, width=35)
-        entry.grid(row=row, column=1, padx=5, sticky="ew")
-        btn = ttk.Button(parent, text=translate("Browse"), 
-                        command=lambda: browse_file(entry, file_types) if file_types 
-                        else browse_folder(entry))
-        btn.grid(row=row, column=2, padx=5)
+        row_frame = ctk.CTkFrame(parent)
+        row_frame.pack(fill="x", pady=2)
+    
+        # Configure grid layout for consistent widths
+        row_frame.grid_columnconfigure(1, weight=1)
+    
+        ctk.CTkLabel(row_frame, text=translate(label_text), width=150, anchor='w').grid(row=0, column=0, padx=5, sticky="w")
+        entry = ctk.CTkEntry(row_frame)
+        entry.grid(row=0, column=1, padx=5, sticky="ew")  # Uniform width
+        btn = ctk.CTkButton(row_frame, text=translate("Browse"), width=80,
+                       command=lambda: browse_file(entry, file_types) if file_types 
+                       else browse_folder(entry))
+        btn.grid(row=0, column=2, padx=5)
         return entry
     
     sc_entry = create_path_row(paths_frame, "sc_folder", 0)
     vorpx_entry = create_path_row(paths_frame, "vorpX_exe", 1, [('Executables', '*.exe')])
     launcher_entry = create_path_row(paths_frame, "Launcher_Exe", 2, [('Executables', '*.exe')])
     
-    # Combined Templates/Resolution Section
-    template_res_frame = ttk.LabelFrame(frame, text=translate("template_resolution_settings"), padding=10)
+    # Template/Resolution Section
+    template_res_frame = ctk.CTkFrame(frame, corner_radius=5)
     template_res_frame.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
+    ctk.CTkLabel(template_res_frame, text=translate("template_resolution_settings")).pack(pady=5)
     
     # Template/Preset Selection
-    ttk.Label(template_res_frame, text=translate("template")).grid(row=0, column=0, sticky="w")
-    templates = get_templates()
-    templates = get_templates()
-    dropdown = ttk.Combobox(template_res_frame, values=[translate("no_template")] + [tmpl['name'] for tmpl in templates])
-    dropdown.grid(row=0, column=1, padx=5, sticky="ew")
+    template_preset_frame = ctk.CTkFrame(template_res_frame)
+    template_preset_frame.pack(fill="x", pady=5)
     
-    ttk.Label(template_res_frame, text=translate("preset")).grid(row=0, column=2, padx=(20,5), sticky="w")
-    prs = get_presets(dropdown.get())
-    prs = get_presets(dropdown.get())
-    preset = ttk.Combobox(template_res_frame, values=[translate("no_preset")] + [p['name'] for p in prs])
-    preset.grid(row=0, column=3, padx=5, sticky="ew")
+    ctk.CTkLabel(template_preset_frame, text=translate("template")).pack(side="left", padx=5)
+    templates = get_templates()
+    template_dropdown = ctk.CTkComboBox(
+        template_preset_frame,
+        values=[translate("no_template")] + [tmpl['name'] for tmpl in templates],
+        command=lambda v: on_template_selected(v, preset_dropdown)
+    )
+    template_dropdown.pack(side="left", padx=5, expand=True, fill="x")
+    
+    ctk.CTkLabel(template_preset_frame, text=translate("preset")).pack(side="left", padx=20)
+    preset_dropdown = ctk.CTkComboBox(
+        template_preset_frame,
+        values=[translate("no_preset")],
+        command=lambda v: on_preset_selected(v, template_dropdown, fov_entry, width_entry, height_entry)
+    )
+    preset_dropdown.pack(side="left", padx=5, expand=True, fill="x")
     
     # Resolution Inputs
-    ttk.Label(template_res_frame, text="FOV").grid(row=1, column=0, padx=5, pady=10, sticky="w")
-    fov_entry = ttk.Entry(template_res_frame, width=8)
-    fov_entry.grid(row=1, column=1, padx=5, sticky="w")
+    res_frame = ctk.CTkFrame(template_res_frame)
+    res_frame.pack(fill="x", pady=5)
+    
+    ctk.CTkLabel(res_frame, text="FOV").pack(side="left", padx=5)
+    fov_entry = ctk.CTkEntry(res_frame, width=60)
+    fov_entry.pack(side="left", padx=5)
     fov_entry.bind("<KeyRelease>", lambda e: numbers_only(fov_entry))
     
-    ttk.Label(template_res_frame, text=translate("resolution")).grid(row=1, column=2, padx=(20,5), sticky="e")
-    width_entry = ttk.Entry(template_res_frame, width=6)
-    width_entry.grid(row=1, column=3, padx=(5, 5), sticky="w")
-    ttk.Label(template_res_frame, text="x").grid(row=1, column=3, padx=(55, 5), sticky="w")
-    height_entry = ttk.Entry(template_res_frame, width=6)
-    height_entry.grid(row=1, column=3, padx=(75, 0), sticky="w")
+    ctk.CTkLabel(res_frame, text=translate("resolution")).pack(side="left", padx=20)
+    width_entry = ctk.CTkEntry(res_frame, width=60)
+    width_entry.pack(side="left", padx=5)
+    ctk.CTkLabel(res_frame, text="x").pack(side="left", padx=5)
+    height_entry = ctk.CTkEntry(res_frame, width=60)
+    height_entry.pack(side="left", padx=5)
     
-    # Event bindings
-    preset.bind("<<ComboboxSelected>>", lambda e: on_preset_selected(preset, dropdown, fov_entry, width_entry, height_entry))
-    dropdown.bind("<<ComboboxSelected>>", lambda e: on_template_selected(dropdown, preset))
-    width_entry.bind("<KeyRelease>", lambda e: on_wh_change(width_entry, height_entry, False, dropdown, preset))
-    height_entry.bind("<KeyRelease>", lambda e: on_wh_change(width_entry, height_entry, True, dropdown, preset))
+    width_entry.bind("<KeyRelease>", 
+                    lambda e: on_wh_change(width_entry, height_entry, False, template_dropdown, preset_dropdown))
+    height_entry.bind("<KeyRelease>", 
+                     lambda e: on_wh_change(width_entry, height_entry, True, template_dropdown, preset_dropdown))
     
     # ===== RIGHT PANEL CONTENT =====
-    right_frame = ttk.LabelFrame(frame, text=translate("additional_settings"), padding=10)
+    right_frame = ctk.CTkFrame(frame, corner_radius=5)
     right_frame.grid(row=0, column=1, rowspan=2, sticky="nsew", padx=5, pady=5)
+    ctk.CTkLabel(right_frame, text=translate("additional_settings")).pack(pady=5)
     
-    # Add additional components here (example)
-    ign_res_warning = tk.BooleanVar()
-    ttk.Checkbutton(right_frame, text=translate("ov_resolution"), variable=ign_res_warning).pack(anchor="w", pady=5)
-        
-    addidional_popup = tk.BooleanVar()
-    ttk.Checkbutton(right_frame, text=translate("ad_popup"), variable=addidional_popup).pack(anchor="w", pady=5)
+    # Checkboxes moved to additional settings
+    ign_res_warning = tk.IntVar()
+    ctk.CTkCheckBox(right_frame, text=translate("ov_resolution"), variable=ign_res_warning).pack(anchor="w", pady=5)
     
-    # ===== BOTTOM SECTION =====
-    # Checkboxes
-    check_frame = ttk.Frame(frame)
-    check_frame.grid(row=2, column=0, columnspan=2, pady=10, sticky="w")
+    additional_popup = tk.IntVar()
+    ctk.CTkCheckBox(right_frame, text=translate("ad_popup"), variable=additional_popup).pack(anchor="w", pady=5)
     
-    use_dxgi = tk.BooleanVar()
-    ttk.Checkbutton(check_frame, text=translate("use_dxgi"), variable=use_dxgi).pack(side="left", padx=10)
+    use_dxgi = tk.IntVar()
+    ctk.CTkCheckBox(right_frame, text=translate("use_dxgi"), variable=use_dxgi).pack(anchor="w", pady=5)
     
-    stay_in_vr = tk.BooleanVar()
-    ttk.Checkbutton(check_frame, text=translate("revert"), variable=stay_in_vr).pack(side="left", padx=10)
+    stay_in_vr = tk.IntVar()
+    ctk.CTkCheckBox(right_frame, text=translate("revert"), variable=stay_in_vr).pack(anchor="w", pady=5)
     
-    # Action Buttons
-    btn_frame = ttk.Frame(frame)
+    # ===== ACTION BUTTONS =====
+    btn_frame = ctk.CTkFrame(frame)
     btn_frame.grid(row=3, column=0, columnspan=2, sticky="e", pady=10)
     
-    save_button = ttk.Button(btn_frame, text=translate("save"))
+    save_button = ctk.CTkButton(btn_frame, text=translate("save"), width=80)
     save_button.pack(side="left", padx=5)
     
-    launch_button = ttk.Button(btn_frame, text=translate("launch"))
+    launch_button = ctk.CTkButton(btn_frame, text=translate("launch"), width=80)
     launch_button.pack(side="left", padx=5)
     
-    res_button = ttk.Button(btn_frame, text=translate("restore"))
+    res_button = ctk.CTkButton(btn_frame, text=translate("restore"), width=80)
     res_button.pack(side="left", padx=5)
     
     components = {
@@ -215,10 +228,10 @@ def create_main_window(container):
         'height_entry': height_entry,
         'stay_in_vr': stay_in_vr,
         'use_dxgi': use_dxgi,
-        'template_dropdown': dropdown,
-        'preset_dropdown': preset,
+        'template_dropdown': template_dropdown,
+        'preset_dropdown': preset_dropdown,
         'ign_res_warning': ign_res_warning,
-        'addidional_popup': addidional_popup
+        'additional_popup': additional_popup
     }
     
     buttons = {
@@ -227,8 +240,7 @@ def create_main_window(container):
         'res_button': res_button
     }
     
-    # Configure row weights for proper expansion
-    frame.rowconfigure(0, weight=1)
-    frame.rowconfigure(1, weight=1)
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_rowconfigure(1, weight=1)
     
     return frame, components, buttons
