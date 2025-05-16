@@ -265,7 +265,7 @@ if __name__ == "__main__":
     ))
 
     interaction['res_button'].configure(command=lambda: quit_vr_mode(
-        gui_components['vorpx_entry'].get(),
+        "vorpControl.exe",
         os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
         gui_components['additional_popup'].get(),
