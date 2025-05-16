@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
-import sys  # pylint: disable=unused-import
-import ctypes  # pylint: disable=unused-import
+import sys
+import ctypes 
 import shutil
 from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
@@ -22,7 +22,7 @@ def launch(ui_elements, launcher_settings):
     vorpx_path = ui_elements['vorpx_entry'].get()
     launcher_path = ui_elements['launcher_entry'].get()
     stay_in_vr = ui_elements['stay_in_vr'].get()
-    addidional_popups = ui_elements['addidional_popup'].get()
+    additional_popups = ui_elements['additional_popup'].get()
 
     # Derived paths
     eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
@@ -104,14 +104,14 @@ def launch(ui_elements, launcher_settings):
         vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(translate("info_title"), translate("modifying_hosts"))
             backup_file(HOSTS_FILE)
             modify_hosts(add=True)
             doneStepID += 1
 
             if (ui_elements['use_dxgi']):
-                if (addidional_popups):
+                if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
                         translate("pasting_dxgi")
@@ -119,7 +119,7 @@ def launch(ui_elements, launcher_settings):
                     shutil.copy2(dxgi_path, dxgi_dest_path)
                     doneStepID += 1
 
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
                     translate("vorpx_start")
@@ -127,7 +127,7 @@ def launch(ui_elements, launcher_settings):
             launch_process(vorpx_path)
             doneStepID += 1
 
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
                     translate("waiting_vorpx_start")
@@ -142,33 +142,33 @@ def launch(ui_elements, launcher_settings):
                 stVal[component_name] = component_value.get()
             update_xml_by_dict(attr_orig_path, stVal)
 
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
                     translate("waiting_vorpx_start")
                 )
             wait_for_process(vorpx_proc_name)
 
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
                     translate("deleting_eac")
                 )
         
             if not os.path.isdir(eac_folder_path):
-                if (addidional_popups):
+                if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
                         translate("eac_already_removed")
                     )
             else:
                 shutil.rmtree(eac_folder_path, ignore_errors=True)
-                if (addidional_popups):
+                if (additional_popups):
                     messagebox.showinfo(translate("info_title"), translate("eac_removed"))
             doneStepID += 1
             
             launch_process(launcher_path)
-            if (addidional_popups):
+            if (additional_popups):
                 messagebox.showinfo(
                     translate("info_title"), 
                     translate("waiting_launcher_start")
@@ -176,21 +176,21 @@ def launch(ui_elements, launcher_settings):
 
             if (stay_in_vr):
                 wait_for_process("StarCitizen")
-                if (addidional_popups):
+                if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
                         translate("waiting_sc_start")
                     )
 
                 wait_for_exit(sc_proc_name)
-                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, addidional_popups, doneStepID)
+                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
 
         except Exception as e:
             messagebox.showerror(
                 translate("error_title"), 
                 translate("error_occurred_revert").format(e=e)
             )
-            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, addidional_popups, doneStepID)
+            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
 
     except Exception as e:
         messagebox.showerror(
@@ -252,20 +252,26 @@ if __name__ == "__main__":
         set_language('en')
 
     root = tk.Tk()
+    root.iconbitmap("media/i.ico")
     gui_components, settings, interaction = setup_gui(root)
     
     # Assign button commands
-    interaction['save_button']['command'] = lambda: save_input_configs(
+    interaction['save_button'].configure(command=lambda: save_input_configs(
         [gui_components, settings]
-    )
-    interaction['launch_button']['command'] = lambda: launch(gui_components, settings)
-    interaction['res_button']['command'] = lambda: quit_vr_mode(
-        gui_components['vorpx_entry'].get(),
+    ))
+    interaction['launch_button'].configure(command=lambda: launch(
+        gui_components, 
+        settings
+    ))
+
+    interaction['res_button'].configure(command=lambda: quit_vr_mode(
+        "vorpControl.exe",
         os.path.join(gui_components['sc_entry'].get(), "Bin64/dxgi.dll"),
         os.path.join(gui_components['sc_entry'].get(), "user/client/0/Profiles/default/attributes.xml"),
-        gui_components['addidional_popup'].get(),
+        gui_components['additional_popup'].get(),
         99999
-    )
+    ))
+    
     if config:
         for key, value in config.items():
             # if key exists in gui_components, set its value

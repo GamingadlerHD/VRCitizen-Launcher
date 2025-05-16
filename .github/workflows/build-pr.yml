@@ -23,18 +23,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller psutil screeninfo
+          pip install -r requirements.txt
 
       - name: Build Windows EXE with PyInstaller (no console)
         run: |
-          python -m PyInstaller --name VRCitizenLauncher-Debug --hidden-import=psutil --hidden-import=screeninfo --onefile --noconsole main.py
+          python -m PyInstaller --name VRCitizenLauncher-Debug --onefile --noconsole main.py
 
       - name: Prepare folder structure for ZIP
         run: |
           New-Item -ItemType Directory -Path build_output\VRCitizenLauncher-Debug | Out-Null
           Copy-Item -Path dist\VRCitizenLauncher-Debug.exe -Destination build_output\VRCitizenLauncher-Debug\
-          Copy-Item -Path image.png -Destination build_output\VRCitizenLauncher-Debug\
           Copy-Item -Path templates.json -Destination build_output\VRCitizenLauncher-Debug\
+          Copy-Item -Recurse -Path media -Destination build_output\VRCitizenLauncher-Debug\
           Copy-Item -Recurse -Path locales -Destination build_output\VRCitizenLauncher-Debug\
         shell: pwsh
 

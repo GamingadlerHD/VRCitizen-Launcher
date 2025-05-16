@@ -15,11 +15,11 @@
     "home": "Configuración del Launcher",
     "setting": "Configuración del Juego",
     "info": "Información",
-    "coppyright": "Licenciado bajo CC BY-NC-ND 4.0",
+    "copyright": "Licenciado bajo CC BY-NC-ND 4.0",
     "join": "Únete al Discord de VR Citizen",
     "support": "Si necesitas ayuda para configurar VR:",
     "github": "Visita mi Repositorio GitHub",
-    "madeby": "Creado por Gamingadler",
+    "made_by": "Creado por Gamingadler",
     "donate": "Puedes donarme un ingame",
     "use_dxgi": "Añadir dxgi.dll a la carpeta de Star Citizen",
     

@@ -1,46 +1,91 @@
-import tkinter as tk
 import webbrowser
+import customtkinter as ctk
+from PIL import Image
 from i18n import translate
+
+STYLE_CONFIG = {
+    "font_family": "Arial",
+    "heading_font": ("Arial", 16, "bold"),
+    "body_font": ("Arial", 14),
+    "link_font": ("Arial", 14, "underline"),
+    "text_color": "#FFFFFF",
+    "link_color": "#00B0F0",
+    "hover_color": "#008CBA",
+    "frame_width": 800,
+    "frame_height": 600,
+    "logo_size": (150, 150)
+}
 
 def open_url(url):
     webbrowser.open(url)
 
 def create_info_frame(container):
-    frame = tk.Frame(container)
+    frame = ctk.CTkFrame(container)
+    
+    # Load and display logos
+    try:
+        logo1 = ctk.CTkImage(Image.open("media/logo1.png"), 
+                           size=STYLE_CONFIG["logo_size"])
+        logo2 = ctk.CTkImage(Image.open("media/logo2.png"), 
+                           size=STYLE_CONFIG["logo_size"])
+        
+        logo_left = ctk.CTkLabel(frame, image=logo1, text="")
+        logo_right = ctk.CTkLabel(frame, image=logo2, text="")
+        logo_left.pack(side="left", padx=20, pady=20)
+        logo_right.pack(side="right", padx=20, pady=20)
+    except Exception as e:
+        print(f"Error loading logos: {e}")
 
-    # Logos
-    logo1 = tk.PhotoImage(file="image.png") 
-    logo2 = tk.PhotoImage(file="image.png")
-    logo1 = logo1.subsample(logo1.width() // 150, logo1.height() // 150)
-    logo2 = logo2.subsample(logo2.width() // 150, logo2.height() // 150)
-    tk.Label(frame, image=logo1).pack(side="left", padx=10, pady=10)
-    tk.Label(frame, image=logo2).pack(side="right", padx=10, pady=10)
+    # Developer section
+    ctk.CTkLabel(frame, 
+                text=translate("made_by"),
+                font=STYLE_CONFIG["heading_font"]).pack(pady=15)
+    
+    # Donation info
+    ctk.CTkLabel(frame, 
+                text=translate("donate"),
+                font=STYLE_CONFIG["body_font"],
+                wraplength=STYLE_CONFIG["frame_width"] - 100).pack(pady=10, padx=20)
 
-    # Keep references to the images to prevent garbage collection
-    frame.logo1 = logo1
-    frame.logo2 = logo2
+    # GitHub link
+    github = ctk.CTkLabel(frame, 
+                        text=translate("github"),
+                        font=STYLE_CONFIG["link_font"],
+                        text_color=STYLE_CONFIG["link_color"],
+                        cursor="hand2")
+    github.pack(pady=10)
+    github.bind("<Button-1>", lambda e: open_url("https://github.com/GamingadlerHD"))
+    github.bind("<Enter>", lambda e: github.configure(text_color=STYLE_CONFIG["hover_color"]))
+    github.bind("<Leave>", lambda e: github.configure(text_color=STYLE_CONFIG["link_color"]))
 
+    # Discord section
+    ctk.CTkLabel(frame, 
+                text=translate("support"),
+                font=STYLE_CONFIG["body_font"]).pack(pady=15)
+    
+    discord = ctk.CTkLabel(frame, 
+                          text=translate("join"),
+                          font=STYLE_CONFIG["link_font"],
+                          text_color=STYLE_CONFIG["link_color"],
+                          cursor="hand2")
+    discord.pack(pady=10)
+    discord.bind("<Button-1>", lambda e: open_url("https://discord.gg/StarCitizen"))
+    discord.bind("<Enter>", lambda e: discord.configure(text_color=STYLE_CONFIG["hover_color"]))
+    discord.bind("<Leave>", lambda e: discord.configure(text_color=STYLE_CONFIG["link_color"]))
 
-    tk.Label(frame, text=translate("madeby"), font=("Arial", 14, "bold")).pack(pady=10)
-    tk.Label(frame, text=translate("donate"), font=("Arial", 12)).pack(pady=5)
-
-    # GitHub Link
-    github_link = tk.Label(frame, text=translate("github"), font=("Arial", 12), fg="blue", cursor="hand2")
-    github_link.pack(pady=5)
-    github_link.bind("<Button-1>", lambda e: open_url("https://github.com/GamingadlerHD"))
-
-    # Support Info
-    tk.Label(frame, text=translate("support"), font=("Arial", 12)).pack(pady=10)
-
-    # Discord Invite
-    discord_link = tk.Label(frame, text=translate("join"), font=("Arial", 12), fg="blue", cursor="hand2")
-    discord_link.pack(pady=5)
-    discord_link.bind("<Button-1>", lambda e: open_url("https://discord.gg/StarCitizen"))
-
-    # Display copyright notice
-    tk.Label(frame, text="© 2025 Gamingadler", font=("Arial", 10)).pack(pady=5)
-    tk.Label(frame, text=translate("coppyright"), font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
-    tk.Label(frame, text="http://creativecommons.org/licenses/by-nc-nd/4.0/", font=("Arial", 10), fg="blue", cursor="hand2").pack(pady=5)
-    frame.pack_propagate(False)
+    # Copyright information
+    ctk.CTkLabel(frame, 
+                text=translate("copyright"),
+                font=("Arial", 12)).pack(side="bottom", pady=10)
+    
+    license_link = ctk.CTkLabel(frame, 
+                               text="http://creativecommons.org/licenses/by-nc-nd/4.0/",
+                               font=("Arial", 12),
+                               text_color=STYLE_CONFIG["link_color"],
+                               cursor="hand2")
+    license_link.pack(side="bottom", pady=5)
+    license_link.bind("<Button-1>", lambda e: open_url("http://creativecommons.org/licenses/by-nc-nd/4.0/"))
+    license_link.bind("<Enter>", lambda e: license_link.configure(text_color=STYLE_CONFIG["hover_color"]))
+    license_link.bind("<Leave>", lambda e: license_link.configure(text_color=STYLE_CONFIG["link_color"]))
 
     return frame

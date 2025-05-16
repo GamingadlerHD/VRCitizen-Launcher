@@ -10,6 +10,7 @@ def load_input_config():
         return json.load(f)
     
 def save_input_configs(ui_components: list[dict]):
+    print("Saving input configs...")
     config : dict = {}
     for component in ui_components:
         for key, value in component.items():

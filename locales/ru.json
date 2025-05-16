@@ -15,11 +15,11 @@
     "home": "Настройки лаунчера",
     "setting": "Настройки игры",
     "info": "Информация",
-    "coppyright": "Лицензия CC BY-NC-ND 4.0",
+    "copyright": "Лицензия CC BY-NC-ND 4.0",
     "join": "Присоединяйтесь к VR Citizen Discord",
     "support": "Если вам нужна помощь с настройкой VR:",
     "github": "Посетите мой GitHub Repo",
-    "madeby": "Автор: Gamingadler",
+    "made_by": "Автор: Gamingadler",
     "donate": "Вы можете задонатить мне внутри игры",
     "use_dxgi": "Добавить dxgi.dll в папку Star Citizen",
     
