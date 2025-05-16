@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
-import sys  # pylint: disable=unused-import
-import ctypes  # pylint: disable=unused-import
+import sys
+import ctypes 
 import shutil
 from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict

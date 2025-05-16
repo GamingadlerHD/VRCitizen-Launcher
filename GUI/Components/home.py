@@ -121,7 +121,7 @@ def create_main_window(container):
     paths_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(paths_frame, text=translate("file_paths")).pack(pady=5)
     
-    def create_path_row(parent, label_text, row, file_types=None):
+    def create_path_row(parent, label_text, file_types=None):
         row_frame = ctk.CTkFrame(parent)
         row_frame.pack(fill="x", pady=2)
     
@@ -138,8 +138,8 @@ def create_main_window(container):
         return entry
     
     sc_entry = create_path_row(paths_frame, "sc_folder", 0)
-    vorpx_entry = create_path_row(paths_frame, "vorpX_exe", 1, [('Executables', '*.exe')])
-    launcher_entry = create_path_row(paths_frame, "Launcher_Exe", 2, [('Executables', '*.exe')])
+    vorpx_entry = create_path_row(paths_frame, "vorpX_exe", [('Executables', '*.exe')])
+    launcher_entry = create_path_row(paths_frame, "Launcher_Exe", [('Executables', '*.exe')])
     
     # Template/Resolution Section
     template_res_frame = ctk.CTkFrame(frame, corner_radius=5)
