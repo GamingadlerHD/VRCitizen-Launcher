@@ -1,18 +1,20 @@
+import asyncio
 import tkinter as tk
 from tkinter import messagebox
 import os
+import threading
 import sys
 import ctypes 
 import shutil
 from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
-from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name
+from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name#, get_path_from_registery
 from GUI.gui import setup_gui
 from validation import validate_resolution
 from i18n import set_language, translate
 from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT, HOSTS_FILE
 
-def launch(ui_elements, launcher_settings):
+async def launch(ui_elements, launcher_settings):
     '''
     Applys all the settings and launches the sc launcher
     '''
@@ -42,7 +44,7 @@ def launch(ui_elements, launcher_settings):
         return
 
     # Path validations
-    if bool(ui_elements['use_dxgi']) is True and bool(os.path.isfile(dxgi_path)) is False:
+    if bool(ui_elements['use_dxgi'].get()) is True and bool(os.path.isfile(dxgi_path)) is False:
         messagebox.showerror(
             translate("error_title"), 
             translate("hook_file_not_found").format(dxgi_path=dxgi_path)
@@ -110,7 +112,7 @@ def launch(ui_elements, launcher_settings):
             modify_hosts(add=True)
             doneStepID += 1
 
-            if (ui_elements['use_dxgi']):
+            if (bool(ui_elements['use_dxgi'].get()) is True):
                 if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
@@ -147,7 +149,7 @@ def launch(ui_elements, launcher_settings):
                     translate("info_title"), 
                     translate("waiting_vorpx_start")
                 )
-            wait_for_process(vorpx_proc_name)
+            await wait_for_process(vorpx_proc_name)
 
             if (additional_popups):
                 messagebox.showinfo(
@@ -175,14 +177,14 @@ def launch(ui_elements, launcher_settings):
                 )
 
             if (stay_in_vr):
-                wait_for_process("StarCitizen")
+                await wait_for_process("StarCitizen.exe")
                 if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
                         translate("waiting_sc_start")
                     )
 
-                wait_for_exit(sc_proc_name)
+                await wait_for_exit(sc_proc_name)
                 quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
 
         except Exception as e:
@@ -259,10 +261,11 @@ if __name__ == "__main__":
     interaction['save_button'].configure(command=lambda: save_input_configs(
         [gui_components, settings]
     ))
-    interaction['launch_button'].configure(command=lambda: launch(
-        gui_components, 
-        settings
-    ))
+
+    def async_launch():
+        threading.Thread(target=asyncio.run, args=(launch(gui_components, settings),)).start()
+
+    interaction['launch_button'].configure(command=async_launch)
 
     interaction['res_button'].configure(command=lambda: quit_vr_mode(
         "vorpControl.exe",

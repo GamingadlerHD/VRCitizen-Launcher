@@ -1,4 +1,5 @@
 # utilities.py
+import asyncio
 import os
 import shutil
 import ctypes
@@ -36,16 +37,19 @@ def modify_hosts(add=True):
 def launch_process(path):
     return subprocess.Popen(path, shell=True)
 
-def wait_for_process(name_substring):
+async def wait_for_process(name_substring):
+    print(f"Waiting for process containing: {name_substring}")
     while True:
-        for proc in psutil.process_iter(['name']):
-            if proc.info['name'] and name_substring.lower() in proc.info['name'].lower():
+        for proc in psutil.process_iter(['pid','name']):
+            if name_substring.lower() in proc.info['name'].lower():
+                print(f"Found process: {proc.info['name']}")
+                await asyncio.sleep(1)
                 return proc
         time.sleep(1)
 
-def wait_for_exit(proc :str):
+async def wait_for_exit(proc :str):
     for p in psutil.process_iter(['pid', 'name']):
-        if proc.lower() == p.info['name'].lower():
+        if proc.lower() in p.info['name'].lower():
             p.wait()
             return
     raise ValueError(f"No process found with name containing: {proc}")
