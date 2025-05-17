@@ -8,7 +8,7 @@ import ctypes
 import shutil
 from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
-from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name, get_path_from_registery
+from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name#, get_path_from_registery
 from GUI.gui import setup_gui
 from validation import validate_resolution
 from i18n import set_language, translate
