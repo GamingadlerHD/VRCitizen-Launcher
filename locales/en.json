@@ -1,7 +1,7 @@
 {
     "sc_folder": "Star Citizen LIVE Folder",
     "Browse": "Browse",
-    "vorpX_exe": "vorpX exe",
+    "vorpX_exe": "vorpXControl exe",
     "Launcher_Exe": "Launcher exe",
     "templates": "Headset",
     "no_template": "Custom",
@@ -10,7 +10,7 @@
     "revert": "Automaticaly revert Changes when closing Star Citizen (Launcher needs to stay open)",
     "save": "Save Config",
     "launch": "Apply & Launch",
-    "restore": "Restore Defaults",
+    "restore": "undo system changes",
     "title": "VR Citizen Launcher",
     "home": "Launcher Settings",
     "setting": "Game Settings",
