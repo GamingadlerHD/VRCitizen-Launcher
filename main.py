@@ -1,5 +1,4 @@
 import asyncio
-import tkinter as tk
 from tkinter import messagebox
 import os
 import threading
@@ -10,7 +9,7 @@ from config import save_input_configs, load_input_config
 from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
 from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name#, get_path_from_registery
 from GUI.gui import setup_gui
-from validation import validate_resolution
+from validation import fits_on_any_monitor
 from i18n import set_language, translate
 from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT, HOSTS_FILE
 
@@ -85,7 +84,7 @@ async def launch(ui_elements, launcher_settings):
         )
         return
     
-    if not validate_resolution(int(ui_elements['width_entry'].get()), int(ui_elements['height_entry'].get())):
+    if not fits_on_any_monitor(int(ui_elements['width_entry'].get()), int(ui_elements['height_entry'].get())):
         if not ui_elements['ign_res_warning'].get():
             messagebox.showerror(
                 translate("error_title"), 
@@ -205,8 +204,8 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
         if doneStepID > 0:
             if additional_popups:
                 messagebox.showinfo(translate("info_title"), translate("restoring_hosts"))
+            modify_hosts(add=False)
             if os.path.exists(HOSTS_FILE + ".backup"):
-                shutil.copy2(HOSTS_FILE + ".backup", HOSTS_FILE)
                 os.remove(HOSTS_FILE + ".backup")
 
         if doneStepID > 1:
@@ -253,7 +252,7 @@ if __name__ == "__main__":
     except(KeyError, TypeError):
         set_language('en')
 
-    root = tk.Tk()
+    root = customtkinter.CTk()
     root.iconbitmap("media/i.ico")
     gui_components, settings, interaction = setup_gui(root)
     
