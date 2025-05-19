@@ -23,17 +23,26 @@ def get_presets(template_name):
             return template['presets']
     return []
 
-def on_template_selected(selected_template, preset_dropdown):
+def get_fov(template_name):
+    templates = get_templates()
+    for template in templates:
+        if template['name'] == template_name:
+            return template['fov']
+    return 0
+
+def on_template_selected(selected_template, preset_dropdown, fov_entry):
     presets = [translate("no_preset")]
     
     if selected_template != translate("no_template"):
         template_presets = get_presets(selected_template)
+        template_fov = get_fov(selected_template)
+        fill_entry(fov_entry, template_fov)
         presets += [p['name'] for p in template_presets]
     
     preset_dropdown.configure(values=presets)
     preset_dropdown.set(presets[0])
 
-def on_preset_selected(selected_preset, template_dropdown, fov_entry, width_entry, height_entry):
+def on_preset_selected(selected_preset, template_dropdown, width_entry, height_entry):
     if selected_preset == translate("no_preset"):
         return
     
@@ -42,15 +51,13 @@ def on_preset_selected(selected_preset, template_dropdown, fov_entry, width_entr
     
     for preset in presets:
         if preset['name'] == selected_preset:
-            fov_entry.delete(0, "end")
-            fov_entry.insert(0, preset['fov'])
-            
-            width_entry.delete(0, "end")
-            width_entry.insert(0, preset['width'])
-            
-            height_entry.delete(0, "end")
-            height_entry.insert(0, preset['height'])
+            fill_entry(width_entry, preset['width'])
+            fill_entry(height_entry, preset['height'])
             break
+
+def fill_entry(entry, value):
+    entry.delete(0, "end")
+    entry.insert(0, str(value))
 
 def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown, preset_dropdown):
     template_name = template_dropdown.get()
@@ -155,7 +162,7 @@ def create_main_window(container):
     template_dropdown = ctk.CTkComboBox(
         template_preset_frame,
         values=[translate("no_template")] + [tmpl['name'] for tmpl in templates],
-        command=lambda v: on_template_selected(v, preset_dropdown)
+        command=lambda v: on_template_selected(v, preset_dropdown, fov_entry)
     )
     template_dropdown.pack(side="left", padx=5, expand=True, fill="x")
     
@@ -163,7 +170,7 @@ def create_main_window(container):
     preset_dropdown = ctk.CTkComboBox(
         template_preset_frame,
         values=[translate("no_preset")],
-        command=lambda v: on_preset_selected(v, template_dropdown, fov_entry, width_entry, height_entry)
+        command=lambda v: on_preset_selected(v, template_dropdown, width_entry, height_entry)
     )
     preset_dropdown.pack(side="left", padx=5, expand=True, fill="x")
     
