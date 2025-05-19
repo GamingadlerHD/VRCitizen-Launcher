@@ -159,7 +159,7 @@ def create_main_window(container):
     
     ctk.CTkLabel(template_preset_frame, text=translate("template")).pack(side="left", padx=5)
     templates = get_templates()
-    template_dropdown = ctk.CTkComboBox(
+    template_dropdown = ctk.CTkOptionMenu(
         template_preset_frame,
         values=[translate("no_template")] + [tmpl['name'] for tmpl in templates],
         command=lambda v: on_template_selected(v, preset_dropdown, fov_entry)
@@ -167,13 +167,13 @@ def create_main_window(container):
     template_dropdown.pack(side="left", padx=5, expand=True, fill="x")
     
     ctk.CTkLabel(template_preset_frame, text=translate("preset")).pack(side="left", padx=20)
-    preset_dropdown = ctk.CTkComboBox(
+    preset_dropdown = ctk.CTkOptionMenu(
         template_preset_frame,
         values=[translate("no_preset")],
         command=lambda v: on_preset_selected(v, template_dropdown, width_entry, height_entry)
     )
     preset_dropdown.pack(side="left", padx=5, expand=True, fill="x")
-    
+
     # Resolution Inputs
     res_frame = ctk.CTkFrame(template_res_frame)
     res_frame.pack(fill="x", pady=5)

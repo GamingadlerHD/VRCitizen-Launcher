@@ -8,16 +8,13 @@ from i18n import translate
 from constants import HOSTS_FILE
 
 async def launch(ui_elements, launcher_settings):
-    '''
-    Applys all the settings and launches the sc launcher
-    '''
-    for component_name, component_value in ui_elements.items():
-        print(f"{component_name} {component_value.get()}")
+
     sc_folder_path = ui_elements['sc_entry'].get()
     vorpx_path = ui_elements['vorpx_entry'].get()
     launcher_path = ui_elements['launcher_entry'].get()
     stay_in_vr = ui_elements['stay_in_vr'].get()
     additional_popups = ui_elements['additional_popup'].get()
+    use_dxgi = bool(ui_elements['use_dxgi'].get())
 
     # Derived paths
     eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
@@ -37,7 +34,7 @@ async def launch(ui_elements, launcher_settings):
         return
 
     # Path validations
-    if bool(ui_elements['use_dxgi'].get()) is True and bool(os.path.isfile(dxgi_path)) is False:
+    if use_dxgi is True and bool(os.path.isfile(dxgi_path)) is False:
         messagebox.showerror(
             translate("error_title"), 
             translate("hook_file_not_found").format(dxgi_path=dxgi_path)
@@ -105,7 +102,7 @@ async def launch(ui_elements, launcher_settings):
             modify_hosts(add=True)
             doneStepID += 1
 
-            if (bool(ui_elements['use_dxgi'].get()) is True):
+            if (use_dxgi is True):
                 if (additional_popups):
                     messagebox.showinfo(
                         translate("info_title"), 
