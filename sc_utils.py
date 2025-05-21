@@ -237,8 +237,9 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
 
 def apply_hook_helper(destPath, Add=True):
     local = os.path.join(os.getcwd(), "dxgi.dll")
-    if not os.path.isfile(local) and not os.path.isfile(destPath): return
-    elif Add:
+    if not os.path.isfile(local) and not os.path.isfile(destPath): 
+        return
+    if Add:
         if os.path.isfile(local and not os.path.isfile(destPath)):
             shutil.copy2(local, destPath)
     elif not Add:
