@@ -15,7 +15,7 @@ def fits_on_any_monitor(width, height):
 
     monitor_sizes = []
 
-    def callback(hMonitor, hdc, lprcMonitor, lParam):
+    def callback(hMonitor, hdc, lprcMonitor, lParam): # pylint: disable=unused-argument
         mi = MONITORINFOEX()
         mi.cbSize = ctypes.sizeof(MONITORINFOEX)
         ctypes.windll.user32.GetMonitorInfoW(hMonitor, ctypes.byref(mi))

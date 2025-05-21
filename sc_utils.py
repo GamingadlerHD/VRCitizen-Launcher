@@ -41,7 +41,12 @@ async def launch(ui_elements, launcher_settings):
         )
         return
 
-
+    if not os.path.isdir(os.path.join(sc_folder_path, "user/client/0/")):
+        messagebox.showerror(
+            translate("error_title"), 
+            translate("no_user_folder")
+        )
+        return
 
     if not os.path.isdir(sc_folder_path):
         messagebox.showerror(
