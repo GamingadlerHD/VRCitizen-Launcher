@@ -1,13 +1,25 @@
+import os
 import tkinter as tk  # For IntVar, StringVar etc.
 from tkinter import filedialog
 import json
 import customtkinter as ctk
 from i18n import translate
+from constants import DXGI_DLL
 
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue") 
 
+def set_dxgi_toggle(dxgi_toggle : ctk.CTkCheckBox, dxgi_label, sc_path):
+    if not sc_path.get(): return
+    localPath = os.getcwd()
+    if not os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL)) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
+        dxgi_toggle.configure(state=ctk.DISABLED)
+        dxgi_label.configure(text=translate("dxgi_info"))
+    else:
+        dxgi_toggle.configure(state=ctk.NORMAL)
+        dxgi_label.configure(text=translate("dxgi_info_enabled"))
+    
 def get_templates():
     try:
         with open('templates.json', 'r', encoding='utf-8') as f:
@@ -197,7 +209,7 @@ def create_main_window(container):
     
     # ===== RIGHT PANEL CONTENT =====
     right_frame = ctk.CTkFrame(frame, corner_radius=5)
-    right_frame.grid(row=0, column=1, rowspan=2, sticky="nsew", padx=5, pady=5)
+    right_frame.grid(row=0, column=1, rowspan=1, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(right_frame, text=translate("additional_settings")).pack(pady=5)
     
     # Checkboxes moved to additional settings
@@ -207,11 +219,22 @@ def create_main_window(container):
     additional_popup = tk.IntVar()
     ctk.CTkCheckBox(right_frame, text=translate("ad_popup"), variable=additional_popup).pack(anchor="w", pady=5)
     
-    use_dxgi = tk.IntVar()
-    ctk.CTkCheckBox(right_frame, text=translate("use_dxgi"), variable=use_dxgi).pack(anchor="w", pady=5)
-    
     stay_in_vr = tk.IntVar()
     ctk.CTkCheckBox(right_frame, text=translate("revert"), variable=stay_in_vr).pack(anchor="w", pady=5)
+
+    # ===== DXGI SETTINGS SECTION =====
+    dxgi_frame = ctk.CTkFrame(frame, corner_radius=5)
+    dxgi_frame.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
+    ctk.CTkLabel(dxgi_frame, text=translate("dxgi_settings")).pack(pady=5)
+
+    use_dxgi = tk.IntVar()
+    dxgi_toggle = ctk.CTkCheckBox(dxgi_frame, text=translate("use_dxgi"), variable=use_dxgi)
+    dxgi_toggle.pack(anchor="w", pady=5)
+
+    dxgi_label = ctk.CTkLabel(dxgi_frame, text=translate("dxgi_info"))
+    dxgi_label.pack(pady=5)
+
+    ctk.CTkButton(dxgi_frame, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(pady=5)
     
     # ===== ACTION BUTTONS =====
     btn_frame = ctk.CTkFrame(frame)
@@ -244,7 +267,8 @@ def create_main_window(container):
     buttons = {
         'save_button': save_button,
         'launch_button': launch_button,
-        'res_button': res_button
+        'res_button': res_button,
+        'check_dxgi_command': lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)
     }
     
     frame.grid_rowconfigure(0, weight=1)

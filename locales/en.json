@@ -23,6 +23,10 @@
     "donate": "You can donate me a ingame",
     "use_dxgi": "Add dxgi.dll to Star Citizen folder",
     "no_preset": "Custom",
+    "dxgi_info": "You need to Launch and let VorpX install the Hook Helper to do this.",
+    "dxgi_info_enabled": "Hook Helper was Successfully located.",
+    "dxgi_check_again": "Check again",
+    "dxgi_settings": "Hook Helper Settings",
     
     "error_title": "Error",
     "hook_file_not_found": "Required vorpX hook file not found:\\n{dxgi_path}",

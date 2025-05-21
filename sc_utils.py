@@ -5,7 +5,7 @@ from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
 from utilities import is_admin, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name
 from validation import fits_on_any_monitor
 from i18n import translate
-from constants import HOSTS_FILE
+from constants import HOSTS_FILE, DXGI_DLL
 
 async def launch(ui_elements, launcher_settings):
 
@@ -20,7 +20,7 @@ async def launch(ui_elements, launcher_settings):
     eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
     attr_orig_path = os.path.join(sc_folder_path, "user/client/0/Profiles/default/attributes.xml")
     sc_executable = os.path.join(sc_folder_path, "Bin64/StarCitizen.exe")
-    dxgi_dest_path = os.path.join(sc_folder_path, "Bin64/dxgi.dll")
+    dxgi_dest_path = os.path.join(sc_folder_path, DXGI_DLL)
 
     # Pre-Validation
     script_dir = os.getcwd()
@@ -34,7 +34,7 @@ async def launch(ui_elements, launcher_settings):
         return
 
     # Path validations
-    if use_dxgi is True and bool(os.path.isfile(dxgi_path)) is False:
+    if use_dxgi is True and bool(os.path.isfile(dxgi_path)) is False and bool(os.path.isfile(dxgi_dest_path)) is False:
         messagebox.showerror(
             translate("error_title"), 
             translate("hook_file_not_found").format(dxgi_path=dxgi_path)
@@ -108,8 +108,8 @@ async def launch(ui_elements, launcher_settings):
                         translate("info_title"), 
                         translate("pasting_dxgi")
                     )
-                    shutil.copy2(dxgi_path, dxgi_dest_path)
-                    doneStepID += 1
+                apply_hook_helper(dxgi_dest_path, Add=True)
+                doneStepID += 1
 
             if (additional_popups):
                 messagebox.showinfo(
@@ -202,8 +202,7 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
         if doneStepID > 1:
             if additional_popups:
                 messagebox.showinfo(translate("info_title"), translate("removing_dxgi"))
-            if os.path.exists(dxgi_dest_path):
-                os.remove(dxgi_dest_path)
+            apply_hook_helper(dxgi_dest_path, Add=False)
 
         if doneStepID > 2:
             if additional_popups:
@@ -228,3 +227,18 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
             translate("error_title"), 
             translate("error_quitting_vr").format(e=e)
         )
+
+
+
+def apply_hook_helper(destPath, Add=True):
+    local = os.path.join(os.getcwd(), "dxgi.dll")
+    if not os.path.isfile(local) and not os.path.isfile(destPath): return
+    elif Add:
+        if os.path.isfile(local and not os.path.isfile(destPath)):
+            shutil.copy2(local, destPath)
+    elif not Add:
+        if os.path.isfile(destPath):
+            if not os.path.isfile(local):
+                shutil.copy2(destPath, local)
+            os.remove(destPath)
+    
