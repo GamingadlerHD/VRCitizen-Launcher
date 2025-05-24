@@ -33,31 +33,67 @@ def change_language(language :str, root):
 def setup_gui(root):
     root.title(translate("title"))
 
-    # Top-level Menu
-    menu_bar = tk.Menu(root)
+    menu_bar = ctk.CTkFrame(root, height=40)
+    menu_bar.pack(fill="x", side="top")
 
-    # Home Menu
-    home_menu = tk.Menu(menu_bar, tearoff=0)
-    home_menu.add_command(label=translate("home"), command=lambda: show_frame(home_frame))
-    home_menu.add_command(label=translate("setting"), command=lambda: show_frame(settings_frame))
+    nav_options = [
+        (translate("home"), "home"),
+        (translate("setting"), "settings"),
+        (translate("info"), "info"),
+    ]
 
+    def on_nav_change(choice):
+        if choice == "home":
+            show_frame(home_frame)
+        elif choice == "settings":
+            show_frame(settings_frame)
+        elif choice == "info":
+            show_frame(info_frame)
 
+    nav_buttons = {}
 
-    menu_bar.add_cascade(label=translate("launcher"), menu=home_menu)
+    def on_nav_click(selected_name):
+        for name, btn in nav_buttons.items():
+            if name == selected_name:
+                btn.configure(fg_color="#1f6aa5")
+            else:
+                btn.configure(fg_color="transparent")
 
-    language_menu = tk.Menu(menu_bar, tearoff=0)
-    language_menu.add_command(label="English", command=lambda: change_language("en", root))
-    language_menu.add_command(label="Deutsch", command=lambda: change_language("de", root))
-    language_menu.add_command(label="Italiano", command=lambda: change_language("it", root))
-    language_menu.add_command(label="Español", command=lambda: change_language("es", root))
-    language_menu.add_command(label="русский", command=lambda: change_language("ru", root))
-    menu_bar.add_cascade(label=translate("Language"), menu=language_menu)
+    for display_name, internal_name in nav_options:
+        def make_command(name=internal_name):
+            return lambda: [on_nav_change(name), on_nav_click(name)]
 
-    info_menu = tk.Menu(menu_bar, tearoff=0)
-    info_menu.add_command(label=translate("info"), command=lambda: show_frame(info_frame))
-    menu_bar.add_cascade(label=translate("info"), menu=info_menu)
+        btn = ctk.CTkButton(
+            menu_bar,
+            text=display_name.title(),
+            command=make_command(),
+            corner_radius=0,
+            fg_color="transparent",
+            width=100, height=40,
+        )
+        btn.pack(side="left", padx=0, pady=0)
+        nav_buttons[internal_name] = btn
 
-    root.config(menu=menu_bar)
+    # Language Dropdown
+    language_var = tk.StringVar(value=translate("Language"))
+    language_options = [
+        ("English", "en"),
+        ("Deutsch", "de"),
+        ("Italiano", "it"),
+        ("Español", "es"),
+        ("русский", "ru"),
+    ]
+    def on_language_change(choice):
+        code = dict(language_options)[choice]
+        change_language(code, root)
+
+    language_menu = ctk.CTkOptionMenu(
+        menu_bar,
+        variable=language_var,
+        values=[name for name, _ in language_options],
+        command=on_language_change
+    )
+    language_menu.pack(side="right", padx=5, pady=5)
 
 
     # --- Pages container ---
@@ -71,8 +107,8 @@ def setup_gui(root):
     for frame in (home_frame, info_frame, settings_frame):
         frame.grid(row=0, column=0, columnspan=6, rowspan=10, sticky="nsew")
 
-    # Show home frame by default
-    show_frame(home_frame)
+    on_nav_click("home")  # Set default page to home
+    on_nav_change("home")
 
     return components, settings, buttons
 
