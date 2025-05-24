@@ -54,6 +54,12 @@ async def wait_for_exit(proc :str):
             return
     raise ValueError(f"No process found with name containing: {proc}")
 
+def is_process_running(name_substring):
+    for proc in psutil.process_iter(['pid', 'name']):
+        if name_substring.lower() in proc.info['name'].lower():
+            return True
+    return False
+
 def kill_process_by_name(name_substring):
     for proc in psutil.process_iter(['pid', 'name']):
         if name_substring.lower() in proc.info['name'].lower():
