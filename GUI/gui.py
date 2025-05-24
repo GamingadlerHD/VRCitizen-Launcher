@@ -50,13 +50,29 @@ def setup_gui(root):
         elif choice == "info":
             show_frame(info_frame)
 
-    nav_segmented = ctk.CTkSegmentedButton(
-        menu_bar,
-        values=[name for name, _ in nav_options],
-        command=lambda name: on_nav_change(dict(nav_options)[name])
-    )
-    nav_segmented.set(translate("home"))
-    nav_segmented.pack(side="left", padx=5, pady=5)
+    nav_buttons = {}
+
+    def on_nav_click(selected_name):
+        for name, btn in nav_buttons.items():
+            if name == selected_name:
+                btn.configure(fg_color="#1f6aa5")
+            else:
+                btn.configure(fg_color="transparent")
+
+    for display_name, internal_name in nav_options:
+        def make_command(name=internal_name):
+            return lambda: [on_nav_change(name), on_nav_click(name)]
+
+        btn = ctk.CTkButton(
+            menu_bar,
+            text=display_name.title(),
+            command=make_command(),
+            corner_radius=0,
+            fg_color="transparent",
+            width=100, height=40,
+        )
+        btn.pack(side="left", padx=0, pady=0)
+        nav_buttons[internal_name] = btn
 
     # Language Dropdown
     language_var = tk.StringVar(value=translate("Language"))
@@ -91,8 +107,8 @@ def setup_gui(root):
     for frame in (home_frame, info_frame, settings_frame):
         frame.grid(row=0, column=0, columnspan=6, rowspan=10, sticky="nsew")
 
-    # Show home frame by default
-    show_frame(home_frame)
+    on_nav_click("home")  # Set default page to home
+    on_nav_change("home")
 
     return components, settings, buttons
 
