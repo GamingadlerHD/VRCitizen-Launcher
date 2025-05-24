@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="./image.png" width="200" alt="Star Citizen Logo"/>
+  <img src="./media/logo1.png" width="200" alt="Star Citizen Logo"/>
 </p>
 
 # VRCitizenLauncher
