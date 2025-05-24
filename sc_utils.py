@@ -241,7 +241,7 @@ def apply_hook_helper(destPath, Add=True):
     if not os.path.isfile(local) and not os.path.isfile(destPath): 
         return
     if Add:
-        if os.path.isfile(local and not os.path.isfile(destPath)):
+        if os.path.isfile(local) and not os.path.isfile(destPath):
             shutil.copy2(local, destPath)
     elif not Add:
         if os.path.isfile(destPath):
