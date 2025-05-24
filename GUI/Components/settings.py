@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from constants import MAIN_BG_COLOR, SECONDARY_BG_COLOR
 from i18n import translate
 
 def set_standard_settings(settings: dict):
@@ -25,12 +26,12 @@ def set_standard_settings(settings: dict):
     return settings
 
 def create_settings_frame(container):
-    frame = ctk.CTkFrame(container)
+    frame = ctk.CTkFrame(container, fg_color=SECONDARY_BG_COLOR)
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
     # Main content container
-    content_frame = ctk.CTkFrame(frame)
+    content_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
     content_frame.grid(row=0, column=0, sticky="nsew")
 
     # Configure columns with equal width
@@ -39,9 +40,9 @@ def create_settings_frame(container):
     content_frame.columnconfigure(4, weight=1, uniform='cols')
 
     # Create section frames
-    left_frame = ctk.CTkFrame(content_frame)
-    middle_frame = ctk.CTkFrame(content_frame)
-    right_frame = ctk.CTkFrame(content_frame)
+    left_frame = ctk.CTkFrame(content_frame, fg_color=MAIN_BG_COLOR)
+    middle_frame = ctk.CTkFrame(content_frame, fg_color=MAIN_BG_COLOR)
+    right_frame = ctk.CTkFrame(content_frame, fg_color=MAIN_BG_COLOR)
 
     # Grid layout for content
     left_frame.grid(row=0, column=0, sticky="nsew", padx=5)

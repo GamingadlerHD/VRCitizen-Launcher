@@ -6,3 +6,8 @@ STARCITIZEN_DEFAULT = "C:\\Program Files\\Roberts Space Industries\\StarCitizen\
 VORPX_DEFAULT = "C:\\Program Files (x86)\\Animation Labs\\vorpX\\vorpControl.exe"
 LAUNCHER_DEFAULT = "C:\\Program Files\\Roberts Space Industries\\RSI Launcher\\RSI Launcher.exe"
 DXGI_DLL = "Bin64/dxgi.dll"
+
+MAIN_BG_COLOR = ("#cfcfcf","#2b2b2b")
+SECONDARY_BG_COLOR = ("#dbdbdb","#333333")
+MENU_BUTTON_COLOR = ("#91bcdf","#0c2c46")
+MENU_SELECTED_COLOR = ("#3b8ed0","#1f6aa5")

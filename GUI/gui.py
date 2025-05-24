@@ -9,6 +9,7 @@ from GUI.Components.info import create_info_frame
 from GUI.Components.settings import create_settings_frame
 from GUI.Components.home import create_main_window
 from config import add_or_change_value_in_config
+from constants import SECONDARY_BG_COLOR, MENU_BUTTON_COLOR, MENU_SELECTED_COLOR
 
 def show_frame(frame):
     frame.tkraise()
@@ -33,7 +34,7 @@ def change_language(language :str, root):
 def setup_gui(root):
     root.title(translate("title"))
 
-    menu_bar = ctk.CTkFrame(root, height=40)
+    menu_bar = ctk.CTkFrame(root, height=40, fg_color=SECONDARY_BG_COLOR)
     menu_bar.pack(fill="x", side="top")
 
     nav_options = [
@@ -55,9 +56,9 @@ def setup_gui(root):
     def on_nav_click(selected_name):
         for name, btn in nav_buttons.items():
             if name == selected_name:
-                btn.configure(fg_color="#1f6aa5")
+                btn.configure(fg_color=MENU_SELECTED_COLOR)
             else:
-                btn.configure(fg_color="transparent")
+                btn.configure(fg_color=MENU_BUTTON_COLOR)
 
     for display_name, internal_name in nav_options:
         def make_command(name=internal_name):

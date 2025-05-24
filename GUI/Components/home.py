@@ -4,10 +4,10 @@ from tkinter import filedialog
 import json
 import customtkinter as ctk
 from i18n import translate
-from constants import DXGI_DLL
+from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
 
 # Set CustomTkinter appearance mode
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue") 
 
 def set_dxgi_toggle(dxgi_toggle : ctk.CTkCheckBox, dxgi_label, sc_path):
@@ -128,7 +128,7 @@ def browse_folder(entry):
         entry.insert(0, foldername)
 
 def create_main_window(container):
-    frame = ctk.CTkFrame(container)
+    frame = ctk.CTkFrame(container, fg_color=MAIN_BG_COLOR)
     
     # Configure main columns (60-40 split)
     frame.grid_columnconfigure(0, weight=6)
@@ -136,12 +136,12 @@ def create_main_window(container):
     
     # ===== LEFT PANEL CONTENT =====
     # File Paths Section
-    paths_frame = ctk.CTkFrame(frame, corner_radius=5)
+    paths_frame = ctk.CTkFrame(frame, corner_radius=5, fg_color=SECONDARY_BG_COLOR)
     paths_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(paths_frame, text=translate("file_paths")).pack(pady=5)
     
     def create_path_row(parent, label_text, file_types=None):
-        row_frame = ctk.CTkFrame(parent)
+        row_frame = ctk.CTkFrame(parent, fg_color=SECONDARY_BG_COLOR)
         row_frame.pack(fill="x", pady=2)
     
         # Configure grid layout for consistent widths
@@ -161,12 +161,12 @@ def create_main_window(container):
     launcher_entry = create_path_row(paths_frame, "Launcher_Exe", [('Executables', '*.exe')])
     
     # Template/Resolution Section
-    template_res_frame = ctk.CTkFrame(frame, corner_radius=5)
+    template_res_frame = ctk.CTkFrame(frame, corner_radius=5, fg_color=SECONDARY_BG_COLOR)
     template_res_frame.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(template_res_frame, text=translate("template_resolution_settings")).pack(pady=5)
     
     # Template/Preset Selection
-    template_preset_frame = ctk.CTkFrame(template_res_frame)
+    template_preset_frame = ctk.CTkFrame(template_res_frame, fg_color=SECONDARY_BG_COLOR)
     template_preset_frame.pack(fill="x", pady=5)
     
     ctk.CTkLabel(template_preset_frame, text=translate("template")).pack(side="left", padx=5)
@@ -187,7 +187,7 @@ def create_main_window(container):
     preset_dropdown.pack(side="left", padx=5, expand=True, fill="x")
 
     # Resolution Inputs
-    res_frame = ctk.CTkFrame(template_res_frame)
+    res_frame = ctk.CTkFrame(template_res_frame, fg_color=SECONDARY_BG_COLOR)
     res_frame.pack(fill="x", pady=5)
     
     ctk.CTkLabel(res_frame, text="FOV").pack(side="left", padx=5)
@@ -208,7 +208,7 @@ def create_main_window(container):
                      lambda e: on_wh_change(width_entry, height_entry, True, template_dropdown, preset_dropdown))
     
     # ===== RIGHT PANEL CONTENT =====
-    right_frame = ctk.CTkFrame(frame, corner_radius=5)
+    right_frame = ctk.CTkFrame(frame, corner_radius=5, fg_color=SECONDARY_BG_COLOR)
     right_frame.grid(row=0, column=1, rowspan=1, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(right_frame, text=translate("additional_settings")).pack(pady=5)
     
@@ -223,7 +223,7 @@ def create_main_window(container):
     ctk.CTkCheckBox(right_frame, text=translate("revert"), variable=stay_in_vr).pack(anchor="w", pady=5)
 
     # ===== DXGI SETTINGS SECTION =====
-    dxgi_frame = ctk.CTkFrame(frame, corner_radius=5)
+    dxgi_frame = ctk.CTkFrame(frame, corner_radius=5, fg_color=SECONDARY_BG_COLOR)
     dxgi_frame.grid(row=1, column=1, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(dxgi_frame, text=translate("dxgi_settings")).pack(pady=5)
 
@@ -237,7 +237,7 @@ def create_main_window(container):
     ctk.CTkButton(dxgi_frame, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(pady=5)
     
     # ===== ACTION BUTTONS =====
-    btn_frame = ctk.CTkFrame(frame)
+    btn_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
     btn_frame.grid(row=3, column=0, columnspan=2, sticky="e", pady=10)
     
     save_button = ctk.CTkButton(btn_frame, text=translate("save"), width=80)
