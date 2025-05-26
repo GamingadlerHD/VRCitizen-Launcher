@@ -38,7 +38,7 @@
     "attributes_file_not_found": "Original attributes file not found:\\n{attr_orig_path}",
     "admin_required_title": "Admin Required",
     "admin_required_message": "This launcher must be run as administrator!",
-    "resolution_too_small": "Your monitor resolution is to small for the selected VR resolution. Visit https://github.com/GamingadlerHD/VRCitizen-Launcher/wiki/Resolution-Warning for more information.",
+    "resolution_too_small": "Your monitor resolution is to small for the selected VR resolution. Visit the Discord in the help tab for more information.",
     "info_title": "Info",
     "modifying_hosts": "Modifying hosts file...",
     "pasting_dxgi": "Pasting dxgi.dll... (Hook Helper)",
