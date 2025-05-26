@@ -93,5 +93,6 @@
     "ov_resolution": "Auflösungswarnung ignorieren",
     "launcher": "Launcher",
     "ad_popup": "Zusätzliche Benachrichtigungen erhalten",
-    "reset": "Auf Standard zurücksetzen"
+    "reset": "Auf Standard zurücksetzen",
+    "dxgi_help": "Hilfe"
 }

@@ -59,7 +59,7 @@
     "restored_title": "Restauración Exitosa",
     "restored_message": "Todo ha sido restaurado a su estado original.",
     "error_quitting_vr": "Ocurrió un error al salir del modo VR: {e}",
-
+    "dxgi_help": "Ayuda",
     "MotionBlur": "Desenfoque de Movimiento",
     "VSync": "VSync",
     "AutoZoomOnSelectedTarget": "Zoom Automático en Objetivo Seleccionado",

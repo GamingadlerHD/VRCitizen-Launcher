@@ -93,6 +93,7 @@
     "ov_resolution": "Ignore Resolution Warning",
     "launcher": "Launcher",
     "ad_popup": "Get additional notifications",
-    "reset": "Reset to Defaults"
+    "reset": "Reset to Defaults",
+    "dxgi_help": "Help"
 }
 

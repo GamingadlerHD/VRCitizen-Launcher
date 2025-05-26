@@ -28,7 +28,7 @@
     "dxgi_check_again": "Проверить снова",
     "dxgi_settings": "Настройки Hook Helper",
     "no_user_folder": "Папка пользователя не найдена. Неверный путь к Star Citizen или игра не запускалась ни разу?",
-    
+    "dxgi_help": "Помощь",
     "error_title": "Ошибка",
     "hook_file_not_found": "Не найден необходимый файл vorpX hook:\\n{dxgi_path}",
     "select_all_files": "Пожалуйста, выберите все необходимые файлы!",

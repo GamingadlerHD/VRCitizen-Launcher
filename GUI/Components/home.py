@@ -2,6 +2,7 @@ import os
 import tkinter as tk  # For IntVar, StringVar etc.
 from tkinter import filedialog
 import json
+import webbrowser
 import customtkinter as ctk
 from i18n import translate
 from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
@@ -9,6 +10,10 @@ from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue") 
+
+
+def open_url(url):
+    webbrowser.open(url)
 
 def set_dxgi_toggle(dxgi_toggle : ctk.CTkCheckBox, dxgi_label, sc_path):
     if not sc_path.get(): return
@@ -234,8 +239,16 @@ def create_main_window(container):
     dxgi_label = ctk.CTkLabel(dxgi_frame, text=translate("dxgi_info"))
     dxgi_label.pack(pady=5)
 
-    ctk.CTkButton(dxgi_frame, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(pady=5)
+    # Place the two buttons side by side in a frame
+    dxgi_btn_row = ctk.CTkFrame(dxgi_frame, fg_color="transparent")
+    dxgi_btn_row.pack(pady=5)
+
+    ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(side="left", padx=5)
+    help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
+    help_button.pack(side="left", padx=5)
     
+    help_button.configure(command=lambda: open_url("https://google.com"))
+
     # ===== ACTION BUTTONS =====
     btn_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
     btn_frame.grid(row=3, column=0, columnspan=2, sticky="e", pady=10)

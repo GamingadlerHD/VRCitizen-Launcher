@@ -28,7 +28,7 @@
     "dxgi_check_again": "Controlla di nuovo",
     "dxgi_settings": "Impostazioni Hook Helper",
     "no_user_folder": "Cartella utente non trovata. Percorso Star Citizen errato o non avviato almeno una volta?",
-    
+    "dxgi_help": "Aiuto",
     "error_title": "Errore",
     "hook_file_not_found": "File hook di vorpX richiesto non trovato:\\n{dxgi_path}",
     "select_all_files": "Seleziona tutti i file necessari!",
