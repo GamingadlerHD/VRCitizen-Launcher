@@ -5,12 +5,14 @@ PyInstaller.__main__.run([
     '--name', 'VRCitizenLauncher',
     '--onefile',
     '--noconsole',
+    '--icon', 'media/i.ico',
     'main.py',
 ])
 
 PyInstaller.__main__.run([
     '--name', 'VRCitizenLauncher-Debug',
     '--onefile',
+    '--icon', 'media/i.ico',
     'main.py',
 ])
 
