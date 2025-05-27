@@ -2,6 +2,7 @@ import webbrowser
 import customtkinter as ctk
 from PIL import Image
 from i18n import translate
+from constants import MAIN_BG_COLOR
 
 STYLE_CONFIG = {
     "font_family": "Arial",
@@ -20,7 +21,7 @@ def open_url(url):
     webbrowser.open(url)
 
 def create_info_frame(container):
-    frame = ctk.CTkFrame(container)
+    frame = ctk.CTkFrame(container, fg_color=MAIN_BG_COLOR)
     
     # Load and display logos
     try:
