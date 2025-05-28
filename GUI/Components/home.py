@@ -247,7 +247,7 @@ def create_main_window(container):
     help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
     help_button.pack(side="left", padx=5)
     
-    help_button.configure(command=lambda: open_url("https://google.com"))
+    help_button.configure(command=lambda: open_url("https://github.com/GamingadlerHD/VRCitizen-Launcher/wiki/Hook-Helper"))
 
     # ===== ACTION BUTTONS =====
     btn_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
