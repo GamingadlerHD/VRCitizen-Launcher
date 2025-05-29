@@ -83,6 +83,7 @@ def setup_gui(root):
         ("Italiano", "it"),
         ("Español", "es"),
         ("русский", "ru"),
+        ("français", "fr"),
     ]
     def on_language_change(choice):
         code = dict(language_options)[choice]
