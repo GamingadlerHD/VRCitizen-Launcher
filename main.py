@@ -74,7 +74,6 @@ if __name__ == "__main__":
         if os.path.exists(LAUNCHER_DEFAULT):
             gui_components['launcher_entry'].insert(0, LAUNCHER_DEFAULT)
 
-    interaction['check_dxgi_command']()
 
 
     root.mainloop()

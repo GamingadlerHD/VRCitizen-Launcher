@@ -15,10 +15,10 @@ ctk.set_default_color_theme("blue")
 def open_url(url):
     webbrowser.open(url)
 
-def set_dxgi_toggle(dxgi_toggle : ctk.CTkCheckBox, dxgi_label, sc_path):
-    if not sc_path.get(): return
+def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
+    print("Check for dxgi.dll")
     localPath = os.getcwd()
-    if not os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL)) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
+    if not (sc_path.get() and os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL))) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
         dxgi_toggle.configure(state=ctk.DISABLED)
         dxgi_label.configure(text=translate("dxgi_info"))
     else:
@@ -243,11 +243,15 @@ def create_main_window(container):
     dxgi_btn_row = ctk.CTkFrame(dxgi_frame, fg_color="transparent")
     dxgi_btn_row.pack(pady=5)
 
-    ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(side="left", padx=5)
-    help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
-    help_button.pack(side="left", padx=5)
-    
+    again_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_check_again"))
+    help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"))
+
+    again_button.configure(command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
     help_button.configure(command=lambda: open_url("https://github.com/GamingadlerHD/VRCitizen-Launcher/wiki/Hook-Helper"))
+
+    again_button.pack(side="left", padx=5)
+    help_button.pack(side="left", padx=5)
+
 
     # ===== ACTION BUTTONS =====
     btn_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
@@ -281,10 +285,11 @@ def create_main_window(container):
         'save_button': save_button,
         'launch_button': launch_button,
         'res_button': res_button,
-        'check_dxgi_command': lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)
     }
     
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_rowconfigure(1, weight=1)
+
+    set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)  # Initial check for dxgi.dll
     
     return frame, components, buttons
