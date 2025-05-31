@@ -116,12 +116,12 @@ async def launch(ui_elements, launcher_settings):
                 apply_hook_helper(dxgi_dest_path, Add=True)
                 doneStepID += 1
 
-            if (additional_popups):
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("vorpx_start")
-                )
             if not is_process_running(vorpx_proc_name):
+                if (additional_popups):
+                    messagebox.showinfo(
+                        translate("info_title"), 
+                        translate("vorpx_start")
+                    )
                 launch_process(vorpx_path)
             doneStepID += 1
 
