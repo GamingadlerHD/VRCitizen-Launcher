@@ -70,7 +70,7 @@ def create_info_frame(container):
                           text_color=STYLE_CONFIG["link_color"],
                           cursor="hand2")
     discord.pack(pady=10)
-    discord.bind("<Button-1>", lambda e: open_url("https://discord.gg/StarCitizen"))
+    discord.bind("<Button-1>", lambda e: open_url("https://discord.gg/2b6tVB2KPu"))
     discord.bind("<Enter>", lambda e: discord.configure(text_color=STYLE_CONFIG["hover_color"]))
     discord.bind("<Leave>", lambda e: discord.configure(text_color=STYLE_CONFIG["link_color"]))
 
