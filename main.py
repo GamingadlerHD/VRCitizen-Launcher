@@ -9,7 +9,7 @@ from config import save_input_configs, load_input_config
 from GUI.gui import setup_gui
 from i18n import set_language
 from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT
-from sc_utils import launch, quit_vr_mode
+from utils.sc_utils import launch, quit_vr_mode
 from utilities import is_admin
 
 if __name__ == "__main__":

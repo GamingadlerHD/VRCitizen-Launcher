@@ -1,7 +1,7 @@
 from tkinter import messagebox
 import os
 import shutil
-from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
+from utils.xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
 from utilities import is_admin, is_process_running, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name
 from validation import fits_on_any_monitor
 from i18n import translate

@@ -25,13 +25,27 @@ def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
         dxgi_toggle.configure(state=ctk.NORMAL)
         dxgi_label.configure(text=translate("dxgi_info_enabled"))
     
-def get_templates():
+def get_templates(folder_path='templates'):
+    combined_templates = []
+    
     try:
-        with open('templates.json', 'r', encoding='utf-8') as f:
-            templates = json.load(f)['templates']
-        return templates
+        # List all files in the directory
+        for filename in os.listdir(folder_path):
+            if filename.endswith('.json'):
+                file_path = os.path.join(folder_path, filename)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        # Assuming each JSON has a 'templates' key with a list
+                        combined_templates.extend(data.get('templates', []))
+                except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                    print(f"Error reading {filename}: {e}")
+                    continue
     except FileNotFoundError:
+        print(f"Folder {folder_path} not found")
         return []
+    
+    return combined_templates
 
 def get_presets(template_name):
     templates = get_templates()
