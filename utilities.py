@@ -16,7 +16,8 @@ def is_admin():
 
 def backup_file(src, backup_suffix=".backup"):
     backup_path = src + backup_suffix
-    shutil.copy2(src, backup_path)
+    if not os.path.exists(backup_path):
+        shutil.copy2(src, backup_path)
     return backup_path
 
 def replace_file(src, dst):
