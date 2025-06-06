@@ -31,29 +31,21 @@ def update_or_add_ini_property(ini_path, section, key, value):
     with open(ini_path, 'w', encoding='utf-8') as configfile:
         config.write(configfile)
 
-def add_item_to_list_if_needed(exe_name, file_path):
+def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExcl'):
     config = configparser.ConfigParser()
     config.read(file_path)
 
-    if 'Excludes' not in config:
-        config['Excludes'] = {}
+    if section not in config:
+        config[section] = {}
 
-    excludes = config['Excludes']
+    excludes = config[section]
 
-    # Prüfen, ob exe schon vorhanden ist
-    if exe_name.lower() in (v.lower() for v in excludes.values()):
-        print(f"{exe_name} ist bereits enthalten.")
+    if value.lower() in (v.lower() for v in excludes.values()):
+        print(f"{value} already present.")
         return
 
-    # Nächsten verfügbaren Schlüssel finden
-    index = 100
-    while f'excl{index}' in excludes:
+    index = 0
+    while f'{prefix}{index}' in excludes:
         index += 1
 
-    # Hinzufügen
-    excludes[f'excl{index}'] = exe_name
-
-    # Datei speichern
-    with open(file_path, 'w') as configfile:
-        config.write(configfile)
-    print(f"{exe_name} wurde hinzugefügt als excl{index}.")
+    update_or_add_ini_property(file_path, section, f'{prefix}{index}', value)
