@@ -1,13 +1,14 @@
 from tkinter import messagebox
 import os
 import shutil
-from xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
+from utils.vorpX_utils import AddExcludeIfNeeded, UpdateToDefaultKeyMappings
+from utils.xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_dict
 from utilities import is_admin, is_process_running, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name
 from validation import fits_on_any_monitor
 from i18n import translate
 from constants import HOSTS_FILE, DXGI_DLL
 
-async def launch(ui_elements, launcher_settings):
+async def Launch(ui_elements, launcher_settings):
 
     sc_folder_path = ui_elements['sc_entry'].get()
     vorpx_path = ui_elements['vorpx_entry'].get()
@@ -116,12 +117,14 @@ async def launch(ui_elements, launcher_settings):
                 apply_hook_helper(dxgi_dest_path, Add=True)
                 doneStepID += 1
 
-            if (additional_popups):
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("vorpx_start")
-                )
             if not is_process_running(vorpx_proc_name):
+                if (additional_popups):
+                    messagebox.showinfo(
+                        translate("info_title"), 
+                        translate("vorpx_start")
+                    )
+                AddExcludeIfNeeded()
+                UpdateToDefaultKeyMappings()
                 launch_process(vorpx_path)
             doneStepID += 1
 

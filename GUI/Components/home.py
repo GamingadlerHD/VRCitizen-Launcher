@@ -15,23 +15,37 @@ ctk.set_default_color_theme("blue")
 def open_url(url):
     webbrowser.open(url)
 
-def set_dxgi_toggle(dxgi_toggle : ctk.CTkCheckBox, dxgi_label, sc_path):
-    if not sc_path.get(): return
+def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
+    print("Check for dxgi.dll")
     localPath = os.getcwd()
-    if not os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL)) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
+    if not (sc_path.get() and os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL))) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
         dxgi_toggle.configure(state=ctk.DISABLED)
         dxgi_label.configure(text=translate("dxgi_info"))
     else:
         dxgi_toggle.configure(state=ctk.NORMAL)
         dxgi_label.configure(text=translate("dxgi_info_enabled"))
     
-def get_templates():
+def get_templates(folder_path='templates'):
+    combined_templates = []
+    
     try:
-        with open('templates.json', 'r', encoding='utf-8') as f:
-            templates = json.load(f)['templates']
-        return templates
+        # List all files in the directory
+        for filename in os.listdir(folder_path):
+            if filename.endswith('.json'):
+                file_path = os.path.join(folder_path, filename)
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        # Assuming each JSON has a 'templates' key with a list
+                        combined_templates.extend(data.get('templates', []))
+                except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                    print(f"Error reading {filename}: {e}")
+                    continue
     except FileNotFoundError:
+        print(f"Folder {folder_path} not found")
         return []
+    
+    return combined_templates
 
 def get_presets(template_name):
     templates = get_templates()
@@ -168,43 +182,56 @@ def create_main_window(container):
     # Template/Resolution Section
     template_res_frame = ctk.CTkFrame(frame, corner_radius=5, fg_color=SECONDARY_BG_COLOR)
     template_res_frame.grid(row=1, column=0, sticky="nsew", padx=5, pady=5)
-    ctk.CTkLabel(template_res_frame, text=translate("template_resolution_settings")).pack(pady=5)
-    
-    # Template/Preset Selection
-    template_preset_frame = ctk.CTkFrame(template_res_frame, fg_color=SECONDARY_BG_COLOR)
-    template_preset_frame.pack(fill="x", pady=5)
-    
-    ctk.CTkLabel(template_preset_frame, text=translate("template")).pack(side="left", padx=5)
+    ctk.CTkLabel(template_res_frame, text=translate("template_resolution_settings")).pack(pady=2)
+
+    columns_frame = ctk.CTkFrame(template_res_frame, fg_color=SECONDARY_BG_COLOR)
+    columns_frame.pack(fill="x", pady=5)
+
+    # Left column (template and FOV)
+    left_column = ctk.CTkFrame(columns_frame, fg_color=SECONDARY_BG_COLOR)
+    left_column.pack(side="left", expand=True, fill="x", padx=5)
+
+    #   Template dropdown row
+    template_row = ctk.CTkFrame(left_column, fg_color=SECONDARY_BG_COLOR)
+    template_row.pack(fill="x", pady=(0, 10))
+    ctk.CTkLabel(template_row, text=translate("template"), width=70).pack(side="left", padx=2)
     templates = get_templates()
     template_dropdown = ctk.CTkOptionMenu(
-        template_preset_frame,
+        template_row,
         values=[translate("no_template")] + [tmpl['name'] for tmpl in templates],
         command=lambda v: on_template_selected(v, preset_dropdown, fov_entry)
     )
     template_dropdown.pack(side="left", padx=5, expand=True, fill="x")
-    
-    ctk.CTkLabel(template_preset_frame, text=translate("preset")).pack(side="left", padx=20)
+
+    fov_row = ctk.CTkFrame(left_column, fg_color=SECONDARY_BG_COLOR)
+    fov_row.pack(fill="x")
+    ctk.CTkLabel(fov_row, text="FOV", width=70).pack(side="left", padx=2)
+    fov_entry = ctk.CTkEntry(fov_row, width=60)
+    fov_entry.pack(side="left", padx=5)
+    fov_entry.bind("<KeyRelease>", lambda e: numbers_only(fov_entry))
+
+    # Right column (preset and resolution)
+    right_column = ctk.CTkFrame(columns_frame, fg_color=SECONDARY_BG_COLOR)
+    right_column.pack(side="right", expand=True, fill="x", padx=5)
+
+    # Preset dropdown row
+    preset_row = ctk.CTkFrame(right_column, fg_color=SECONDARY_BG_COLOR)
+    preset_row.pack(fill="x", pady=(0, 10))
+    ctk.CTkLabel(preset_row, text=translate("preset"), width=70).pack(side="left", padx=2)
     preset_dropdown = ctk.CTkOptionMenu(
-        template_preset_frame,
+        preset_row,
         values=[translate("no_preset")],
         command=lambda v: on_preset_selected(v, template_dropdown, width_entry, height_entry)
     )
     preset_dropdown.pack(side="left", padx=5, expand=True, fill="x")
 
-    # Resolution Inputs
-    res_frame = ctk.CTkFrame(template_res_frame, fg_color=SECONDARY_BG_COLOR)
-    res_frame.pack(fill="x", pady=5)
-    
-    ctk.CTkLabel(res_frame, text="FOV").pack(side="left", padx=5)
-    fov_entry = ctk.CTkEntry(res_frame, width=60)
-    fov_entry.pack(side="left", padx=5)
-    fov_entry.bind("<KeyRelease>", lambda e: numbers_only(fov_entry))
-    
-    ctk.CTkLabel(res_frame, text=translate("resolution")).pack(side="left", padx=20)
-    width_entry = ctk.CTkEntry(res_frame, width=60)
+    res_row = ctk.CTkFrame(right_column, fg_color=SECONDARY_BG_COLOR)
+    res_row.pack(fill="x")
+    ctk.CTkLabel(res_row, text=translate("resolution"), width=70).pack(side="left", padx=2)
+    width_entry = ctk.CTkEntry(res_row, width=60)
     width_entry.pack(side="left", padx=5)
-    ctk.CTkLabel(res_frame, text="x").pack(side="left", padx=5)
-    height_entry = ctk.CTkEntry(res_frame, width=60)
+    ctk.CTkLabel(res_row, text="x").pack(side="left", padx=5)
+    height_entry = ctk.CTkEntry(res_row, width=60)
     height_entry.pack(side="left", padx=5)
     
     width_entry.bind("<KeyRelease>", 
@@ -217,7 +244,6 @@ def create_main_window(container):
     right_frame.grid(row=0, column=1, rowspan=1, sticky="nsew", padx=5, pady=5)
     ctk.CTkLabel(right_frame, text=translate("additional_settings")).pack(pady=5)
     
-    # Checkboxes moved to additional settings
     ign_res_warning = tk.IntVar()
     ctk.CTkCheckBox(right_frame, text=translate("ov_resolution"), variable=ign_res_warning).pack(anchor="w", pady=5)
     
@@ -239,15 +265,18 @@ def create_main_window(container):
     dxgi_label = ctk.CTkLabel(dxgi_frame, text=translate("dxgi_info"))
     dxgi_label.pack(pady=5)
 
-    # Place the two buttons side by side in a frame
     dxgi_btn_row = ctk.CTkFrame(dxgi_frame, fg_color="transparent")
     dxgi_btn_row.pack(pady=5)
 
-    ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_check_again"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)).pack(side="left", padx=5)
-    help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"), command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
+    again_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_check_again"))
+    help_button = ctk.CTkButton(dxgi_btn_row, text=translate("dxgi_help"))
+
+    again_button.configure(command=lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry))
+    help_button.configure(command=lambda: open_url("https://github.com/GamingadlerHD/VRCitizen-Launcher/wiki/Hook-Helper"))
+
+    again_button.pack(side="left", padx=5)
     help_button.pack(side="left", padx=5)
-    
-    help_button.configure(command=lambda: open_url("https://google.com"))
+
 
     # ===== ACTION BUTTONS =====
     btn_frame = ctk.CTkFrame(frame, fg_color=MAIN_BG_COLOR)
@@ -281,10 +310,11 @@ def create_main_window(container):
         'save_button': save_button,
         'launch_button': launch_button,
         'res_button': res_button,
-        'check_dxgi_command': lambda: set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)
     }
     
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_rowconfigure(1, weight=1)
+
+    set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_entry)  # Initial check for dxgi.dll
     
     return frame, components, buttons

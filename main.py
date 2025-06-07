@@ -9,7 +9,7 @@ from config import save_input_configs, load_input_config
 from GUI.gui import setup_gui
 from i18n import set_language
 from constants import LAUNCHER_DEFAULT, STARCITIZEN_DEFAULT, VORPX_DEFAULT
-from sc_utils import launch, quit_vr_mode
+from utils.sc_utils import Launch, quit_vr_mode
 from utilities import is_admin
 
 if __name__ == "__main__":
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     ))
 
     def async_launch():
-        threading.Thread(target=asyncio.run, args=(launch(gui_components, settings),)).start()
+        threading.Thread(target=asyncio.run, args=(Launch(gui_components, settings),)).start()
 
     interaction['launch_button'].configure(command=async_launch)
 
@@ -74,7 +74,6 @@ if __name__ == "__main__":
         if os.path.exists(LAUNCHER_DEFAULT):
             gui_components['launcher_entry'].insert(0, LAUNCHER_DEFAULT)
 
-    interaction['check_dxgi_command']()
 
 
     root.mainloop()

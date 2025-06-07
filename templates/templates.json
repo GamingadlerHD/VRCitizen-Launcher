@@ -1,0 +1,720 @@
+{
+  "templates": [
+    {
+      "name": "Bigscreen Beyond",
+      "fov": 98,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2670,
+          "height": 2560
+        },
+		{
+		  "name": "4:3",
+          "width": 3414,
+          "height": 2560
+        },
+		{
+		  "name": "16:9",
+          "width": 4552,
+          "height": 2560
+        }
+			
+      ]
+    },
+	{
+      "name": "Bigscreen Beyond 2",
+      "fov": 100,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2670,
+          "height": 2560
+        },
+		{
+		  "name": "4:3",
+          "width": 3414,
+          "height": 2560
+        },
+		{
+		  "name": "16:9",
+          "width": 4552,
+          "height": 2560
+        }
+			
+      ]
+    },
+    {
+      "name": "DPVR E4",
+      "fov": 96,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1832,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3413,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "HP Reverb",
+      "fov": 90,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "HP Reverb G2",
+      "fov": 91,
+      "presets": [
+         {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive",
+      "fov": 112,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1080,
+          "height": 1200
+        },
+		{
+		  "name": "4:3",
+          "width": 1600,
+          "height": 1200
+        },
+		{
+		  "name": "16:9",
+          "width": 2134,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Elite",
+      "fov": 103,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2000,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Focus 3",
+      "fov": 97,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2548,
+          "height": 2448
+        },
+		{
+		  "name": "4:3",
+          "width": 3264,
+          "height": 2448
+        },
+		{
+		  "name": "16:9",
+          "width": 4352,
+          "height": 2448
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro",
+      "fov": 108,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+		{
+		  "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+		{
+		  "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro 2",
+      "fov": 96,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2540,
+          "height": 2440
+        },
+		{
+		  "name": "4:3",
+          "width": 3254,
+          "height": 2440
+        },
+		{
+		  "name": "16:9",
+          "width": 4338,
+          "height": 2440
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive XR Streaming",
+      "fov": 91,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2000,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Lenovo Explorer",
+      "fov": 101,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1500,
+          "height": 1440
+        },
+		{
+		  "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+		{
+		  "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Oculus Meta Quest Pro",
+      "fov": 96,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest",
+      "fov": 100,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+		{
+		  "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+		{
+		  "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 2",
+      "fov": 98,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2000,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 3",
+      "fov": 98,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2064,
+          "height": 2208
+        },
+		{
+		  "name": "4:3",
+          "width": 2944,
+          "height": 2208
+        },
+		{
+		  "name": "16:9",
+          "width": 3926,
+          "height": 2208
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift CV1",
+      "fov": 90,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1080,
+          "height": 1200
+        },
+		{
+		  "name": "4:3",
+          "width": 1600,
+          "height": 1200
+        },
+		{
+		  "name": "16:9",
+          "width": 2134,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift S",
+      "fov": 94,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1280,
+          "height": 1440
+        },
+		{
+		  "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+		{
+		  "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Pico 4",
+      "fov": 104,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 3",
+      "fov": 94,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1832,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 2",
+      "fov": 101,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2048,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3440,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pimax 5K Plus",
+      "fov": 103,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2560,
+          "height": 1440
+        },
+		{
+		  "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+		{
+		  "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Pimax 8K",
+      "fov": 105,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3840,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pimax Artisan",
+      "fov": 103,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3200,
+          "height": 1440
+        },
+		{
+		  "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+		{
+		  "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K Plus",
+      "fov": 103,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3840,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K X",
+      "fov": 103,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3840,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Pimax Crystal",
+      "fov": 104,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3000,
+          "height": 2880
+        },
+		{
+		  "name": "4:3",
+          "width": 3840,
+          "height": 2880
+        },
+		{
+		  "name": "16:9",
+          "width": 5120,
+          "height": 2880
+        }
+      ]
+    },
+	{
+      "name": "Samsung Odyssey",
+      "fov": 101,
+      "presets": [
+      {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+		{
+		  "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+		{
+		  "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+	{
+      "name": "Sony PS VR2",
+      "fov": 106,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 4000,
+          "height": 2040
+        },
+		{
+		  "name": "4:3",
+          "width": 2720,
+          "height": 2040
+        },
+		{
+		  "name": "16:9",
+          "width": 3627,
+          "height": 2040
+        }
+      ]
+    },
+    {
+      "name": "StarVR One",
+      "fov": 117,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1830,
+          "height": 1464
+        },
+		{
+		  "name": "4:3",
+          "width": 1952,
+          "height": 1464
+        },
+		{
+		  "name": "16:9",
+          "width": 2603,
+          "height": 1464
+        }
+      ]
+    },
+	{
+      "name": "Valve Index",
+      "fov": 109,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+		{
+		  "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+		{
+		  "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "Varjo Aero",
+      "fov": 86,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2880,
+          "height": 2720
+        },
+		{
+		  "name": "4:3",
+          "width": 3627,
+          "height": 2720
+        },
+		{
+		  "name": "16:9",
+          "width": 4836,
+          "height": 2720
+        }
+      ]
+    },
+	{
+      "name": "Varjo VR/XR",
+      "fov": 89,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+		{
+		  "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+		{
+		  "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+	{
+      "name": "Varjo XR 4",
+      "fov": 114,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3840,
+          "height": 3744
+        },
+		{
+		  "name": "4:3",
+          "width": 4992,
+          "height": 3744
+        },
+		{
+		  "name": "16:9",
+          "width": 6656,
+          "height": 3744
+        }
+      ]
+    }    
+  ]
+}
