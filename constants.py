@@ -8,6 +8,7 @@ LAUNCHER_DEFAULT = "C:\\Program Files\\Roberts Space Industries\\RSI Launcher\\R
 DXGI_DLL = "Bin64/dxgi.dll"
 VORPX_INI = "C:\\ProgramData\\Animation Labs\\vorpX\\vorpX.ini"
 VORPCONTROL_INI = "C:\\ProgramData\\Animation Labs\\vorpX\\vorpControl.ini"
+VORPX_URL = 'https://www.vorpx.com/share/ZPO7-FC5R-P34C-76HH/vorpX_beta_WebSetup.zip'
 
 MAIN_BG_COLOR = ("#cfcfcf","#2b2b2b")
 SECONDARY_BG_COLOR = ("#dbdbdb","#333333")
