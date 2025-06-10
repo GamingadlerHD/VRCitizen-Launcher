@@ -16,6 +16,7 @@ def get_ini_content(ini_path):
 
 def update_or_add_ini_property(ini_path, section, key, value):
     config = configparser.ConfigParser()
+    config.optionxform = str
     config.read(ini_path, encoding='utf-8')
 
     if not config.has_section(section):
@@ -27,9 +28,12 @@ def update_or_add_ini_property(ini_path, section, key, value):
         current_value = config.get(section, key)
         if current_value != str(value):
             config.set(section, key, str(value))
+        else:
+            return False
 
     with open(ini_path, 'w', encoding='utf-8') as configfile:
         config.write(configfile)
+    return True
 
 def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExcl'):
     config = configparser.ConfigParser()
