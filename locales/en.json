@@ -94,6 +94,11 @@
     "launcher": "Launcher",
     "ad_popup": "Get additional notifications",
     "reset": "Reset to Defaults",
-    "dxgi_help": "Help"
+    "dxgi_help": "Help",
+
+    "vorpxframe": "vorpX settings",
+    "vorpxlefttitle": "Virtual Monitor",
+    "vorpxrighttitle": "VorpX Settings",
+    "keepkeybinds": "Dont remove keybinds"
 }
 
