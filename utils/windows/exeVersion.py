@@ -10,7 +10,7 @@ def get_file_version(file_path):
     
     r = ctypes.c_void_p()
     l = ctypes.c_uint()
-    ctypes.windll.version.VerQueryValueW(res, u'\\', ctypes.byref(r), ctypes.byref(l))
+    ctypes.windll.version.VerQueryValueW(res, '\\', ctypes.byref(r), ctypes.byref(l))
     
     if not r:
         return None

@@ -42,10 +42,11 @@ def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExc
 
     if value.lower() in (v.lower() for v in excludes.values()):
         print(f"{value} already present.")
-        return
+        return False
 
     index = 0
     while f'{prefix}{index}' in excludes:
         index += 1
 
     update_or_add_ini_property(file_path, section, f'{prefix}{index}', value)
+    return True

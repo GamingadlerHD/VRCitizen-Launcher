@@ -1,7 +1,19 @@
+import os
+from utilities import kill_process_by_name, launch_process
 from utils.iniFile_utils import update_or_add_ini_property, add_item_to_list_if_needed
 from constants import VORPCONTROL_INI, VORPX_INI
 
+def PrepareVorpX(vorpXpath: str, keepKeybinds : bool = False):
+    changed = False
+    if not keepKeybinds:
+        UpdateToDefaultKeyMappings()
+        changed = True
+    if AddExcludeIfNeeded():
+        changed = True
+    if changed:
+        RestartVorpX(vorpXpath)
 
+    
 
 def SetVirtualDisplaySettings(bEnable, bManualAttach, bNoDisplayAttach, bHeadsetActivityAttach, customResolution=None):
     section = 'VirtualDisplay'
@@ -15,8 +27,9 @@ def SetVirtualDisplaySettings(bEnable, bManualAttach, bNoDisplayAttach, bHeadset
 #     return
 
 def AddExcludeIfNeeded():
-    add_item_to_list_if_needed('RSI Launcher.exe', VORPCONTROL_INI)
-    add_item_to_list_if_needed('StarCitizen_Launcher.exe', VORPCONTROL_INI)
+    if add_item_to_list_if_needed('RSI Launcher.exe', VORPCONTROL_INI) or add_item_to_list_if_needed('StarCitizen_Launcher.exe', VORPCONTROL_INI):
+        return True
+    return False
 
 
 # def check_exe_version(exe_path, version):
@@ -46,3 +59,7 @@ def UpdateToDefaultKeyMappings():
 
     for key, value in defaultKeyMappings.items():
         update_or_add_ini_property(VORPX_INI, section, key, value)
+
+def RestartVorpX(vorpX):
+    kill_process_by_name(os.path.basename(vorpX))
+    launch_process(vorpX)
