@@ -23,5 +23,10 @@ def set_language(lang_code):
 def translate(tag: str, lang_code=None):
     if lang_code:
         other_translations = load_translations_from_file(lang_code)
-        return other_translations.get(tag, f"[{tag}]")
-    return _translations.get(tag.lower(), f"[{tag}]")
+        return other_translations.get(tag.lower(), f"[{tag}]")
+    
+    text = _translations.get(tag.lower(), "")
+    if text == "":
+        print(f"[i18n] Warning: Translation for '{tag}' not found in '{_current_lang}.json'.")
+        return translate(tag, 'en')  # Fallback to English if not found
+    return text
