@@ -99,6 +99,7 @@
     "vorpxframe": "vorpX settings",
     "vorpxlefttitle": "Virtual Monitor",
     "vorpxrighttitle": "VorpX Settings",
-    "keepkeybinds": "Dont remove keybinds"
+    "keepkeybinds": "Dont remove keybinds",
+    "customConfig": "Custom Headset Config"
 }
 

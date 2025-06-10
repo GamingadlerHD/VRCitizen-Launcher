@@ -117,7 +117,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 doneStepID += 1
             
             keepKeybinds = vorpx_settings['keep_keybinds'].get()
-            PrepareVorpX(vorpx_path, ui_elements['template_dropdown'].get(), False, keepKeybinds)
+            PrepareVorpX(vorpx_path, ui_elements['template_dropdown'].get(), vorpx_settings["custom_config"].get(), keepKeybinds)
 
             if not is_process_running(vorpx_proc_name):
                 if (additional_popups):

@@ -21,8 +21,15 @@ def createVorpXFrame(container):
     )
     keep_keybinds_check.grid(row=1, column=1, sticky="w", padx=20, pady=(0, 20))
 
+    custom_config_var = ctk.BooleanVar()
+    custom_config_check = ctk.CTkCheckBox(
+        frame, text=translate('customConfig'), variable=custom_config_var
+    )
+    custom_config_check.grid(row=2, column=1, sticky="w", padx=20, pady=(0, 20))
+
     data = {
-        "keep_keybinds": keep_keybinds_var
+        "keep_keybinds": keep_keybinds_var,
+        "custom_config": custom_config_var
         }
 
     return frame, data

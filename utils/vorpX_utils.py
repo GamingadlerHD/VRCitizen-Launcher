@@ -43,8 +43,8 @@ def UpdateHeadsetSettings(headsetName: str):
         else:
             res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
             return res
-    except AttributeError:
-        print(f"Template '{headsetName}' not found.")
+    except Exception as e:
+        print(f"Template '{headsetName}' not found. Error: {e}")
         return False
 
 def AddExcludeIfNeeded():
