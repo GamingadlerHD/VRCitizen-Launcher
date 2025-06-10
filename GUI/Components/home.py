@@ -1,11 +1,11 @@
 import os
-import tkinter as tk  # For IntVar, StringVar etc.
+import tkinter as tk 
 from tkinter import filedialog
-import json
 import webbrowser
 import customtkinter as ctk
 from i18n import translate
 from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
+from templates import get_templates, GetPresets
 
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("system")
@@ -24,35 +24,6 @@ def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
     else:
         dxgi_toggle.configure(state=ctk.NORMAL)
         dxgi_label.configure(text=translate("dxgi_info_enabled"))
-    
-def get_templates(folder_path='templates'):
-    combined_templates = []
-    
-    try:
-        # List all files in the directory
-        for filename in os.listdir(folder_path):
-            if filename.endswith('.json'):
-                file_path = os.path.join(folder_path, filename)
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                        # Assuming each JSON has a 'templates' key with a list
-                        combined_templates.extend(data.get('templates', []))
-                except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                    print(f"Error reading {filename}: {e}")
-                    continue
-    except FileNotFoundError:
-        print(f"Folder {folder_path} not found")
-        return []
-    
-    return combined_templates
-
-def get_presets(template_name):
-    templates = get_templates()
-    for template in templates:
-        if template['name'] == template_name:
-            return template['presets']
-    return []
 
 def get_fov(template_name):
     templates = get_templates()
@@ -65,7 +36,7 @@ def on_template_selected(selected_template, preset_dropdown, fov_entry):
     presets = [translate("no_preset")]
     
     if selected_template != translate("no_template"):
-        template_presets = get_presets(selected_template)
+        template_presets = GetPresets(selected_template)
         template_fov = get_fov(selected_template)
         fill_entry(fov_entry, template_fov)
         presets += [p['name'] for p in template_presets]
@@ -78,7 +49,7 @@ def on_preset_selected(selected_preset, template_dropdown, width_entry, height_e
         return
     
     template_name = template_dropdown.get()
-    presets = get_presets(template_name)
+    presets = GetPresets(template_name)
     
     for preset in presets:
         if preset['name'] == selected_preset:
@@ -96,7 +67,7 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown
         return
     
     selected_preset = preset_dropdown.get()
-    presets = get_presets(template_name)
+    presets = GetPresets(template_name)
     
     preset = None
     for p in presets:
