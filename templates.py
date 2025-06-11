@@ -34,6 +34,5 @@ def GetPresets(templateName):
     template = GetTemplateByName(templateName)
     if template:
         return template.get('presets', [])
-    else:
-        print(f"Template '{templateName}' not found.")
-        return []
+    print(f"Template '{templateName}' not found.")
+    return []

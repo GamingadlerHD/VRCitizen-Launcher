@@ -32,10 +32,10 @@ def update_or_add_ini_property(ini_path, section, key, value):
             return False
 
     with open(ini_path, 'w', encoding='utf-8') as configfile:
-        for section in config.sections():
-            configfile.write(f'[{section}]\n')
-            for key, val in config.items(section):
-                configfile.write(f'{key}={val}\n')
+        for se in config.sections():
+            configfile.write(f'[{se}]\n')
+            for ky, val in config.items(se):
+                configfile.write(f'{ky}={val}\n')
             configfile.write('\n')
     return True
 

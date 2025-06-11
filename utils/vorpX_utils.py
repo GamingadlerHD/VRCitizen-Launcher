@@ -41,9 +41,8 @@ def UpdateHeadsetSettings(headsetName: str):
             res5 = update_or_add_ini_property(GENERICHMD_INI, 'Hardware', 'iScreenResY', splitedHeadsetSettings[2])
             res6 = update_or_add_ini_property(GENERICHMD_INI, 'Hardware', 'fDisplayCamFovV', template['fov'])
             return any([res1, res2, res3, res4, res5, res6])
-        else:
-            res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
-            return res
+        res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
+        return res
     except Exception as e:
         print(f"Template '{headsetName}' not found. Error: {e}")
         return False
