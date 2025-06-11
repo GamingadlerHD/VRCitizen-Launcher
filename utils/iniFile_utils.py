@@ -32,7 +32,11 @@ def update_or_add_ini_property(ini_path, section, key, value):
             return False
 
     with open(ini_path, 'w', encoding='utf-8') as configfile:
-        config.write(configfile)
+        for section in config.sections():
+            configfile.write(f'[{section}]\n')
+            for key, val in config.items(section):
+                configfile.write(f'{key}={val}\n')
+            configfile.write('\n')
     return True
 
 def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExcl'):

@@ -1,10 +1,10 @@
 import os
-from utilities import kill_process_by_name
+from utilities import kill_process_by_name, wait_for_exit
 from utils.iniFile_utils import update_or_add_ini_property, add_item_to_list_if_needed
 from constants import VORPCONTROL_INI, VORPX_INI, GENERICHMD_INI
 from templates import GetTemplateByName
 
-def PrepareVorpX(vorpXpath: str, headsetName: str, useCustomVXConfig = False, keepKeybinds : bool = False):
+async def PrepareVorpX(vorpXpath: str, headsetName: str, useCustomVXConfig = False, keepKeybinds : bool = False):
 
     changed = False
     if not keepKeybinds:
@@ -17,6 +17,7 @@ def PrepareVorpX(vorpXpath: str, headsetName: str, useCustomVXConfig = False, ke
             changed = True
     if changed:
         kill_process_by_name(os.path.basename(vorpXpath))
+        await wait_for_exit(os.path.basename(vorpXpath))
 
 def SetVirtualDisplaySettings(bEnable, bManualAttach, bNoDisplayAttach, bHeadsetActivityAttach, customResolution=None):
     section = 'VirtualDisplay'
@@ -63,6 +64,21 @@ def AddExcludeIfNeeded():
 def UpdateToDefaultKeyMappings():
     section = 'KeyMappings'
     defaultKeyMappings = {
+        
+        'iKeyMenu': 46,
+        'iKeyEdgePeek': 4,
+        'iKeyVRHotkeys': 260,
+        'iKeyReset': 813,
+        'iKeyCenterPosTracking': 800,
+        'iKeyCenterGamepad': 0,
+        'iKeyInfoOverlay': 0,
+        'iKeyMagnifier': 4,
+        'iKeyG3DZ3DSwitch': 0,
+        'iKeyDvrScan': 0,
+        'iKeyDvrEnable': 0,
+        'iKeyCursor': 0,
+        'iKeyStereoDisable': 0,
+        'iKeyFovAdjust': 0,
     }
 
     # REMOVED FOR NOW

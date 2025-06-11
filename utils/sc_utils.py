@@ -117,7 +117,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 doneStepID += 1
             
             keepKeybinds = vorpx_settings['keep_keybinds'].get()
-            PrepareVorpX(vorpx_path, ui_elements['template_dropdown'].get(), vorpx_settings["custom_config"].get(), keepKeybinds)
+            await PrepareVorpX(vorpx_path, ui_elements['template_dropdown'].get(), vorpx_settings["custom_config"].get(), keepKeybinds)
 
             if not is_process_running(vorpx_proc_name):
                 if (additional_popups):
@@ -128,11 +128,6 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 launch_process(vorpx_path)
             doneStepID += 1
 
-            if (additional_popups):
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("waiting_vorpx_start")
-                )
             backup_file(attr_orig_path)
             view_attr = {'Width': ui_elements['width_entry'].get(), 'Height': ui_elements['height_entry'].get(), 'FOV': ui_elements['fov_entry'].get()}
             doneStepID += 1

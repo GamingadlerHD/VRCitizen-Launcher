@@ -3,7 +3,6 @@ import asyncio
 import os
 import shutil
 import ctypes
-import subprocess
 import time
 import psutil
 from constants import HOSTS_FILE, BYPASS_LINE
@@ -36,7 +35,7 @@ def modify_hosts(add=True):
         f.writelines(lines)
 
 def launch_process(path):
-    return subprocess.Popen(path, shell=True)
+    ctypes.windll.shell32.ShellExecuteW(None, "open", path, None, None, 1)
 
 async def wait_for_process(name_substring):
     print(f"Waiting for process containing: {name_substring}")
