@@ -1,5 +1,8 @@
 import ctypes
 from ctypes import wintypes
+import os
+
+from i18n import translate
 
 def fits_on_any_monitor(width, height):
     ctypes.windll.shcore.SetProcessDpiAwareness(1)  # System DPI aware
@@ -39,3 +42,14 @@ def fits_on_any_monitor(width, height):
     )
 
     return any(w >= width and h >= height for w, h in monitor_sizes)
+
+def CheckPathsReturnInfo(scFolder, rsiPath, vorpxPath):
+    if os.path.basename(os.path.normpath(scFolder)) != "LIVE":
+        return False, translate("iName_sc_folder")
+    if not os.path.isfile(os.path.join(rsiPath, "RSI Launcher.exe")):
+        return False, translate("iName_rsi_launcher")
+    if not os.path.isfile(os.path.join(vorpxPath, "vorpXcontroll.exe")):
+        return False, translate("iName_vorpx")
+    return True, ""
+
+    

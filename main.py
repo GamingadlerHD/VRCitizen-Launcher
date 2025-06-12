@@ -28,15 +28,15 @@ if __name__ == "__main__":
 
     root = customtkinter.CTk()
     root.iconbitmap("media/i.ico")
-    gui_components, settings, interaction = setup_gui(root)
+    gui_components, settings, interaction, vorpXsettings = setup_gui(root)
     
     # Assign button commands
     interaction['save_button'].configure(command=lambda: save_input_configs(
-        [gui_components, settings]
+        [gui_components, settings, vorpXsettings]
     ))
 
     def async_launch():
-        threading.Thread(target=asyncio.run, args=(Launch(gui_components, settings),)).start()
+        threading.Thread(target=asyncio.run, args=(Launch(gui_components, settings, vorpXsettings),)).start()
 
     interaction['launch_button'].configure(command=async_launch)
 
@@ -48,22 +48,18 @@ if __name__ == "__main__":
         99999
     ))
     
+    def set_component_value(components, componentName, configValue):
+        if componentName in components:
+            try:
+                components[componentName].insert(0, configValue)
+            except AttributeError:
+                components[componentName].set(configValue)
+
     if config:
-        for key, value in config.items():
-            # if key exists in gui_components, set its value
-            entry_name = key.replace("_val", "")
-            if entry_name in gui_components:
-                try:
-                    gui_components[entry_name].insert(0, config.get(key, ''))
-                except AttributeError:
-                    # if the component is not an Entry, set its value directly
-                    gui_components[entry_name].set(config.get(key))
-            elif (entry_name in settings):
-                try:
-                    settings[entry_name].insert(0, config.get(key, ''))
-                except AttributeError:
-                    # if the component is not an Entry, set its value directly
-                    settings[entry_name].set(config.get(key))
+        for k, val in config.items():
+            entry_name = k.replace("_val", "")
+            for component_dict in (gui_components, settings, vorpXsettings):
+                set_component_value(component_dict, entry_name, val)
 
 
     else:

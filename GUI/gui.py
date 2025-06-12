@@ -4,10 +4,11 @@ import sys
 import tkinter as tk
 from tkinter import messagebox
 import customtkinter as ctk
-from i18n import set_language, translate
+from GUI.Components.vorpXsettings import createVorpXFrame
 from GUI.Components.info import create_info_frame
 from GUI.Components.settings import create_settings_frame
 from GUI.Components.home import create_main_window
+from i18n import set_language, translate
 from config import add_or_change_value_in_config
 from constants import SECONDARY_BG_COLOR, MENU_BUTTON_COLOR, MENU_SELECTED_COLOR
 
@@ -40,6 +41,7 @@ def setup_gui(root):
     nav_options = [
         (translate("home"), "home"),
         (translate("setting"), "settings"),
+        (translate("vorpxframe"), "vorpx"),
         (translate("info"), "info"),
     ]
 
@@ -48,6 +50,8 @@ def setup_gui(root):
             show_frame(home_frame)
         elif choice == "settings":
             show_frame(settings_frame)
+        elif choice == "vorpx":
+            show_frame(vorpX_frame)
         elif choice == "info":
             show_frame(info_frame)
 
@@ -105,14 +109,15 @@ def setup_gui(root):
     home_frame, components, buttons = create_main_window(container)
     info_frame = create_info_frame(container)
     settings_frame, settings = create_settings_frame(container)
+    vorpX_frame, vorpX_settings = createVorpXFrame(container)
 
-    for frame in (home_frame, info_frame, settings_frame):
+    for frame in (home_frame, vorpX_frame, info_frame, settings_frame):
         frame.grid(row=0, column=0, columnspan=6, rowspan=10, sticky="nsew")
 
     on_nav_click("home")  # Set default page to home
     on_nav_change("home")
 
-    return components, settings, buttons
+    return components, settings, buttons, vorpX_settings
 
 
 
