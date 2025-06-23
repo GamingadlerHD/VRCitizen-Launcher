@@ -1,0 +1,67 @@
+{
+  "templates": [
+    {
+      "name": "Varjo Aero",
+      "fov": 86,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2880,
+          "height": 2720
+        },
+        {
+          "name": "4:3",
+          "width": 3627,
+          "height": 2720
+        },
+        {
+          "name": "16:9",
+          "width": 4836,
+          "height": 2720
+        }
+      ]
+    },
+    {
+      "name": "Varjo VR/XR",
+      "fov": 89,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1440,
+          "height": 1600
+        },
+        {
+          "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+        {
+          "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "Varjo XR 4",
+      "fov": 114,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 3840,
+          "height": 3744
+        },
+        {
+          "name": "4:3",
+          "width": 4992,
+          "height": 3744
+        },
+        {
+          "name": "16:9",
+          "width": 6656,
+          "height": 3744
+        }
+      ]
+    }
+  ]
+}

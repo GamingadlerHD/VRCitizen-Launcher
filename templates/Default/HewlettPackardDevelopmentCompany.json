@@ -1,0 +1,46 @@
+{
+  "templates": [
+    {
+      "name": "HP Reverb",
+      "fov": 90,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+        {
+          "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+        {
+          "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "HP Reverb G2",
+      "fov": 91,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+        {
+          "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+        {
+          "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    }
+  ]
+}

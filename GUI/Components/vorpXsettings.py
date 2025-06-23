@@ -12,6 +12,9 @@ def createVorpXFrame(container):
     vr_label = ctk.CTkLabel(frame, text=translate('vorpxlefttitle'), font=ctk.CTkFont(weight="bold"))
     vr_label.grid(row=0, column=0, sticky="w", padx=20, pady=20)
 
+    coming_soon_label = ctk.CTkLabel(frame, text="-- Coming Soon --")
+    coming_soon_label.grid(row=1, column=0, sticky="w", padx=20, pady=(0, 20))
+
     vorpx_label = ctk.CTkLabel(frame, text=translate('vorpxrighttitle'), font=ctk.CTkFont(weight="bold"))
     vorpx_label.grid(row=0, column=1, sticky="w", padx=20, pady=(20, 5))
 

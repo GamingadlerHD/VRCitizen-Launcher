@@ -1,0 +1,46 @@
+{
+  "templates": [
+    {
+      "name": "Bigscreen Beyond",
+      "fov": 98,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2670,
+          "height": 2560
+        },
+        {
+          "name": "4:3",
+          "width": 3414,
+          "height": 2560
+        },
+        {
+          "name": "16:9",
+          "width": 4552,
+          "height": 2560
+        }
+      ]
+    },
+    {
+      "name": "Bigscreen Beyond 2",
+      "fov": 100,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2670,
+          "height": 2560
+        },
+        {
+          "name": "4:3",
+          "width": 3414,
+          "height": 2560
+        },
+        {
+          "name": "16:9",
+          "width": 4552,
+          "height": 2560
+        }
+      ]
+    }
+  ]
+}

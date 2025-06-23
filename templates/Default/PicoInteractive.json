@@ -1,0 +1,67 @@
+{
+  "templates": [
+    {
+      "name": "Pico 4",
+      "fov": 104,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2250,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 3",
+      "fov": 94,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 1832,
+          "height": 1920
+        },
+		{
+		  "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+		{
+		  "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Pico Neo 2",
+      "fov": 101,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 2048,
+          "height": 2160
+        },
+		{
+		  "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+		{
+		  "name": "16:9",
+          "width": 3440,
+          "height": 2160
+        }
+      ]
+    }
+    ]
+}

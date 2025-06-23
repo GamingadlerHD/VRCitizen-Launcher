@@ -3,24 +3,25 @@ import os
 
 def get_templates(folder_path='templates'):
     combined_templates = []
-    
+
     try:
-        # List all files in the directory
-        for filename in os.listdir(folder_path):
-            if filename.endswith('.json'):
-                file_path = os.path.join(folder_path, filename)
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                        # Assuming each JSON has a 'templates' key with a list
-                        combined_templates.extend(data.get('templates', []))
-                except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                    print(f"Error reading {filename}: {e}")
-                    continue
+        # Walk through all subdirectories and files
+        for root, _, files in os.walk(folder_path):
+            for filename in files:
+                if filename.endswith('.json'):
+                    file_path = os.path.join(root, filename)
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                            # Assuming each JSON has a 'templates' key with a list
+                            combined_templates.extend(data.get('templates', []))
+                    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                        print(f"Error reading {file_path}: {e}")
+                        continue
     except FileNotFoundError:
         print(f"Folder {folder_path} not found")
         return []
-    
+
     return combined_templates
 
 def GetTemplateByName(templateName: str):

@@ -1,0 +1,25 @@
+{
+  "templates": [
+    {
+      "name": "Sony PS VR2",
+      "fov": 106,
+      "presets": [
+        {
+          "name": "Default",
+          "width": 4000,
+          "height": 2040
+        },
+        {
+          "name": "4:3",
+          "width": 2720,
+          "height": 2040
+        },
+        {
+          "name": "16:9",
+          "width": 3627,
+          "height": 2040
+        }
+      ]
+    }
+  ]
+}

@@ -94,5 +94,11 @@
     "launcher": "Launcher",
     "ad_popup": "Zusätzliche Benachrichtigungen erhalten",
     "reset": "Auf Standard zurücksetzen",
-    "dxgi_help": "Hilfe"
+    "dxgi_help": "Hilfe",
+
+    "vorpxframe": "vorpX-Einstellungen",  
+    "vorpxlefttitle": "Virtueller Monitor",  
+    "vorpxrighttitle": "vorpX-Einstellungen",  
+    "keepkeybinds": "Tastenbelegungen nicht entfernen",  
+    "customConfig": "Benutzerdefinierte Headset-Konfiguration"  
 }
