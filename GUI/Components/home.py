@@ -6,6 +6,7 @@ import customtkinter as ctk
 from i18n import translate
 from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
 from templates import get_templates, GetPresets
+from logs import log
 
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("system")
@@ -16,7 +17,7 @@ def open_url(url):
     webbrowser.open(url)
 
 def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
-    print("Check for dxgi.dll")
+    log("Check for dxgi.dll")
     localPath = os.getcwd()
     if not (sc_path.get() and os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL))) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
         dxgi_toggle.configure(state=ctk.DISABLED)

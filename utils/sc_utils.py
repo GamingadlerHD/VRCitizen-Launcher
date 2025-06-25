@@ -6,7 +6,7 @@ from utils.xml_editor import update_vr_settings_from_xml_to_xml, update_xml_by_d
 from utilities import is_admin, is_process_running, modify_hosts, backup_file, launch_process, wait_for_process, wait_for_exit, kill_process_by_name
 from validation import fits_on_any_monitor
 from i18n import translate
-from constants import HOSTS_FILE, DXGI_DLL
+from constants import HOSTS_FILE, DXGI_DLL, EASY_ANTICHEAT_FOLDER
 
 async def Launch(ui_elements, launcher_settings, vorpx_settings):
     sc_folder_path = ui_elements['sc_entry'].get()
@@ -17,7 +17,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
     use_dxgi = bool(ui_elements['use_dxgi'].get())
 
     # Derived paths
-    eac_folder_path = os.path.join(os.getenv('APPDATA'), "EasyAntiCheat")
+    eac_folder_path = EASY_ANTICHEAT_FOLDER
     attr_orig_path = os.path.join(sc_folder_path, "user/client/0/Profiles/default/attributes.xml")
     sc_executable = os.path.join(sc_folder_path, "Bin64/StarCitizen.exe")
     dxgi_dest_path = os.path.join(sc_folder_path, DXGI_DLL)

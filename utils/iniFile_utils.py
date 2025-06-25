@@ -1,5 +1,5 @@
 import configparser
-
+from logs import log
 
 def get_ini_content(ini_path):
     config = configparser.ConfigParser()
@@ -49,7 +49,7 @@ def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExc
     excludes = config[section]
 
     if value.lower() in (v.lower() for v in excludes.values()):
-        print(f"{value} already present.")
+        log(f"{value} already present.")
         return False
 
     index = 0

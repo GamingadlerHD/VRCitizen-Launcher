@@ -1,5 +1,6 @@
 import json
 import os
+from logs import error
 
 def get_templates(folder_path='templates'):
     combined_templates = []
@@ -16,10 +17,10 @@ def get_templates(folder_path='templates'):
                             # Assuming each JSON has a 'templates' key with a list
                             combined_templates.extend(data.get('templates', []))
                     except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                        print(f"Error reading {file_path}: {e}")
+                        error(f"Error reading {file_path}: {e}")
                         continue
     except FileNotFoundError:
-        print(f"Folder {folder_path} not found")
+        error(f"Folder {folder_path} not found")
         return []
 
     return combined_templates
@@ -35,5 +36,5 @@ def GetPresets(templateName):
     template = GetTemplateByName(templateName)
     if template:
         return template.get('presets', [])
-    print(f"Template '{templateName}' not found.")
+    error(f"Template '{templateName}' not found.")
     return []

@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from logs import log, error
 
 def update_xml(root, tag : str, value : str):
     """
@@ -20,7 +21,7 @@ def update_xml(root, tag : str, value : str):
         root.append(new_attr)
         return True
     except Exception as e:
-        print(f"Error updating XML file: {e}")
+        error(f"Error updating XML file: {e}")
         return False
 
 def update_xml_by_dict(file_path : str, attributes : dict):
@@ -31,7 +32,7 @@ def update_xml_by_dict(file_path : str, attributes : dict):
     tree = ET.parse(file_path)
     root = tree.getroot()
     for key, value in attributes.items():
-        print(f"Updating {key} to {value}")
+        log(f"Updating {key} to {value}")
         if isinstance(value, str):
             if value == "Faceware FOIP":
                 value = 2
@@ -90,7 +91,7 @@ def update_vr_settings_from_xml_to_xml(from_xml_path : str, to_xml_path : str):
     for attr in root.findall('Attr'):
         name = attr.get('name')
         if name in vr_settings:
-            print(f"Updating {name}")
+            log(f"Updating {name}")
             if name in from_attributes:
                 attributes[name] = from_values[name]
             else:

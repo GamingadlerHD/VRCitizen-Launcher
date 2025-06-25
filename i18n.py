@@ -1,18 +1,19 @@
 import json
 import os
+from logs import log, warn, error
 
-_current_lang = 'it'
+_current_lang = 'en'
 _translations = {}
 
 def load_translations_from_file(lang_code):
     path = os.path.join('locales', f'{lang_code}.json')
-    print(f"[i18n] Loading language file: {path}")
+    log(f"[i18n] Loading language file: {path}")
     try:
         with open(path, 'r', encoding='utf-8') as f:
             data = json.load(f)
             return {k.lower(): v for k, v in data.items()}
     except FileNotFoundError:
-        print(f"[i18n] Warning: Language file '{lang_code}.json' not found. Falling back to empty.")
+        error(f"[i18n] Warning: Language file '{lang_code}.json' not found. Falling back to empty.")
         return {}
 
 def set_language(lang_code):
@@ -27,6 +28,6 @@ def translate(tag: str, lang_code=None):
     
     text = _translations.get(tag.lower(), "")
     if text == "":
-        print(f"[i18n] Warning: Translation for '{tag}' not found in '{_current_lang}.json'.")
+        warn(f"[i18n] Warning: Translation for '{tag}' not found in '{_current_lang}.json'.")
         return translate(tag, 'en')  # Fallback to English if not found
     return text

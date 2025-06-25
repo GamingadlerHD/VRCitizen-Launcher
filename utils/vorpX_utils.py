@@ -1,4 +1,5 @@
 import os
+from logs import log, error
 from utilities import kill_process_by_name, wait_for_exit
 from utils.iniFile_utils import update_or_add_ini_property, add_item_to_list_if_needed
 from constants import VORPCONTROL_INI, VORPX_INI, GENERICHMD_INI
@@ -25,14 +26,14 @@ def SetVirtualDisplaySettings(bEnable, bManualAttach, bNoDisplayAttach, bHeadset
     update_or_add_ini_property(VORPCONTROL_INI, section, 'bManualAttach', bManualAttach)
     update_or_add_ini_property(VORPCONTROL_INI, section, 'bNoDisplayAttach', bNoDisplayAttach)
     update_or_add_ini_property(VORPCONTROL_INI, section, 'bHeadsetActivityAttach', bHeadsetActivityAttach)
-    print(customResolution)
+    log(customResolution)
 
 def UpdateHeadsetSettings(headsetName: str):
     template = GetTemplateByName(headsetName)
     try:
         if template['headsetType'].startswith('GenericHMD'):
             splitedHeadsetSettings = template['headsetType'].split(';')
-            print(splitedHeadsetSettings)
+            log(splitedHeadsetSettings)
 
             res1 = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', splitedHeadsetSettings[0])
             res2 = update_or_add_ini_property(GENERICHMD_INI, 'Hardware', 'iRecommendedHmdResX', splitedHeadsetSettings[1])
@@ -44,7 +45,7 @@ def UpdateHeadsetSettings(headsetName: str):
         res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
         return res
     except Exception as e:
-        print(f"Template '{headsetName}' not found. Error: {e}")
+        error(f"Template '{headsetName}' not found. Error: {e}")
         return False
 
 def AddExcludeIfNeeded():

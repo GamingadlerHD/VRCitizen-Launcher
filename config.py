@@ -2,6 +2,7 @@
 import json
 import os
 from constants import CONFIG_FILE
+from logs import log
 
 def load_input_config():
     if not os.path.exists(CONFIG_FILE):
@@ -10,7 +11,7 @@ def load_input_config():
         return json.load(f)
     
 def save_input_configs(ui_components: list[dict]):
-    print("Saving input configs...")
+    log("Saving input configs...")
     config : dict = {}
     for component in ui_components:
         for key, value in component.items():

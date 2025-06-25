@@ -6,6 +6,7 @@ import ctypes
 import time
 import psutil
 from constants import HOSTS_FILE, BYPASS_LINE
+from logs import log, warn
 
 def is_admin():
     try:
@@ -38,11 +39,11 @@ def launch_process(path):
     ctypes.windll.shell32.ShellExecuteW(None, "open", path, None, None, 1)
 
 async def wait_for_process(name_substring):
-    print(f"Waiting for process containing: {name_substring}")
+    log(f"Waiting for process containing: {name_substring}")
     while True:
         for proc in psutil.process_iter(['pid','name']):
             if name_substring.lower() in proc.info['name'].lower():
-                print(f"Found process: {proc.info['name']}")
+                log(f"Found process: {proc.info['name']}")
                 await asyncio.sleep(1)
                 return proc
         time.sleep(1)
@@ -52,10 +53,10 @@ async def wait_for_exit(proc :str):
         if proc.lower() in p.info['name'].lower():
             p.wait()
             return
-    raise ValueError(f"No process found with name containing: {proc}")
+    warn(f"No process found with name containing: {proc}")
 
 def is_process_running(name_substring):
-    print(f"Checking if process containing: {name_substring} is running")
+    log(f"Checking if process containing: {name_substring} is running")
     return any(name_substring.lower() in proc.info['name'].lower() for proc in psutil.process_iter(['pid', 'name']))
 
 def kill_process_by_name(name_substring):
