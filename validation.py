@@ -3,7 +3,7 @@ from ctypes import wintypes
 import os
 
 from i18n import translate
-from logs import log, warn, error
+from logs import log, warn
 
 def fits_on_any_monitor(width, height):
     ctypes.windll.shcore.SetProcessDpiAwareness(1)  # System DPI aware

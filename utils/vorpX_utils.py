@@ -61,11 +61,9 @@ def UpdateHeadsetSettings(headsetName: str):
             changes_made = any([res1, res2, res3, res4, res5, res6])
             log(f"GenericHMD settings update completed, changes made: {changes_made}")
             return changes_made
-        else:
-            log(f"Processing standard headset template: {template['headsetType']}")
-            res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
-            log(f"Standard headset settings update completed, changes made: {res}")
-            return res
+        log(f"Processing standard headset template: {template['headsetType']}")
+        res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
+        return res
     except Exception as e:
         error(f"Template '{headsetName}' processing failed. Error: {e}")
         return False

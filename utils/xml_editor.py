@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from logs import log, warn, error
+from logs import log, error
 
 def update_xml(root, tag : str, value : str):
     """

@@ -2,7 +2,7 @@
 import json
 import os
 from constants import CONFIG_FILE
-from logs import log, warn, error
+from logs import log, error
 
 def load_input_config():
     if not os.path.exists(CONFIG_FILE):

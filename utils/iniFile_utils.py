@@ -1,5 +1,5 @@
 import configparser
-from logs import log, warn, error
+from logs import log, error
 
 def get_ini_content(ini_path):
     config = configparser.ConfigParser()

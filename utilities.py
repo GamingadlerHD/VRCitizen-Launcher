@@ -36,7 +36,7 @@ def replace_file(src, dst):
     log(f"Replacing file: {dst} with {src}")
     try:
         shutil.copy2(src, dst)
-        log(f"File replaced successfully")
+        log("File replaced successfully")
     except Exception as e:
         error(f"Failed to replace file {dst} with {src}: {e}")
         raise
@@ -51,19 +51,18 @@ def modify_hosts(add=True):
             if add:
                 if BYPASS_LINE not in lines:
                     lines.append(BYPASS_LINE)
-                    log(f"Added bypass line to hosts file")
+                    log("Added bypass line to hosts file")
                 else:
-                    log(f"Bypass line already exists in hosts file")
+                    log("Bypass line already exists in hosts file")
             else:
                 original_count = len(lines)
                 lines = [line for line in lines if line != BYPASS_LINE]
                 if len(lines) < original_count:
-                    log(f"Removed bypass line from hosts file")
+                    log("Removed bypass line from hosts file")
                 else:
-                    log(f"Bypass line not found in hosts file")
+                    log("Bypass line not found in hosts file")
             f.truncate(0)
             f.writelines(lines)
-        log(f"Hosts file modification completed successfully")
     except Exception as e:
         error(f"Failed to modify hosts file: {e}")
         raise

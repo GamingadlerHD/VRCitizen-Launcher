@@ -17,7 +17,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
     additional_popups = ui_elements['additional_popup'].get()
     use_dxgi = bool(ui_elements['use_dxgi'].get())
 
-    log(f"Launch parameters:")
+    log("Launch parameters:")
     log(f"  SC Folder: {sc_folder_path}")
     log(f"  VorpX Path: {vorpx_path}")
     log(f"  Launcher Path: {launcher_path}")
@@ -112,8 +112,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 translate("resolution_too_small")
             )
             return
-        else:
-            warn(f"Resolution {width}x{height} warning ignored by user")
+        warn(f"Resolution {width}x{height} warning ignored by user")
     else:
         log("Resolution compatibility check passed")
     
@@ -298,11 +297,9 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
             translate("restored_title"), 
             translate("restored_message")
         )
-    except Exception as e:
-        error(f"Error during VR mode cleanup: {e}")
-        raise
 
     except Exception as e:
+        error(f"Error during VR mode cleanup: {e}")
         messagebox.showerror(
             translate("error_title"), 
             translate("error_quitting_vr").format(e=e)
