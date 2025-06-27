@@ -6,7 +6,7 @@ import customtkinter as ctk
 from i18n import translate
 from constants import DXGI_DLL, MAIN_BG_COLOR, SECONDARY_BG_COLOR
 from templates import get_templates, GetPresets
-from logs import log
+from logs import log, warn, error
 
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("system")
@@ -14,15 +14,26 @@ ctk.set_default_color_theme("blue")
 
 
 def open_url(url):
-    webbrowser.open(url)
+    try:
+        webbrowser.open(url)
+    except Exception as e:
+        error(f"Failed to open URL: {e}")
 
 def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
-    log("Check for dxgi.dll")
+    log("Checking for dxgi.dll availability")
     localPath = os.getcwd()
-    if not (sc_path.get() and os.path.isfile(os.path.join(sc_path.get(), DXGI_DLL))) and not os.path.isfile(os.path.join(localPath, 'dxgi.dll')):
+    local_dxgi = os.path.join(localPath, 'dxgi.dll')
+    sc_dxgi = os.path.join(sc_path.get(), DXGI_DLL) if sc_path.get() else ""
+    
+    local_exists = os.path.isfile(local_dxgi)
+    sc_exists = sc_dxgi and os.path.isfile(sc_dxgi)
+    
+    if not local_exists and not sc_exists:
+        log("DXGI file not found - disabling DXGI toggle")
         dxgi_toggle.configure(state=ctk.DISABLED)
         dxgi_label.configure(text=translate("dxgi_info"))
     else:
+        log("DXGI file found - enabling DXGI toggle")
         dxgi_toggle.configure(state=ctk.NORMAL)
         dxgi_label.configure(text=translate("dxgi_info_enabled"))
 
@@ -30,10 +41,14 @@ def get_fov(template_name):
     templates = get_templates()
     for template in templates:
         if template['name'] == template_name:
-            return template['fov']
+            fov = template['fov']
+            log(f"FOV found for {template_name}: {fov}")
+            return fov
+    warn(f"No FOV found for template: {template_name}")
     return 0
 
 def on_template_selected(selected_template, preset_dropdown, fov_entry):
+    log(f"Template selected: {selected_template}")
     presets = [translate("no_preset")]
     
     if selected_template != translate("no_template"):
@@ -41,6 +56,9 @@ def on_template_selected(selected_template, preset_dropdown, fov_entry):
         template_fov = get_fov(selected_template)
         fill_entry(fov_entry, template_fov)
         presets += [p['name'] for p in template_presets]
+        log(f"Found {len(template_presets)} presets for template")
+    else:
+        log("No template selected - clearing presets")
     
     preset_dropdown.configure(values=presets)
     preset_dropdown.set(presets[0])
@@ -56,7 +74,9 @@ def on_preset_selected(selected_preset, template_dropdown, width_entry, height_e
         if preset['name'] == selected_preset:
             fill_entry(width_entry, preset['width'])
             fill_entry(height_entry, preset['height'])
-            break
+            return
+    
+    warn(f"Preset {selected_preset} not found in template {template_name}")
 
 def fill_entry(entry, value):
     entry.delete(0, "end")
@@ -77,6 +97,7 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown
             break
     
     if not preset:
+        warn(f"Preset {selected_preset} not found for aspect ratio calculation")
         return
     
     ratio = float(preset['width']) / float(preset['height'])
@@ -89,7 +110,7 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown
             width_entry.delete(0, "end")
             width_entry.insert(0, str(int(num)))
         except ValueError:
-            pass
+            warn("Invalid height value entered")
     else:
         if not width_entry.get():
             return
@@ -98,7 +119,7 @@ def on_wh_change(width_entry, height_entry, is_height_changed, template_dropdown
             height_entry.delete(0, "end")
             height_entry.insert(0, str(int(num)))
         except ValueError:
-            pass
+            warn("Invalid width value entered")
 
 def numbers_only(entry):
     user_input = entry.get()
@@ -107,16 +128,30 @@ def numbers_only(entry):
         entry.insert(0, ''.join(filter(str.isdigit, user_input)))
 
 def browse_file(entry, filetypes):
-    filename = filedialog.askopenfilename(filetypes=filetypes)
-    if filename:
-        entry.delete(0, "end")
-        entry.insert(0, filename)
+    log(f"Opening file browser with filetypes: {filetypes}")
+    try:
+        filename = filedialog.askopenfilename(filetypes=filetypes)
+        if filename:
+            log(f"File selected: {filename}")
+            entry.delete(0, "end")
+            entry.insert(0, filename)
+        else:
+            log("File browser cancelled")
+    except Exception as e:
+        error(f"Error opening file browser: {e}")
 
 def browse_folder(entry):
-    foldername = filedialog.askdirectory()
-    if foldername:
-        entry.delete(0, "end")
-        entry.insert(0, foldername)
+    log("Opening folder browser")
+    try:
+        foldername = filedialog.askdirectory()
+        if foldername:
+            log(f"Folder selected: {foldername}")
+            entry.delete(0, "end")
+            entry.insert(0, foldername)
+        else:
+            log("Folder browser cancelled")
+    except Exception as e:
+        error(f"Error opening folder browser: {e}")
 
 def create_main_window(container):
     frame = ctk.CTkFrame(container, fg_color=MAIN_BG_COLOR)

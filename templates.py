@@ -1,6 +1,6 @@
 import json
 import os
-from logs import error
+from logs import log, warn, error
 
 def get_templates(folder_path='templates'):
     combined_templates = []
@@ -20,9 +20,10 @@ def get_templates(folder_path='templates'):
                         error(f"Error reading {file_path}: {e}")
                         continue
     except FileNotFoundError:
-        error(f"Folder {folder_path} not found")
+        error(f"Templates folder {folder_path} not found")
         return []
 
+    log(f"Total templates loaded: {len(combined_templates)}")
     return combined_templates
 
 def GetTemplateByName(templateName: str):
@@ -30,11 +31,14 @@ def GetTemplateByName(templateName: str):
     for template in templates:
         if template['name'] == templateName:
             return template
+    warn(f"Template not found: {templateName}")
     return {}
 
 def GetPresets(templateName):
     template = GetTemplateByName(templateName)
     if template:
-        return template.get('presets', [])
-    error(f"Template '{templateName}' not found.")
+        presets = template.get('presets', [])
+        log(f"Found {len(presets)} presets for template {templateName}")
+        return presets
+    error(f"Template '{templateName}' not found for preset lookup.")
     return []
