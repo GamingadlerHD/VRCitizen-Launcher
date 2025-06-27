@@ -3,7 +3,6 @@ import asyncio
 import os
 import shutil
 import ctypes
-import time
 import psutil
 from constants import HOSTS_FILE, BYPASS_LINE
 from logs import log, warn, error
@@ -82,7 +81,7 @@ async def wait_for_process(name_substring):
                 log(f"Found process: {proc.info['name']}")
                 await asyncio.sleep(1)
                 return proc
-        time.sleep(1)
+        await asyncio.sleep(1)
 
 async def wait_for_exit(proc :str):
     for p in psutil.process_iter(['pid', 'name']):
