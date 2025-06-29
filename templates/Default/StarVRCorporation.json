@@ -5,7 +5,7 @@
       "fov": 117,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 1830,
           "height": 1464
         },

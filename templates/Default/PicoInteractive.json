@@ -5,7 +5,7 @@
       "fov": 104,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 2250,
           "height": 2160
         },
@@ -26,7 +26,7 @@
       "fov": 94,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 1832,
           "height": 1920
         },
@@ -47,7 +47,7 @@
       "fov": 101,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 2048,
           "height": 2160
         },

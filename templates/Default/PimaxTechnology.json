@@ -5,7 +5,7 @@
       "fov": 103,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 2560,
           "height": 1440
         },
@@ -26,7 +26,7 @@
       "fov": 105,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 3840,
           "height": 2160
         },
@@ -47,7 +47,7 @@
       "fov": 103,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 3200,
           "height": 1440
         },
@@ -68,7 +68,7 @@
       "fov": 103,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 3840,
           "height": 2160
         },
@@ -89,7 +89,7 @@
       "fov": 103,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 3840,
           "height": 2160
         },
@@ -110,7 +110,7 @@
       "fov": 104,
       "presets": [
         {
-          "name": "Default",
+          "name": "1:1",
           "width": 3000,
           "height": 2880
         },
