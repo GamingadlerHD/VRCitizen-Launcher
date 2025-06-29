@@ -25,7 +25,7 @@ def backup_file(src, backup_suffix=".backup"):
             shutil.copy2(src, backup_path)
             log(f"Backup created successfully: {backup_path}")
         except Exception as e:
-            error(f"Failed to create backup of {src}: {e}")
+            error(f"ECL1300: Failed to create backup of {src}: {e}")
             raise
     else:
         log(f"Backup already exists: {backup_path}")
@@ -37,7 +37,7 @@ def replace_file(src, dst):
         shutil.copy2(src, dst)
         log("File replaced successfully")
     except Exception as e:
-        error(f"Failed to replace file {dst} with {src}: {e}")
+        error(f"ECL1301: Failed to replace file {dst} with {src}: {e}")
         raise
 
 def modify_hosts(add=True):
@@ -63,14 +63,14 @@ def modify_hosts(add=True):
             f.truncate(0)
             f.writelines(lines)
     except Exception as e:
-        error(f"Failed to modify hosts file: {e}")
+        error(f"ECL1302: Failed to modify hosts file: {e}")
         raise
 
 def launch_process(path):
     try:
         ctypes.windll.shell32.ShellExecuteW(None, "open", path, None, None, 1)
     except Exception as e:
-        error(f"Failed to launch process {path}: {e}")
+        error(f"ECL1303: Failed to launch process {path}: {e}")
         raise
 
 async def wait_for_process(name_substring):
@@ -105,5 +105,5 @@ def kill_process_by_name(name_substring):
         if killed_count == 0:
             log(f"No processes found containing: {name_substring}")
     except Exception as e:
-        error(f"Error while killing processes: {e}")
+        error(f"ECL1304: Error while killing processes: {e}")
         raise

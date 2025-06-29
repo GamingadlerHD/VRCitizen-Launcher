@@ -51,7 +51,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return
 
     if not os.path.isdir(os.path.join(sc_folder_path, "user/client/0/")):
-        error(f"Star Citizen user folder not found: {os.path.join(sc_folder_path, 'user/client/0/')}")
+        error(f"ECL1000: Star Citizen user folder not found: {os.path.join(sc_folder_path, 'user/client/0/')}")
         messagebox.showerror(
             translate("error_title"), 
             translate("no_user_folder")
@@ -59,7 +59,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return
 
     if not os.path.isdir(sc_folder_path):
-        error(f"Star Citizen folder not found: {sc_folder_path}")
+        error(f"ECL1001: Star Citizen folder not found: {sc_folder_path}")
         messagebox.showerror(
             translate("error_title"), 
             translate("sc_folder_not_found").format(sc_folder_path=sc_folder_path)
@@ -67,7 +67,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return
     
     if not os.path.isfile(vorpx_path):
-        error(f"VorpX executable not found: {vorpx_path}")
+        error(f"ECL1002: VorpX executable not found: {vorpx_path}")
         messagebox.showerror(
             translate("error_title"), 
             translate("vorpx_exe_not_found").format(vorpx_path=vorpx_path)
@@ -75,7 +75,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return 
     
     if not os.path.isfile(sc_executable):
-        error(f"Star Citizen executable not found: {sc_executable}")
+        error(f"ECL1003: Star Citizen executable not found: {sc_executable}")
         messagebox.showerror(
             translate("error_title"), 
             translate("sc_exe_not_found").format(sc_executable=sc_executable)
@@ -83,7 +83,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return
     
     if not os.path.isfile(attr_orig_path):
-        error(f"Attributes file not found: {attr_orig_path}")
+        error(f"ECL1004: Attributes file not found: {attr_orig_path}")
         messagebox.showerror(
             translate("error_title"), 
             translate("attributes_file_not_found").format(attr_orig_path=attr_orig_path)
@@ -91,7 +91,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         return
 
     if not is_admin():
-        error("Administrator privileges required but not available")
+        error("ECL1005: Administrator privileges required but not available")
         messagebox.showerror(
             translate("admin_required_title"), 
             translate("admin_required_message")
@@ -177,7 +177,6 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 'Height': ui_elements['height_entry'].get(), 
                 'FOV': ui_elements['fov_entry'].get()
             }
-            log(f"View attributes: {view_attr}")
             doneStepID += 1
             update_xml_by_dict(attr_orig_path, view_attr)
 
@@ -185,7 +184,6 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
             stVal = {}
             for component_name, component_value in launcher_settings.items():
                 stVal[component_name] = component_value.get()
-            log(f"Launcher settings: {stVal}")
             update_xml_by_dict(attr_orig_path, stVal)
 
             # Wait for VorpX to be ready
@@ -250,7 +248,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
             log("=== Launch sequence completed successfully ===")
 
         except Exception as e:
-            error(f"Error during launch sequence: {e}")
+            error(f"ECL1006: Error during launch sequence: {e}")
             messagebox.showerror(
                 translate("error_title"), 
                 translate("error_occurred_revert").format(e=e)
@@ -258,7 +256,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
             quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
 
     except Exception as e:
-        error(f"Critical error in launch operation: {e}")
+        error(f"ECL1007: Critical error in launch operation: {e}")
         messagebox.showerror(
             translate("error_title"), 
             translate("operation_failed").format(e=e)
@@ -299,7 +297,7 @@ def quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_pop
         )
 
     except Exception as e:
-        error(f"Error during VR mode cleanup: {e}")
+        error(f"ECL1008: Error during VR mode cleanup: {e}")
         messagebox.showerror(
             translate("error_title"), 
             translate("error_quitting_vr").format(e=e)
@@ -331,6 +329,6 @@ def apply_hook_helper(destPath, Add=True):
             else:
                 log("DXGI hook not found at destination - nothing to remove")
     except Exception as e:
-        error(f"Failed to {action.lower()} DXGI hook: {e}")
+        error(f"ECL1009: Failed to {action.lower()} DXGI hook: {e}")
         raise
     

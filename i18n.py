@@ -13,7 +13,7 @@ def load_translations_from_file(lang_code):
             data = json.load(f)
             return {k.lower(): v for k, v in data.items()}
     except FileNotFoundError:
-        error(f"Warning: Language file '{lang_code}.json' not found. Falling back to empty.")
+        error(f"ECL1150: Warning: Language file '{lang_code}.json' not found. Falling back to empty.")
         return {}
 
 def set_language(lang_code):

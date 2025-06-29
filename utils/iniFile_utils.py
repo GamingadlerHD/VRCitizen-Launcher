@@ -16,7 +16,7 @@ def get_ini_content(ini_path):
         log(f"Successfully read INI file with {len(ini_content)} sections")
         return ini_content
     except Exception as e:
-        error(f"Failed to read INI file {ini_path}: {e}")
+        error(f"ECL1700: Failed to read INI file {ini_path}: {e}")
         return {}
 
 def update_or_add_ini_property(ini_path, section, key, value):
@@ -51,7 +51,7 @@ def update_or_add_ini_property(ini_path, section, key, value):
         
         return True
     except Exception as e:
-        error(f"Failed to update INI file {ini_path}: {e}")
+        error(f"ECL1701: Failed to update INI file {ini_path}: {e}")
         return False
 
 def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExcl'):
@@ -78,5 +78,5 @@ def add_item_to_list_if_needed(value, file_path, section='Exclude', prefix='sExc
         update_or_add_ini_property(file_path, section, f'{prefix}{index}', value)
         return True
     except Exception as e:
-        error(f"Failed to add item to INI list: {e}")
+        error(f"ECL1702: Failed to add item to INI list: {e}")
         return False

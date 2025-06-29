@@ -14,7 +14,7 @@ def load_input_config():
             log(f"Configuration loaded successfully with {len(config)} entries")
             return config
     except Exception as e:
-        error(f"Failed to load configuration: {e}")
+        error(f"ECL1100: Failed to load configuration: {e}")
         return None
     
 def save_input_configs(ui_components: list[dict]):
@@ -38,7 +38,7 @@ def save_input_configs(ui_components: list[dict]):
         
         log(f"Successfully saved {component_count} configuration values to {CONFIG_FILE}")
     except Exception as e:
-        error(f"Failed to save configuration: {e}")
+        error(f"ECL1101: Failed to save configuration: {e}")
         raise
 
 def add_or_change_value_in_config(key: str, value: str):
@@ -50,4 +50,4 @@ def add_or_change_value_in_config(key: str, value: str):
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(config, f)
     except Exception as e:
-        error(f"Failed to update configuration: {e}")
+        error(f"ECL1102: Failed to update configuration: {e}")

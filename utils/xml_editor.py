@@ -23,7 +23,7 @@ def update_xml(root, tag : str, value : str):
         root.append(new_attr)
         return True
     except Exception as e:
-        error(f"Error updating XML file: {e}")
+        error(f"ECL1600: Error updating XML file: {e}")
         return False
 
 def update_xml_by_dict(file_path : str, attributes : dict):
@@ -60,7 +60,7 @@ def update_xml_by_dict(file_path : str, attributes : dict):
         log(f"XML file update completed - {updated_count} attributes processed")
         
     except Exception as e:
-        error(f"Failed to update XML file {file_path}: {e}")
+        error(f"ECL1601: Failed to update XML file {file_path}: {e}")
         raise
 
 
@@ -137,5 +137,5 @@ def update_vr_settings_from_xml_to_xml(from_xml_path : str, to_xml_path : str):
         log(f"VR settings restoration completed - {len(vr_attributes)} updated, {removed_count} removed")
         
     except Exception as e:
-        error(f"Failed to update VR settings from XML: {e}")
+        error(f"ECL1602: Failed to update VR settings from XML: {e}")
         raise

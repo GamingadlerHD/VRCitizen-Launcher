@@ -65,7 +65,7 @@ def UpdateHeadsetSettings(headsetName: str):
         res = update_or_add_ini_property(VORPX_INI, 'General', 'sDeviceIniName', template['headsetType'])
         return res
     except Exception as e:
-        error(f"Template '{headsetName}' processing failed. Error: {e}")
+        error(f"ECL1500: Template '{headsetName}' processing failed. Error: {e}")
         return False
 
 def AddExcludeIfNeeded():

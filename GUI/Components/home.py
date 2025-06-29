@@ -17,7 +17,7 @@ def open_url(url):
     try:
         webbrowser.open(url)
     except Exception as e:
-        error(f"Failed to open URL: {e}")
+        error(f"ECL1400: Failed to open URL: {e}")
 
 def set_dxgi_toggle(dxgi_toggle, dxgi_label, sc_path):
     log("Checking for dxgi.dll availability")
@@ -138,7 +138,7 @@ def browse_file(entry, filetypes):
         else:
             log("File browser cancelled")
     except Exception as e:
-        error(f"Error opening file browser: {e}")
+        error(f"ECL1401: Error opening file browser: {e}")
 
 def browse_folder(entry):
     log("Opening folder browser")
@@ -151,7 +151,7 @@ def browse_folder(entry):
         else:
             log("Folder browser cancelled")
     except Exception as e:
-        error(f"Error opening folder browser: {e}")
+        error(f"ECL1402: Error opening folder browser: {e}")
 
 def create_main_window(container):
     frame = ctk.CTkFrame(container, fg_color=MAIN_BG_COLOR)

@@ -17,10 +17,10 @@ def get_templates(folder_path='templates'):
                             # Assuming each JSON has a 'templates' key with a list
                             combined_templates.extend(data.get('templates', []))
                     except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                        error(f"Error reading {file_path}: {e}")
+                        error(f"ECL1201: Error reading {file_path}: {e}")
                         continue
     except FileNotFoundError:
-        error(f"Templates folder {folder_path} not found")
+        error(f"ECL1202: Templates folder {folder_path} not found")
         return []
 
     log(f"Total templates loaded: {len(combined_templates)}")
@@ -40,5 +40,5 @@ def GetPresets(templateName):
         presets = template.get('presets', [])
         log(f"Found {len(presets)} presets for template {templateName}")
         return presets
-    error(f"Template '{templateName}' not found for preset lookup.")
+    error(f"ECL1203: Template '{templateName}' not found for preset lookup.")
     return []
