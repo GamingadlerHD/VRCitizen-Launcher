@@ -1,0 +1,26 @@
+{
+  "templates": [
+    {
+      "name": "StarVR One",
+      "fov": 117,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1830,
+          "height": 1464
+        },
+        {
+          "name": "4:3",
+          "width": 1952,
+          "height": 1464
+        },
+        {
+          "name": "16:9",
+          "width": 2603,
+          "height": 1464
+        }
+      ]
+    }
+  ]
+}

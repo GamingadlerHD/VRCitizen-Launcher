@@ -1,0 +1,26 @@
+{
+  "templates": [
+    {
+      "name": "Valve Index",
+      "fov": 109,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1440,
+          "height": 1600
+        },
+        {
+          "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+        {
+          "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    }
+  ]
+}

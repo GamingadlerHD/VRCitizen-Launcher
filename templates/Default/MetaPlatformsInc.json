@@ -1,0 +1,134 @@
+{
+  "templates": [
+    {
+      "name": "Oculus Meta Quest Pro",
+      "fov": 96,
+      "headsetType": "Oculus",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2560,
+          "height": 1920
+        },
+        {
+          "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+        {
+          "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest",
+      "fov": 100,
+      "headsetType": "Oculus",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1440,
+          "height": 1600
+        },
+        {
+          "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+        {
+          "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 2",
+      "fov": 98,
+      "headsetType": "Oculus",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2000,
+          "height": 1920
+        },
+        {
+          "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+        {
+          "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Oculus Quest 3",
+      "fov": 98,
+      "headsetType": "Oculus",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2064,
+          "height": 2208
+        },
+        {
+          "name": "4:3",
+          "width": 2944,
+          "height": 2208
+        },
+        {
+          "name": "16:9",
+          "width": 3926,
+          "height": 2208
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift CV1",
+      "fov": 90,
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1080,
+          "height": 1200
+        },
+        {
+          "name": "4:3",
+          "width": 1600,
+          "height": 1200
+        },
+        {
+          "name": "16:9",
+          "width": 2134,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "name": "Oculus Rift S",
+      "fov": 94,
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1280,
+          "height": 1440
+        },
+        {
+          "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+        {
+          "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    }
+  ]
+}

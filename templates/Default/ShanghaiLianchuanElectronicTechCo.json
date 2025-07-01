@@ -1,0 +1,26 @@
+{
+    "templates": [
+        {
+            "name": "DPVR E4",
+            "fov": 96,
+            "headsetType": "SteamVR",
+            "presets": [
+                {
+                    "name": "1:1",
+                    "width": 1832,
+                    "height": 1920
+                },
+                {
+                    "name": "4:3",
+                    "width": 2560,
+                    "height": 1920
+                },
+                {
+                    "name": "16:9",
+                    "width": 3413,
+                    "height": 1920
+                }
+            ]
+        }
+    ]
+}

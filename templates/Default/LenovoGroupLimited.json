@@ -1,0 +1,26 @@
+{
+  "templates": [
+    {
+      "name": "Lenovo Explorer",
+      "fov": 101,
+      "headsetType": "OpenXR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1500,
+          "height": 1440
+        },
+        {
+          "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+        {
+          "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    }
+  ]
+}

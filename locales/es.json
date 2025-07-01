@@ -93,5 +93,11 @@
     "ov_resolution": "Ignorar Advertencia de Resolución",
     "launcher": "Launcher",
     "ad_popup": "Recibir notificaciones adicionales",
-    "reset": "Restablecer a Predeterminados"
+    "reset": "Restablecer a Predeterminados",
+
+    "vorpxframe": "Ajustes de vorpX",  
+    "vorpxlefttitle": "Monitor virtual",  
+    "vorpxrighttitle": "Configuración de vorpX",  
+    "keepkeybinds": "No eliminar atajos de teclado",  
+    "customConfig": "Configuración personalizada del visor"  
 }

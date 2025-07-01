@@ -3,6 +3,7 @@ import customtkinter as ctk
 from PIL import Image
 from i18n import translate
 from constants import MAIN_BG_COLOR
+from logs import warn
 
 STYLE_CONFIG = {
     "font_family": "Arial",
@@ -35,7 +36,7 @@ def create_info_frame(container):
         logo_left.pack(side="left", padx=20, pady=20)
         logo_right.pack(side="right", padx=20, pady=20)
     except Exception as e:
-        print(f"Error loading logos: {e}")
+        warn(f"Error loading logos: {e}")
 
     # Developer section
     ctk.CTkLabel(frame, 

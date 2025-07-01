@@ -7,6 +7,8 @@
 
 **VRCitizenLauncher** is a custom VR-friendly launcher for **Star Citizen** that simplifies setting up the game for use with headsets like the Meta Quest series via **vorpX**. It automates configuration, preserves system integrity, and offers powerful user customization.
 
+Please visit [here](https://gist.github.com/GamingadlerHD/e804861897e26e575d735fd89b32e711) to see our Privacy Policy, ToS and Disclaimer
+
 ---
 
 ## 💡 Features

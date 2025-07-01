@@ -1,0 +1,136 @@
+{
+  "templates": [
+    {
+      "name": "Pimax 5K Plus",
+      "fov": 103,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2560,
+          "height": 1440
+        },
+        {
+          "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+        {
+          "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Pimax 8K",
+      "fov": 105,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+        {
+          "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pimax Artisan",
+      "fov": 103,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 3200,
+          "height": 1440
+        },
+        {
+          "name": "4:3",
+          "width": 1920,
+          "height": 1440
+        },
+        {
+          "name": "16:9",
+          "width": 2560,
+          "height": 1440
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K Plus",
+      "fov": 103,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "name": "4:3",
+          "width": 2880,
+          "height": 2160
+        },
+        {
+          "name": "16:9",
+          "width": 3840,
+          "height": 2160
+        }
+      ]
+    },
+    {
+      "name": "Pimax Vision 8K X",
+      "fov": 103,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 3840,
+          "height": 2160
+        },
+        {
+          "name": "4:3",
+          "width": 2880,
+          "height": 1920
+        },
+        {
+          "name": "16:9",
+          "width": 3840,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "Pimax Crystal",
+      "fov": 104,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 3000,
+          "height": 2880
+        },
+        {
+          "name": "4:3",
+          "width": 3840,
+          "height": 2880
+        },
+        {
+          "name": "16:9",
+          "width": 5120,
+          "height": 2880
+        }
+      ]
+    }
+  ]
+}

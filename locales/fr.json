@@ -91,5 +91,11 @@
     "launcher": "Launcher",
     "ad_popup": "Obtenir des notifications supplémentaires",
     "reset": "Réinitialiser aux valeurs par défaut",
-    "dxgi_help": "Aide"
+    "dxgi_help": "Aide",
+
+    "vorpxframe": "Paramètres de vorpX",  
+    "vorpxlefttitle": "Moniteur virtuel",  
+    "vorpxrighttitle": "Paramètres de vorpX",  
+    "keepkeybinds": "Ne pas supprimer les raccourcis clavier",  
+    "customConfig": "Configuration personnalisée du casque"  
 }

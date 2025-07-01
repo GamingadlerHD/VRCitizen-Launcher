@@ -1,0 +1,134 @@
+{
+  "templates": [
+    {
+      "name": "HTC Vive",
+      "fov": 112,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1080,
+          "height": 1200
+        },
+        {
+          "name": "4:3",
+          "width": 1600,
+          "height": 1200
+        },
+        {
+          "name": "16:9",
+          "width": 2134,
+          "height": 1200
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Elite",
+      "fov": 103,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2000,
+          "height": 1920
+        },
+        {
+          "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+        {
+          "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Focus 3",
+      "fov": 97,
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2548,
+          "height": 2448
+        },
+        {
+          "name": "4:3",
+          "width": 3264,
+          "height": 2448
+        },
+        {
+          "name": "16:9",
+          "width": 4352,
+          "height": 2448
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro",
+      "fov": 108,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 1440,
+          "height": 1600
+        },
+        {
+          "name": "4:3",
+          "width": 2134,
+          "height": 1600
+        },
+        {
+          "name": "16:9",
+          "width": 2845,
+          "height": 1600
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive Pro 2",
+      "fov": 96,
+      "headsetType": "SteamVR",
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2540,
+          "height": 2440
+        },
+        {
+          "name": "4:3",
+          "width": 3254,
+          "height": 2440
+        },
+        {
+          "name": "16:9",
+          "width": 4338,
+          "height": 2440
+        }
+      ]
+    },
+    {
+      "name": "HTC Vive XR Streaming",
+      "fov": 91,
+      "presets": [
+        {
+          "name": "1:1",
+          "width": 2000,
+          "height": 1920
+        },
+        {
+          "name": "4:3",
+          "width": 2560,
+          "height": 1920
+        },
+        {
+          "name": "16:9",
+          "width": 3414,
+          "height": 1920
+        }
+      ]
+    }
+  ]
+}
