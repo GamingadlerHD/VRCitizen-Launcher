@@ -3,6 +3,7 @@
     {
       "name": "Valve Index",
       "fov": 109,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",

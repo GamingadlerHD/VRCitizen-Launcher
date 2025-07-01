@@ -3,6 +3,7 @@
     {
       "name": "Bigscreen Beyond",
       "fov": 98,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -24,6 +25,7 @@
     {
       "name": "Bigscreen Beyond 2",
       "fov": 100,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",

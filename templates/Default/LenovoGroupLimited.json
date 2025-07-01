@@ -3,6 +3,7 @@
     {
       "name": "Lenovo Explorer",
       "fov": 101,
+      "headsetType": "OpenXR",
       "presets": [
         {
           "name": "1:1",

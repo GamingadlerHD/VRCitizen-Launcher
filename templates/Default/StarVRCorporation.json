@@ -3,6 +3,7 @@
     {
       "name": "StarVR One",
       "fov": 117,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",

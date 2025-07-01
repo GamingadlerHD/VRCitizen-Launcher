@@ -3,6 +3,7 @@
     {
       "name": "Pimax 5K Plus",
       "fov": 103,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -24,6 +25,7 @@
     {
       "name": "Pimax 8K",
       "fov": 105,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -45,6 +47,7 @@
     {
       "name": "Pimax Artisan",
       "fov": 103,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -66,6 +69,7 @@
     {
       "name": "Pimax Vision 8K Plus",
       "fov": 103,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -87,6 +91,7 @@
     {
       "name": "Pimax Vision 8K X",
       "fov": 103,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",
@@ -108,6 +113,7 @@
     {
       "name": "Pimax Crystal",
       "fov": 104,
+      "headsetType": "SteamVR",
       "presets": [
         {
           "name": "1:1",

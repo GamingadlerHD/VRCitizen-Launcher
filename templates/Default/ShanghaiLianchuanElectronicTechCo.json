@@ -3,6 +3,7 @@
         {
             "name": "DPVR E4",
             "fov": 96,
+            "headsetType": "SteamVR",
             "presets": [
                 {
                     "name": "1:1",

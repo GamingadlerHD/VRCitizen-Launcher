@@ -3,6 +3,7 @@
     {
       "name": "Samsung Odyssey",
       "fov": 101,
+      "headsetType": "OpenXR",
       "presets": [
         {
           "name": "1:1",
