@@ -1,0 +1,177 @@
+<!-- Home Page Component -->
+<div id="home-page" class="page-component">
+
+    <div class="grid grid-cols-5 gap-6 h-full">
+        <!-- Left Panel (3/5 width) -->
+        <div class="col-span-3 space-y-6">
+            <!-- File Paths Section -->
+            <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+                <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="file_paths">File Paths</h3>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <label class="col-span-3 text-sc-text text-sm font-medium" data-i18n="sc_folder">Star Citizen
+                            Folder:</label>
+                        <input type="text" id="sc-path"
+                            class="col-span-7 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                            placeholder="Select Star Citizen installation folder">
+                        <button
+                            class="col-span-2 btn-primary px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="HomePage.browseFolder('sc-path')" data-i18n="Browse">Browse</button>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <label class="col-span-3 text-sc-text text-sm font-medium" data-i18n="vorpX_exe">VorpX
+                            Executable:</label>
+                        <input type="text" id="vorpx-path"
+                            class="col-span-7 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                            placeholder="Select VorpX executable">
+                        <button
+                            class="col-span-2 btn-primary px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="HomePage.browseFile('vorpx-path', ['.exe'])" data-i18n="Browse">Browse</button>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <label class="col-span-3 text-sc-text text-sm font-medium" data-i18n="Launcher_Exe">Launcher
+                            Executable:</label>
+                        <input type="text" id="launcher-path"
+                            class="col-span-7 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                            placeholder="Select launcher executable">
+                        <button
+                            class="col-span-2 btn-primary px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="HomePage.browseFile('launcher-path', ['.exe'])" data-i18n="Browse">Browse</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template/Resolution Settings -->
+            <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+                <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="template_resolution_settings">
+                    Template & Resolution Settings</h3>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Left Column -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sc-text text-sm font-medium mb-2"
+                                data-i18n="templates">Template:</label>
+                            <select id="template-select"
+                                class="w-full px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2"
+                                onchange="HomePage.onTemplateSelected(this.value)">
+                                <option value="" data-i18n="no_template">No Template</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sc-text text-sm font-medium mb-2">FOV:</label>
+                            <input type="number" id="fov"
+                                class="w-20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                                placeholder="110">
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sc-text text-sm font-medium mb-2"
+                                data-i18n="preset">Preset:</label>
+                            <select id="preset-select"
+                                class="w-full px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2"
+                                onchange="HomePage.onPresetSelected(this.value)">
+                                <option value="" data-i18n="no_preset">No Preset</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sc-text text-sm font-medium mb-2"
+                                data-i18n="resolution">Resolution:</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" id="width"
+                                    class="w-20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                                    placeholder="1920" onchange="HomePage.onResolutionChange('width')">
+                                <span class="text-sc-text">x</span>
+                                <input type="number" id="height"
+                                    class="w-20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2"
+                                    placeholder="1080" onchange="HomePage.onResolutionChange('height')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel (2/5 width) -->
+        <div class="col-span-2 space-y-6">
+            <!-- Additional Settings -->
+            <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+                <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="additional_settings">Additional
+                    Settings</h3>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sc-text text-sm" data-i18n="ov_resolution">Fallback</span>
+                        <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                            onclick="Components.toggleSwitch(this)" data-setting="ignoreResolutionWarning">
+                            <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-sc-text text-sm" data-i18n="ad_popup">Additional Popup</span>
+                        <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                            onclick="Components.toggleSwitch(this)" data-setting="additionalPopup">
+                            <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-sc-text text-sm" data-i18n="stay_in_vr">Stay in VR</span>
+                        <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                            onclick="Components.toggleSwitch(this)" data-setting="stayInVR">
+                            <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DXGI Settings -->
+            <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+                <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="dxgi_settings_section">DXGI
+                    Settings</h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sc-text text-sm" data-i18n="use_dxgi">Use DXGI</span>
+                        <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                            onclick="Components.toggleSwitch(this)" data-setting="useDXGI">
+                            <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <p id="dxgi-status" class="text-sc-text-muted text-sm" data-i18n="dxgi_status_checking">DXGI status:
+                        Checking...</p>
+
+                    <div class="flex space-x-2">
+                        <button
+                            class="btn-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="HomePage.checkDXGI()" data-i18n="dxgi_check_again">Check Again</button>
+                        <button
+                            class="btn-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="HomePage.openDXGIHelp()" data-i18n="dxgi_help">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end space-x-4 mt-8">
+        <button class="btn-primary px-6 py-2 rounded-md font-medium transition-colors duration-200"
+            onclick="HomePage.saveSettings()" data-i18n="save">Save</button>
+        <button class="btn-launch px-6 py-2 rounded-md font-medium transition-colors duration-200"
+            onclick="HomePage.launchGame()"
+            data-i18n="launch">Launch</button>
+        <button class="btn-secondary px-6 py-2 rounded-md font-medium transition-colors duration-200"
+            onclick="HomePage.restoreSettings()" data-i18n="restore">Restore</button>
+    </div>
+</div>

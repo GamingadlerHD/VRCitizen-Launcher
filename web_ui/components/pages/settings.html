@@ -1,0 +1,187 @@
+<!-- Settings Page Component -->
+<div id="settings-page" class="page-component">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-sc-blue-light" data-i18n="setting">Game Settings</h1>
+        <button class="btn-primary px-6 py-2 rounded-md font-medium transition-colors duration-200"
+            onclick="SettingsPage.applyStandardSettings()" data-i18n="apply_standard_vr_settings">Apply Standard VR
+            Settings</button>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6">
+        <!-- General Settings -->
+        <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+            <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="GeneralSettings">General Settings</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="MotionBlur">Motion Blur</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="motionBlur">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="VSync">V-Sync</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="vSync">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="AutoZoomOnSelectedTarget">Auto Zoom on Selected
+                        Target</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="autoZoomOnSelectedTarget">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="FilmGrain">Film Grain</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="filmGrain">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="SpringMovment">Camera Spring Movement</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="cameraSpringMovement">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Head Tracking -->
+        <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+            <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="Headtracking">Head Tracking</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingToggle">Head Tracking Toggle</span>
+                    <div class="switch active relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingToggle">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingDisableDuringADS">Disable During
+                        ADS</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingDisableDuringADS">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingDisableDuringMobiGlas">Disable During
+                        MobiGlas</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingDisableDuringMobiGlas">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingDisableDuringWalking">Disable During
+                        Walking</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingDisableDuringWalking">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingEnableRollFPS">Enable Roll FPS</span>
+                    <div class="switch active relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingEnableRollFPS">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingThirdPersonCameraToggle">Third Person
+                        Camera Toggle</span>
+                    <div class="switch active relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)" data-setting="headtrackingThirdPersonCameraToggle">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sc-text text-sm" data-i18n="HeadtrackingThirdPersonDisableDuringInventory">Disable
+                        During Inventory</span>
+                    <div class="switch relative w-12 h-6 rounded-full cursor-pointer"
+                        onclick="Components.toggleSwitch(this)"
+                        data-setting="headtrackingThirdPersonDisableDuringInventory">
+                        <div class="switch-thumb absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Settings -->
+        <div class="bg-sc-bg-secondary rounded-lg p-6 border border-sc-border">
+            <h3 class="text-lg font-semibold text-sc-blue-light mb-4" data-i18n="AdvancedSettings">Advanced Settings
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sc-text text-sm" data-i18n="GForceBoostZoomScale">G-Force Boost Zoom
+                            Scale</label>
+                        <span id="gforce-boost-value" class="text-sc-text-muted text-sm">0</span>
+                    </div>
+                    <input type="range" id="gforce-boost" class="w-full" min="0" max="100" value="0"
+                        onchange="Components.updateSliderValue('gforce-boost', 'gforce-boost-value')">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sc-text text-sm" data-i18n="GForceHeadBobScale">G-Force Head Bob
+                            Scale</label>
+                        <span id="gforce-bob-value" class="text-sc-text-muted text-sm">0</span>
+                    </div>
+                    <input type="range" id="gforce-bob" class="w-full" min="0" max="100" value="0"
+                        onchange="Components.updateSliderValue('gforce-bob', 'gforce-bob-value')">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sc-text text-sm" data-i18n="ShakeScale">Shake Scale</label>
+                        <span id="shake-scale-value" class="text-sc-text-muted text-sm">0</span>
+                    </div>
+                    <input type="range" id="shake-scale" class="w-full" min="0" max="100" value="0"
+                        onchange="Components.updateSliderValue('shake-scale', 'shake-scale-value')">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sc-text text-sm" data-i18n="MaxAutoZoom">Max Auto Zoom</label>
+                        <span id="max-zoom-value" class="text-sc-text-muted text-sm">0</span>
+                    </div>
+                    <input type="range" id="max-zoom" class="w-full" min="0" max="100" value="0"
+                        onchange="Components.updateSliderValue('max-zoom', 'max-zoom-value')">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sc-text text-sm" data-i18n="ChromaticAberration">Chromatic Aberration</label>
+                        <span id="chromatic-value" class="text-sc-text-muted text-sm">0</span>
+                    </div>
+                    <input type="range" id="chromatic" class="w-full" min="0" max="100" value="0"
+                        onchange="Components.updateSliderValue('chromatic', 'chromatic-value')">
+                </div>
+
+                <div>
+                    <label class="block text-sc-text text-sm font-medium mb-2" data-i18n="HeadtrackingSource">Head
+                        Tracking Source</label>
+                    <select id="headtracking-source"
+                        class="w-full px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2">
+                        <option value="TrackIR">TrackIR</option>
+                        <option value="Faceware FOIP">Faceware FOIP</option>
+                        <option value="Tobi">Tobi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Button -->
+    <div class="flex justify-center mt-8">
+        <button class="btn-secondary px-8 py-3 rounded-md font-medium transition-colors duration-200"
+            onclick="SettingsPage.resetToDefaults()" data-i18n="reset">Reset to Defaults</button>
+    </div>
+</div>

@@ -1,0 +1,369 @@
+/* Custom CSS Styles for Star Citizen VR Launcher */
+
+:root {
+    /* Default theme variables */
+    --theme-bg-primary: #1a202c;
+    --theme-bg-secondary: #2d3748;
+    --theme-bg-tertiary: #4a5568;
+    --theme-border: #4a5568;
+    
+    /* RGB values for transparency calculations */
+    --theme-bg-primary-rgb: 26, 32, 44;
+    --theme-bg-secondary-rgb: 45, 55, 72;
+    --theme-bg-tertiary-rgb: 74, 85, 104;
+    
+    /* Background image variables */
+    --theme-bg-image: "";
+    --theme-bg-opacity: 0.3;
+    --theme-bg-position: center;
+    --theme-bg-size: cover;
+    --theme-bg-repeat: no-repeat;
+    
+    /* Background opacity variables for semi-transparent content */
+    --theme-content-bg-opacity: 0.8;
+    --theme-main-bg-opacity: 0.7;
+    
+    /* Text colors */
+    --theme-text-primary: #e2e8f0;
+    --theme-text-secondary: #a0aec0;
+    --theme-text-muted: #718096;
+    
+    /* Navigation colors */
+    --theme-nav-text: #a0aec0;
+    --theme-nav-text-hover: #ffffff;
+    --theme-nav-text-active: #ffffff;
+    --theme-nav-bg-hover: #4a5568;
+    --theme-nav-bg-active: #3182ce;
+    
+    /* Form elements */
+    --theme-input-bg: #4a5568;
+    --theme-input-border: #718096;
+    --theme-input-text: #ffffff;
+    --theme-input-placeholder: #a0aec0;
+    --theme-input-focus-border: #3182ce;
+    
+    /* Dropdown colors */
+    --theme-dropdown-bg: #4a5568;
+    --theme-dropdown-border: #718096;
+    --theme-dropdown-text: #ffffff;
+    --theme-dropdown-option-hover: #3182ce;
+    
+    /* Button colors */
+    --theme-btn-primary-bg: #3182ce;
+    --theme-btn-primary-text: #ffffff;
+    --theme-btn-primary-hover: #2b6cb0;
+    --theme-btn-secondary-bg: #4a5568;
+    --theme-btn-secondary-text: #e2e8f0;
+    --theme-btn-secondary-hover: #718096;
+    
+    /* Accent colors */
+    --theme-accent: #3182ce;
+    --theme-accent-light: #63b3ed;
+    --theme-accent-dark: #2b6cb0;
+    
+    /* Status colors */
+    --theme-success: #38a169;
+    --theme-warning: #d69e2e;
+    --theme-error: #e53e3e;
+}
+
+body {
+    background-color: var(--theme-bg-primary);
+    background-image: var(--theme-bg-image);
+    background-position: var(--theme-bg-position);
+    background-size: var(--theme-bg-size);
+    background-repeat: var(--theme-bg-repeat);
+    background-attachment: fixed;
+    color: var(--theme-text-primary);
+}
+
+/* Main app background overlay for opacity control */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--theme-bg-image);
+    background-position: var(--theme-bg-position);
+    background-size: var(--theme-bg-size);
+    background-repeat: var(--theme-bg-repeat);
+    background-attachment: fixed;
+    opacity: var(--theme-bg-opacity);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.switch {
+    transition: background-color 0.3s ease;
+    background-color: var(--theme-bg-tertiary) !important;
+}
+
+.switch-thumb {
+    transition: transform 0.3s ease;
+    background-color: var(--theme-text-primary);
+    transform: translateX(0px);
+}
+
+.switch.active {
+    background-color: var(--theme-accent) !important;
+}
+
+.switch.active .switch-thumb {
+    transform: translateX(24px);
+}
+
+.nav-button {
+    color: var(--theme-nav-text) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    color: var(--theme-nav-text-hover) !important;
+    background-color: var(--theme-nav-bg-hover) !important;
+    transform: translateY(-1px);
+}
+
+.nav-button.active {
+    color: var(--theme-nav-text-active) !important;
+    background-color: var(--theme-nav-bg-active) !important;
+}
+
+input[type="text"], input[type="number"], input[type="range"] {
+    background-color: var(--theme-input-bg) !important;
+    border-color: var(--theme-input-border) !important;
+    color: var(--theme-input-text) !important;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--theme-input-focus-border) !important;
+    box-shadow: 0 0 0 2px rgba(var(--theme-accent), 0.2) !important;
+}
+
+input::placeholder {
+    color: var(--theme-input-placeholder) !important;
+}
+
+select {
+    background-color: var(--theme-dropdown-bg) !important;
+    border-color: var(--theme-dropdown-border) !important;
+    color: var(--theme-dropdown-text) !important;
+}
+
+select:focus {
+    border-color: var(--theme-input-focus-border) !important;
+    box-shadow: 0 0 0 2px rgba(var(--theme-accent), 0.2) !important;
+}
+
+select option {
+    background-color: var(--theme-dropdown-bg) !important;
+    color: var(--theme-dropdown-text) !important;
+}
+
+select option:hover {
+    background-color: var(--theme-dropdown-option-hover) !important;
+}
+
+.btn-primary, .bg-sc-blue {
+    background-color: var(--theme-btn-primary-bg) !important;
+    color: var(--theme-btn-primary-text) !important;
+    border-color: var(--theme-btn-primary-bg) !important;
+}
+
+.btn-primary:hover, .bg-sc-blue:hover {
+    background-color: var(--theme-btn-primary-hover) !important;
+    border-color: var(--theme-btn-primary-hover) !important;
+}
+
+.btn-secondary {
+    background-color: var(--theme-btn-secondary-bg) !important;
+    color: var(--theme-btn-secondary-text) !important;
+    border-color: var(--theme-btn-secondary-bg) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--theme-btn-secondary-hover) !important;
+    border-color: var(--theme-btn-secondary-hover) !important;
+}
+
+.btn-launch {
+    background-color: var(--theme-success) !important;
+    color: var(--theme-btn-primary-text) !important;
+    border-color: var(--theme-success) !important;
+}
+
+.btn-launch:hover {
+    background-color: var(--theme-success) !important;
+    opacity: 0.9;
+}
+
+.text-sc-text {
+    color: var(--theme-text-primary) !important;
+}
+
+.text-sc-text-secondary {
+    color: var(--theme-text-secondary) !important;
+}
+
+.text-sc-text-muted {
+    color: var(--theme-text-muted) !important;
+}
+
+.bg-sc-bg-secondary {
+    background-color: var(--theme-bg-secondary) !important;
+}
+
+.bg-sc-border {
+    background-color: var(--theme-bg-tertiary) !important;
+}
+
+.border-sc-border {
+    border-color: var(--theme-border) !important;
+}
+
+.language-select {
+    background-color: var(--theme-dropdown-bg) !important;
+    border-color: var(--theme-dropdown-border) !important;
+    color: var(--theme-dropdown-text) !important;
+}
+
+.theme-option {
+    border-color: var(--theme-border) !important;
+}
+
+.theme-option:hover {
+    border-color: var(--theme-accent) !important;
+    background-color: var(--theme-bg-secondary) !important;
+}
+
+.toast {
+    animation: slideIn 0.3s ease-out;
+    background-color: var(--theme-bg-secondary);
+    border-color: var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+@keyframes slideIn {
+    from { 
+        transform: translateX(100%); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateX(0); 
+        opacity: 1; 
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--theme-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--theme-bg-tertiary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-accent-light);
+}
+
+/* Theme-aware components that are actually used */
+.theme-border {
+    border-color: var(--theme-border);
+}
+
+.theme-bg {
+    background-color: var(--theme-bg-primary);
+}
+
+.theme-text {
+    color: var(--theme-text-primary);
+}
+
+.theme-text-muted {
+    color: var(--theme-text-muted);
+}
+
+.theme-accent {
+    color: var(--theme-accent);
+}
+
+.theme-accent-bg {
+    background-color: var(--theme-accent);
+}
+
+/* Loading spinner for theme transitions */
+.theme-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--theme-bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.theme-loading.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.theme-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--theme-bg-tertiary);
+    border-top: 4px solid var(--theme-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Content areas with semi-transparency to show background */
+.bg-sc-bg-secondary {
+    background-color: rgba(var(--theme-bg-secondary-rgb), var(--theme-content-bg-opacity)) !important;
+}
+
+/* Navigation should remain solid (no transparency) */
+#navigation-container,
+nav {
+    background-color: var(--theme-bg-secondary) !important; /* Solid background for nav */
+}
+
+/* Main content area fills the whole page area (excluding navbar) */
+main {
+    background-color: rgba(var(--theme-bg-primary-rgb), var(--theme-main-bg-opacity));
+    position: relative;
+}
+
+/* Page container should be transparent and just organize content */
+#page-container {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* Ensure cards and panels are also semi-transparent */
+.card, .panel, [class*="bg-sc-bg"]:not(#navigation-container):not(nav) {
+    background-color: rgba(var(--theme-bg-secondary-rgb), var(--theme-content-bg-opacity)) !important;
+}
+
+/* Toast notifications should remain solid for readability */
+.toast {
+    background-color: var(--theme-bg-secondary) !important;
+}

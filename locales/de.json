@@ -28,7 +28,6 @@
     "dxgi_check_again": "Erneut prüfen",
     "dxgi_settings": "Hook Helper Einstellungen",
     "no_user_folder": "Benutzerordner nicht gefunden. Falscher Star Citizen Pfad oder noch nicht einmal gestartet?",
-    
     "error_title": "Fehler",
     "hook_file_not_found": "Erforderliche vorpX Hook-Datei nicht gefunden:\\n{dxgi_path}",
     "select_all_files": "Bitte wähle alle notwendigen Dateien aus!",
@@ -59,7 +58,6 @@
     "restored_title": "Erfolgreich wiederhergestellt",
     "restored_message": "Alles wurde in den ursprünglichen Zustand zurückversetzt.",
     "error_quitting_vr": "Ein Fehler ist beim Beenden des VR-Modus aufgetreten: {e}",
-
     "MotionBlur": "Motion Blur",
     "VSync": "VSync",
     "AutoZoomOnSelectedTarget": "Automatischer Zoom auf ausgewähltes Ziel",
@@ -74,7 +72,6 @@
     "HeadtrackingThirdPersonDisableDuringInventory": "Third-Person während Inventar deaktivieren",
     "change_language": "Du bist dabei, die Sprache auf Deutsch zu ändern. Dies wird die Anwendung neu starten.",
     "Headtracking": "Kopftracking",
-
     "SpringMovment": "Gefederte Bewegung",
     "GForceBoostZoomScale": "G-Force-Boost-Zoom-Skalierung",
     "GForceHeadBobScale": "G-Force-Kopfwackel-Skalierung",
@@ -95,10 +92,13 @@
     "ad_popup": "Zusätzliche Benachrichtigungen erhalten",
     "reset": "Auf Standard zurücksetzen",
     "dxgi_help": "Hilfe",
-
-    "vorpxframe": "vorpX-Einstellungen",  
-    "vorpxlefttitle": "Virtueller Monitor",  
-    "vorpxrighttitle": "vorpX-Einstellungen",  
-    "keepkeybinds": "Tastenbelegungen nicht entfernen",  
-    "customConfig": "Benutzerdefinierte Headset-Konfiguration"  
+    "dxgi_status_checking": "DXGI-Status: Überprüfung...",
+    "dxgi_status_available": "DXGI-Status: Verfügbar",
+    "dxgi_status_not_found": "DXGI-Status: Nicht gefunden",
+    "dxgi_status_check_failed": "DXGI-Status: Überprüfung fehlgeschlagen",
+    "vorpxframe": "vorpX-Einstellungen",
+    "vorpxlefttitle": "Virtueller Monitor",
+    "vorpxrighttitle": "vorpX-Einstellungen",
+    "keepkeybinds": "Tastenbelegungen nicht entfernen",
+    "customConfig": "Benutzerdefinierte Headset-Konfiguration"
 }

@@ -1,0 +1,46 @@
+<!-- Info Page Component -->
+<div id="info-page" class="page-component">
+    <div class="text-center space-y-8">
+        <div class="flex justify-center space-x-8 mb-8">
+            <div class="w-36 h-36 bg-sc-border rounded-lg flex items-center justify-center text-sc-text-muted"
+                data-i18n="logo_1">
+                Logo 1
+            </div>
+            <div class="w-36 h-36 bg-sc-border rounded-lg flex items-center justify-center text-sc-text-muted"
+                data-i18n="logo_2">
+                Logo 2
+            </div>
+        </div>
+
+        <div class="bg-sc-bg-secondary rounded-lg p-8 border border-sc-border">
+            <h2 class="text-2xl font-bold text-sc-blue-light mb-4" data-i18n="made_by">Made by VR Community</h2>
+
+            <p class="text-sc-text-muted mb-6 max-w-2xl mx-auto" data-i18n="support_message">
+                If you enjoy this launcher and want to support development,
+                consider making a donation. Your support helps us continue
+                improving the VR experience for Star Citizen.
+            </p>
+
+            <div class="space-y-3">
+                <a href="#" class="block text-sc-blue-light hover:text-blue-300 transition-colors duration-200"
+                    onclick="InfoPage.openUrl('https://github.com/your-repo')">
+                    <span data-i18n="github">🔗 GitHub Repository</span>
+                </a>
+
+                <a href="#" class="block text-sc-blue-light hover:text-blue-300 transition-colors duration-200"
+                    onclick="InfoPage.openUrl('https://discord.gg/your-discord')">
+                    <span data-i18n="join">💬 Join our Discord</span>
+                </a>
+
+                <a href="#" class="block text-green-400 hover:text-green-300 transition-colors duration-200"
+                    onclick="InfoPage.openUrl('https://paypal.me/your-paypal')">
+                    <span data-i18n="donate">💖 Donate via PayPal</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-sc-bg-secondary rounded-lg p-4 border border-sc-border">
+            <p class="text-sc-text-muted text-sm" data-i18n="version_info">Star Citizen VR Launcher v1.0.0</p>
+        </div>
+    </div>
+</div>

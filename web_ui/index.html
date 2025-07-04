@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Citizen VR Launcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sc-bg': 'var(--theme-bg-primary, #1a202c)',
+                        'sc-bg-secondary': 'var(--theme-bg-secondary, #2d3748)',
+                        'sc-border': 'var(--theme-border, #4a5568)',
+                        'sc-text': 'var(--theme-text-primary, #e2e8f0)',
+                        'sc-text-muted': 'var(--theme-text-secondary, #a0aec0)',
+                        'sc-blue': 'var(--theme-accent, #3182ce)',
+                        'sc-blue-light': 'var(--theme-accent-light, #63b3ed)',
+                        'sc-green': 'var(--theme-success, #38a169)',
+                        'sc-red': 'var(--theme-error, #e53e3e)'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/themes.js"></script>
+</head>
+
+<body class="bg-sc-bg text-white min-h-screen">
+    <div id="theme-loading" class="theme-loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="app" class="flex flex-col h-screen">
+        <div id="navigation-container"></div>
+
+        <main class="flex-1 overflow-y-auto p-6">
+            <div id="page-container" class="max-w-7xl mx-auto">
+                <!-- Pages will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
+    <button id="debug-toggle" onclick="Utils.toggleDebugPanel()"
+        class="fixed bottom-4 right-4 bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full text-xs font-mono z-50 transition-colors duration-200">
+        🐛
+    </button>
+
+    <!-- Debug Panel -->
+    <div id="debug-panel"
+        class="fixed bottom-4 left-4 bg-black text-green-400 p-2 text-xs font-mono max-w-md max-h-32 overflow-y-auto border border-green-400 z-50 hidden">
+        <div class="flex justify-between items-center mb-1">
+            <span data-i18n="debug_log">Debug Log:</span>
+            <button onclick="Utils.clearDebugLog()" class="text-red-400 hover:text-red-300 ml-2" data-i18n="clear_log"
+                title="Clear Log">✕</button>
+        </div>
+        <div id="debug-log"></div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof App !== 'undefined') {
+                App.init();
+            } else {
+                Utils.debugLog('App object not found!');
+            }
+        });
+    </script>
+</body>
+
+</html>

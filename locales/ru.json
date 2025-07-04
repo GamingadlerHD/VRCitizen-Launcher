@@ -29,6 +29,10 @@
     "dxgi_settings": "Настройки Hook Helper",
     "no_user_folder": "Папка пользователя не найдена. Неверный путь к Star Citizen или игра не запускалась ни разу?",
     "dxgi_help": "Помощь",
+    "dxgi_status_checking": "DXGI статус: Проверка...",
+    "dxgi_status_available": "DXGI статус: Доступен",
+    "dxgi_status_not_found": "DXGI статус: Не найден",
+    "dxgi_status_check_failed": "DXGI статус: Ошибка проверки",
     "error_title": "Ошибка",
     "hook_file_not_found": "Не найден необходимый файл vorpX hook:\\n{dxgi_path}",
     "select_all_files": "Пожалуйста, выберите все необходимые файлы!",
@@ -59,7 +63,6 @@
     "restored_title": "Успешно восстановлено",
     "restored_message": "Все было восстановлено в исходное состояние.",
     "error_quitting_vr": "Произошла ошибка при выходе из VR-режима: {e}",
-
     "MotionBlur": "Размытие в движении",
     "VSync": "Вертикальная синхронизация",
     "AutoZoomOnSelectedTarget": "Автоматическое приближение к выбранной цели",
@@ -74,7 +77,6 @@
     "HeadtrackingThirdPersonDisableDuringInventory": "Отключить камеру от третьего лица в инвентаре",
     "change_language": "Вы собираетесь изменить язык на русский. Это приведет к перезапуску приложения.",
     "Headtracking": "Отслеживание головы",
-
     "SpringMovment": "Пружинящее движение",
     "GForceBoostZoomScale": "Масштаб приближения при перегрузке",
     "GForceHeadBobScale": "Масштаб покачивания головы при перегрузке",
@@ -94,10 +96,9 @@
     "launcher": "Лаунчер",
     "ad_popup": "Получать дополнительные уведомления",
     "reset": "Сбросить настройки",
-
-    "vorpxframe": "Настройки vorpX",  
-    "vorpxlefttitle": "Виртуальный монитор",  
-    "vorpxrighttitle": "Настройки vorpX",  
-    "keepkeybinds": "Не удалять привязки клавиш",  
-    "customConfig": "Пользовательская конфигурация гарнитуры"  
+    "vorpxframe": "Настройки vorpX",
+    "vorpxlefttitle": "Виртуальный монитор",
+    "vorpxrighttitle": "Настройки vorpX",
+    "keepkeybinds": "Не удалять привязки клавиш",
+    "customConfig": "Пользовательская конфигурация гарнитуры"
 }

@@ -29,6 +29,10 @@
     "dxgi_settings": "Impostazioni Hook Helper",
     "no_user_folder": "Cartella utente non trovata. Percorso Star Citizen errato o non avviato almeno una volta?",
     "dxgi_help": "Aiuto",
+    "dxgi_status_checking": "Stato DXGI: Verifica...",
+    "dxgi_status_available": "Stato DXGI: Disponibile",
+    "dxgi_status_not_found": "Stato DXGI: Non trovato",
+    "dxgi_status_check_failed": "Stato DXGI: Verifica fallita",
     "error_title": "Errore",
     "hook_file_not_found": "File hook di vorpX richiesto non trovato:\\n{dxgi_path}",
     "select_all_files": "Seleziona tutti i file necessari!",
@@ -59,7 +63,6 @@
     "restored_title": "Ripristino Completato",
     "restored_message": "Tutto è stato ripristinato allo stato originale.",
     "error_quitting_vr": "Si è verificato un errore durante l'uscita dalla modalità VR: {e}",
-
     "MotionBlur": "Motion Blur",
     "VSync": "VSync",
     "AutoZoomOnSelectedTarget": "Zoom Automatico sul Bersaglio Selezionato",
@@ -74,7 +77,6 @@
     "HeadtrackingThirdPersonDisableDuringInventory": "Disattiva Terza Persona Durante Inventario",
     "change_language": "Stai per cambiare la lingua in italiano. L'applicazione verrà riavviata.",
     "Headtracking": "Tracciamento Testa",
-
     "SpringMovment": "Movimento a Molla",
     "GForceBoostZoomScale": "Scala Zoom G-Force Boost",
     "GForceHeadBobScale": "Scala Oscillazione Testa G-Force",
@@ -94,10 +96,9 @@
     "launcher": "Launcher",
     "ad_popup": "Ricevi notifiche aggiuntive",
     "reset": "Ripristina Predefiniti",
-
-    "vorpxframe": "Impostazioni di vorpX",  
-    "vorpxlefttitle": "Monitor virtuale",  
-    "vorpxrighttitle": "Impostazioni di vorpX",  
-    "keepkeybinds": "Non rimuovere i tasti assegnati",  
-    "customConfig": "Configurazione personalizzata del visore"  
+    "vorpxframe": "Impostazioni di vorpX",
+    "vorpxlefttitle": "Monitor virtuale",
+    "vorpxrighttitle": "Impostazioni di vorpX",
+    "keepkeybinds": "Non rimuovere i tasti assegnati",
+    "customConfig": "Configurazione personalizzata del visore"
 }

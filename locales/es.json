@@ -28,7 +28,6 @@
     "dxgi_check_again": "Verificar nuevamente",
     "dxgi_settings": "Configuración del Hook Helper",
     "no_user_folder": "Carpeta de usuario no encontrada. ¿Ruta de Star Citizen incorrecta o no se ha iniciado al menos una vez?",
-    
     "error_title": "Error",
     "hook_file_not_found": "Archivo de hook vorpX requerido no encontrado:\\n{dxgi_path}",
     "select_all_files": "¡Por favor selecciona todos los archivos necesarios!",
@@ -60,6 +59,10 @@
     "restored_message": "Todo ha sido restaurado a su estado original.",
     "error_quitting_vr": "Ocurrió un error al salir del modo VR: {e}",
     "dxgi_help": "Ayuda",
+    "dxgi_status_checking": "Estado DXGI: Verificando...",
+    "dxgi_status_available": "Estado DXGI: Disponible",
+    "dxgi_status_not_found": "Estado DXGI: No encontrado",
+    "dxgi_status_check_failed": "Estado DXGI: Error en verificación",
     "MotionBlur": "Desenfoque de Movimiento",
     "VSync": "VSync",
     "AutoZoomOnSelectedTarget": "Zoom Automático en Objetivo Seleccionado",
@@ -74,7 +77,6 @@
     "HeadtrackingThirdPersonDisableDuringInventory": "Desactivar Tercera Persona Durante Inventario",
     "change_language": "Estás a punto de cambiar el idioma a español. Esto reiniciará la aplicación.",
     "Headtracking": "Seguimiento de Cabeza",
-
     "SpringMovment": "Movimiento con Rebote",
     "GForceBoostZoomScale": "Escala de Zoom por G-Fuerza",
     "GForceHeadBobScale": "Escala de Movimiento de Cabeza por G-Fuerza",
@@ -94,10 +96,9 @@
     "launcher": "Launcher",
     "ad_popup": "Recibir notificaciones adicionales",
     "reset": "Restablecer a Predeterminados",
-
-    "vorpxframe": "Ajustes de vorpX",  
-    "vorpxlefttitle": "Monitor virtual",  
-    "vorpxrighttitle": "Configuración de vorpX",  
-    "keepkeybinds": "No eliminar atajos de teclado",  
-    "customConfig": "Configuración personalizada del visor"  
+    "vorpxframe": "Ajustes de vorpX",
+    "vorpxlefttitle": "Monitor virtual",
+    "vorpxrighttitle": "Configuración de vorpX",
+    "keepkeybinds": "No eliminar atajos de teclado",
+    "customConfig": "Configuración personalizada del visor"
 }

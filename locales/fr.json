@@ -92,10 +92,13 @@
     "ad_popup": "Obtenir des notifications supplémentaires",
     "reset": "Réinitialiser aux valeurs par défaut",
     "dxgi_help": "Aide",
-
-    "vorpxframe": "Paramètres de vorpX",  
-    "vorpxlefttitle": "Moniteur virtuel",  
-    "vorpxrighttitle": "Paramètres de vorpX",  
-    "keepkeybinds": "Ne pas supprimer les raccourcis clavier",  
-    "customConfig": "Configuration personnalisée du casque"  
+    "dxgi_status_checking": "Statut DXGI: Vérification...",
+    "dxgi_status_available": "Statut DXGI: Disponible",
+    "dxgi_status_not_found": "Statut DXGI: Non trouvé",
+    "dxgi_status_check_failed": "Statut DXGI: Échec de la vérification",
+    "vorpxframe": "Paramètres de vorpX",
+    "vorpxlefttitle": "Moniteur virtuel",
+    "vorpxrighttitle": "Paramètres de vorpX",
+    "keepkeybinds": "Ne pas supprimer les raccourcis clavier",
+    "customConfig": "Configuration personnalisée du casque"
 }

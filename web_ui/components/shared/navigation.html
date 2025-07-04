@@ -1,0 +1,34 @@
+<!-- Navigation Component -->
+<nav class="bg-sc-bg-secondary border-b border-sc-border px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-0">
+        <button
+            class="nav-button px-6 py-3 transition-all duration-200 font-medium text-sm border-none bg-transparent cursor-pointer active"
+            onclick="App.showPage('home')" data-i18n="home">
+            Home
+        </button>
+        <button
+            class="nav-button px-6 py-3 transition-all duration-200 font-medium text-sm border-none bg-transparent cursor-pointer"
+            onclick="App.showPage('settings')" data-i18n="setting">
+            Settings
+        </button>
+        <button
+            class="nav-button px-6 py-3 transition-all duration-200 font-medium text-sm border-none bg-transparent cursor-pointer"
+            onclick="App.showPage('vorpx')" data-i18n="vorpxframe">
+            VorpX
+        </button>
+        <button
+            class="nav-button px-6 py-3 transition-all duration-200 font-medium text-sm border-none bg-transparent cursor-pointer"
+            onclick="App.showPage('info')" data-i18n="info">
+            Info
+        </button>
+    </div>
+    <select id="language-select" class="language-select px-3 py-2 rounded-md text-sm cursor-pointer"
+        onchange="App.changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="ru">русский</option>
+        <option value="fr">français</option>
+    </select>
+</nav>

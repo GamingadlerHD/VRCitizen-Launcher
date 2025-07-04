@@ -28,7 +28,6 @@
     "dxgi_check_again": "Check again",
     "dxgi_settings": "Hook Helper Settings",
     "no_user_folder": "User folder not found. Wrong Star Citizen path or not started once?",
-    
     "error_title": "Error",
     "hook_file_not_found": "Required vorpX hook file not found:\\n{dxgi_path}",
     "select_all_files": "Please select all necessary files!",
@@ -59,7 +58,6 @@
     "restored_title": "Successfully Restored",
     "restored_message": "Everything has been restored to its original state.",
     "error_quitting_vr": "An error occurred while quitting VR mode: {e}",
-
     "MotionBlur": "Motion Blur",
     "VSync": "VSync",
     "AutoZoomOnSelectedTarget": "Auto Zoom on Selected Target",
@@ -74,7 +72,6 @@
     "HeadtrackingThirdPersonDisableDuringInventory": "Third Person Disable During Inventory",
     "change_language": "You are about to chage the language to English. This will restart the application.",
     "Headtracking": "Headtracking",
-
     "SpringMovment": "Spring Movement",
     "GForceBoostZoomScale": "G-Force Boost Zoom Scale",
     "GForceHeadBobScale": "G-Force Head Bob Scale",
@@ -95,11 +92,13 @@
     "ad_popup": "Get additional notifications",
     "reset": "Reset to Defaults",
     "dxgi_help": "Help",
-
     "vorpxframe": "vorpX settings",
     "vorpxlefttitle": "Virtual Monitor",
     "vorpxrighttitle": "VorpX Settings",
     "keepkeybinds": "Dont remove keybinds",
-    "customConfig": "Custom Headset Config"
+    "customConfig": "Custom Headset Config",
+    "dxgi_status_checking": "DXGI status: Checking...",
+    "dxgi_status_available": "DXGI status: Available",
+    "dxgi_status_not_found": "DXGI status: Not found",
+    "dxgi_status_check_failed": "DXGI status: Check failed"
 }
-
