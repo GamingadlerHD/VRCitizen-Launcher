@@ -10,6 +10,8 @@ from constants import HOSTS_FILE, DXGI_DLL, EASY_ANTICHEAT_FOLDER
 from logs import log, warn, error
 
 async def Launch(settings):
+    noBypass = os.path.isfile(os.path.join(os.getcwd(), ".nobypass"))
+
     sc_folder_path = settings['sc_entry'].get()
     vorpx_path = settings['vorpx_entry'].get()
     launcher_path = settings['launcher_entry'].get()
@@ -130,7 +132,7 @@ async def Launch(settings):
         vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
-            if (settings["noBypass"] is False):
+            if (noBypass is False):
                 backup_file(HOSTS_FILE)
                 modify_hosts(add=True)
 
@@ -190,7 +192,7 @@ async def Launch(settings):
             await wait_for_process(vorpx_proc_name)
             log("VorpX is now running and ready")
         
-            if (settings["noBypass"] is False):
+            if (noBypass is False):
                 if not os.path.isdir(eac_folder_path):
                     log("EAC folder does not exist - already removed or not present")
                     if (additional_popups):
