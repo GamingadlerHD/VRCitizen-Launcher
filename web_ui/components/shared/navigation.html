@@ -22,13 +22,22 @@
             Info
         </button>
     </div>
-    <select id="language-select" class="language-select px-3 py-2 rounded-md text-sm cursor-pointer"
-        onchange="App.changeLanguage(this.value)">
-        <option value="en">English</option>
-        <option value="de">Deutsch</option>
-        <option value="it">Italiano</option>
-        <option value="es">Español</option>
-        <option value="ru">русский</option>
-        <option value="fr">français</option>
-    </select>
+    <div class="flex items-center space-x-3">
+        <button
+            id="theme-selector-btn"
+            class="theme-button px-3 py-2 rounded-md text-sm cursor-pointer bg-sc-bg-tertiary hover:bg-sc-nav-bg-hover text-sc-text-secondary hover:text-sc-text-primary transition-all duration-200 border border-sc-border"
+            onclick="App.showThemeSelector()"
+            title="Change theme">
+            🎨
+        </button>
+        <select id="language-select" class="language-select px-3 py-2 rounded-md text-sm cursor-pointer"
+            onchange="App.changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="es">Español</option>
+            <option value="ru">русский</option>
+            <option value="fr">français</option>
+        </select>
+    </div>
 </nav>

@@ -367,3 +367,29 @@ main {
 .toast {
     background-color: var(--theme-bg-secondary) !important;
 }
+
+/* Theme selector button */
+.theme-button {
+    color: var(--theme-text-secondary) !important;
+    background-color: var(--theme-bg-tertiary) !important;
+    border-color: var(--theme-border) !important;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.theme-button:hover {
+    color: var(--theme-text-primary) !important;
+    background-color: var(--theme-nav-bg-hover) !important;
+    border-color: var(--theme-accent) !important;
+    transform: translateY(-1px);
+}
+
+.theme-button:active {
+    transform: translateY(0);
+}

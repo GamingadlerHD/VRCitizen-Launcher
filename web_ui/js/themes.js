@@ -2,266 +2,90 @@
 
 class ThemeManager {
   constructor() {
-    this.themes = {
-      default: {
-        name: "Star Citizen",
-        description: "Classic Star Citizen styling",
-        background: {
-          image: "https://wallpapercave.com/wp/iqZETVS.jpg", // Path to background image
-          opacity: 0.3, // Image opacity (0-1)
-          position: "center",
-          size: "cover",
-          repeat: "no-repeat",
-        },
-        colors: {
-          // Backgrounds
-          "bg-primary": "#1a202c",
-          "bg-secondary": "#2d3748",
-          "bg-tertiary": "#4a5568",
-          border: "#4a5568",
+    this.themes = {};
+    this.themesLoaded = false;
+    this.currentTheme = "default";
 
-          // Text colors
-          "text-primary": "#e2e8f0",
-          "text-secondary": "#a0aec0",
-          "text-muted": "#718096",
-
-          // Navigation colors
-          "nav-text": "#a0aec0",
-          "nav-text-hover": "#ffffff",
-          "nav-text-active": "#ffffff",
-          "nav-bg-hover": "#4a5568",
-          "nav-bg-active": "#3182ce",
-
-          // Form elements
-          "input-bg": "#4a5568",
-          "input-border": "#718096",
-          "input-text": "#ffffff",
-          "input-placeholder": "#a0aec0",
-          "input-focus-border": "#3182ce",
-
-          // Dropdown colors
-          "dropdown-bg": "#4a5568",
-          "dropdown-border": "#718096",
-          "dropdown-text": "#ffffff",
-          "dropdown-option-hover": "#3182ce",
-
-          // Button colors
-          "btn-primary-bg": "#3182ce",
-          "btn-primary-text": "#ffffff",
-          "btn-primary-hover": "#2b6cb0",
-          "btn-secondary-bg": "#4a5568",
-          "btn-secondary-text": "#e2e8f0",
-          "btn-secondary-hover": "#718096",
-
-          // Accent colors
-          accent: "#3182ce",
-          "accent-light": "#63b3ed",
-          "accent-dark": "#2b6cb0",
-
-          // Status colors
-          success: "#38a169",
-          warning: "#d69e2e",
-          error: "#e53e3e",
-        },
-      },
-      starwars: {
-        name: "Star Wars",
-        description: "A galaxy far, far away...",
-        background: {
-          image: "https://wallpapercave.com/wp/iqZETVS.jpg", // Path to background image (could be Death Star, space scene, etc.)
-          opacity: 0.2, // Lower opacity for darker theme
-          position: "center",
-          size: "cover",
-          repeat: "no-repeat",
-        },
-        colors: {
-          // Backgrounds
-          "bg-primary": "#0a0a0a",
-          "bg-secondary": "#1a1a1a",
-          "bg-tertiary": "#2a2a2a",
-          border: "#ffd700",
-
-          // Text colors
-          "text-primary": "#ffd700",
-          "text-secondary": "#ffffff",
-          "text-muted": "#cccccc",
-
-          // Navigation colors
-          "nav-text": "#cccccc",
-          "nav-text-hover": "#ffd700",
-          "nav-text-active": "#000000",
-          "nav-bg-hover": "#2a2a2a",
-          "nav-bg-active": "#ffd700",
-
-          // Form elements
-          "input-bg": "#2a2a2a",
-          "input-border": "#ffd700",
-          "input-text": "#ffd700",
-          "input-placeholder": "#cccccc",
-          "input-focus-border": "#ffed4e",
-
-          // Dropdown colors
-          "dropdown-bg": "#2a2a2a",
-          "dropdown-border": "#ffd700",
-          "dropdown-text": "#ffd700",
-          "dropdown-option-hover": "#b8860b",
-
-          // Button colors
-          "btn-primary-bg": "#ffd700",
-          "btn-primary-text": "#000000",
-          "btn-primary-hover": "#b8860b",
-          "btn-secondary-bg": "#2a2a2a",
-          "btn-secondary-text": "#ffd700",
-          "btn-secondary-hover": "#3a3a3a",
-
-          // Accent colors
-          accent: "#ffd700",
-          "accent-light": "#ffed4e",
-          "accent-dark": "#b8860b",
-
-          // Status colors
-          success: "#00ff00",
-          warning: "#ff8c00",
-          error: "#ff4444",
-        },
-      },
-      cyberpunk: {
-        name: "Cyberpunk",
-        description: "Neon-lit future vibes",
-        background: {
-          image: "https://wallpapercave.com/wp/iqZETVS.jpg", // Path to background image (could be cyberpunk cityscape, neon, etc.)
-          opacity: 0.25, // Medium opacity for neon visibility
-          position: "center",
-          size: "cover",
-          repeat: "no-repeat",
-        },
-        colors: {
-          // Backgrounds
-          "bg-primary": "#0f0f0f",
-          "bg-secondary": "#1a1a2e",
-          "bg-tertiary": "#16213e",
-          border: "#ff00ff",
-
-          // Text colors
-          "text-primary": "#00ffff",
-          "text-secondary": "#ff00ff",
-          "text-muted": "#a0a0a0",
-
-          // Navigation colors
-          "nav-text": "#a0a0a0",
-          "nav-text-hover": "#00ffff",
-          "nav-text-active": "#000000",
-          "nav-bg-hover": "#16213e",
-          "nav-bg-active": "#ff00ff",
-
-          // Form elements
-          "input-bg": "#16213e",
-          "input-border": "#ff00ff",
-          "input-text": "#00ffff",
-          "input-placeholder": "#a0a0a0",
-          "input-focus-border": "#ff66ff",
-
-          // Dropdown colors
-          "dropdown-bg": "#16213e",
-          "dropdown-border": "#ff00ff",
-          "dropdown-text": "#00ffff",
-          "dropdown-option-hover": "#cc00cc",
-
-          // Button colors
-          "btn-primary-bg": "#ff00ff",
-          "btn-primary-text": "#000000",
-          "btn-primary-hover": "#cc00cc",
-          "btn-secondary-bg": "#16213e",
-          "btn-secondary-text": "#00ffff",
-          "btn-secondary-hover": "#1a2a4e",
-
-          // Accent colors
-          accent: "#ff00ff",
-          "accent-light": "#ff66ff",
-          "accent-dark": "#cc00cc",
-
-          // Status colors
-          success: "#00ff00",
-          warning: "#ffff00",
-          error: "#ff0066",
-        },
-      },
-      minimal: {
-        name: "Minimal Dark",
-        description: "Clean, minimal dark interface",
-        background: {
-          image: "https://wallpapercave.com/wp/iqZETVS.jpg", // Path to background image (could be subtle texture, pattern, etc.)
-          opacity: 0.15, // Very low opacity for minimal design
-          position: "center",
-          size: "cover",
-          repeat: "no-repeat",
-        },
-        colors: {
-          // Backgrounds
-          "bg-primary": "#1a1a1a",
-          "bg-secondary": "#2a2a2a",
-          "bg-tertiary": "#3a3a3a",
-          border: "#555555",
-
-          // Text colors
-          "text-primary": "#ffffff",
-          "text-secondary": "#cccccc",
-          "text-muted": "#999999",
-
-          // Navigation colors
-          "nav-text": "#cccccc",
-          "nav-text-hover": "#ffffff",
-          "nav-text-active": "#ffffff",
-          "nav-bg-hover": "#3a3a3a",
-          "nav-bg-active": "#555555",
-
-          // Form elements
-          "input-bg": "#3a3a3a",
-          "input-border": "#555555",
-          "input-text": "#ffffff",
-          "input-placeholder": "#999999",
-          "input-focus-border": "#777777",
-
-          // Dropdown colors
-          "dropdown-bg": "#3a3a3a",
-          "dropdown-border": "#555555",
-          "dropdown-text": "#ffffff",
-          "dropdown-option-hover": "#555555",
-
-          // Button colors
-          "btn-primary-bg": "#555555",
-          "btn-primary-text": "#ffffff",
-          "btn-primary-hover": "#666666",
-          "btn-secondary-bg": "#3a3a3a",
-          "btn-secondary-text": "#cccccc",
-          "btn-secondary-hover": "#4a4a4a",
-
-          // Accent colors
-          accent: "#555555",
-          "accent-light": "#777777",
-          "accent-dark": "#333333",
-
-          // Status colors
-          success: "#4CAF50",
-          warning: "#FF9800",
-          error: "#F44336",
-        },
-      },
-    };
-
-    this.currentTheme = this.loadSavedTheme();
-
-    // Load any saved customizations for the current theme
-    this.loadThemeCustomization(this.currentTheme);
+    // Load themes from JSON files
+    this.loadThemesFromFiles().then(async () => {
+      this.currentTheme = await this.loadSavedTheme();
+      await this.loadThemeCustomization(this.currentTheme);
+    });
   }
 
-  loadSavedTheme() {
-    const saved = localStorage.getItem("sc-vr-theme");
-    return saved && this.themes[saved] ? saved : "default";
+  // Load all theme files from the themes directory
+  async loadThemesFromFiles() {
+    try {
+      console.log("Loading themes from JSON files...");
+      let themeFiles = [];
+      const loadedThemes = {};
+
+      if (themeFiles.length === 0) {
+        const potentialThemes = [
+          "default.json",
+          "starwars.json",
+          "cyberpunk.json",
+          "minimal.json",
+        ];
+
+        for (const filename of potentialThemes) {
+          try {
+            const response = await fetch(`themes/${filename}`);
+            if (response.ok) {
+              try {
+                const themeId = filename.replace(".json", "");
+                const themeData = await response.json();
+                loadedThemes[themeId] = themeData;
+              } catch (error) {
+                console.warn(`Failed to load theme file ${filename}:`, error);
+              }
+            }
+          } catch (error) {
+            // Theme file doesn't exist, skip silently
+          }
+        }
+      }
+
+      this.themes = loadedThemes;
+      this.themesLoaded = true;
+
+      console.log(
+        `Successfully loaded ${loadedCount} themes:`,
+        Object.keys(this.themes)
+      );
+    } catch (error) {
+      console.error("Failed to load themes:", error);
+    }
   }
 
-  saveTheme(themeId) {
-    localStorage.setItem("sc-vr-theme", themeId);
+  // Wait for themes to be loaded
+  async waitForThemes() {
+    while (!this.themesLoaded) {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+  }
+
+  async loadSavedTheme() {
+    try {
+      if (window.API && window.API.getSavedTheme) {
+        const saved = await window.API.getSavedTheme();
+        return saved && this.themes[saved] ? saved : "default";
+      }
+      return "default";
+    } catch (error) {
+      console.error("Failed to load saved theme:", error);
+      return "default";
+    }
+  }
+
+  async saveTheme(themeId) {
+    try {
+      if (window.API && window.API.saveTheme) {
+        await window.API.saveTheme(themeId);
+      }
+    } catch (error) {
+      console.error("Failed to save theme:", error);
+    }
   }
 
   // Helper function to convert hex to RGB values
@@ -277,7 +101,10 @@ class ThemeManager {
     return `${r}, ${g}, ${b}`;
   }
 
-  applyTheme(themeId) {
+  async applyTheme(themeId) {
+    // Wait for themes to be loaded
+    await this.waitForThemes();
+
     if (!this.themes[themeId]) {
       console.warn(`Theme ${themeId} not found, using default`);
       themeId = "default";
@@ -290,7 +117,7 @@ class ThemeManager {
     this.showLoading();
 
     // Apply CSS variables with a slight delay for smooth transition
-    setTimeout(() => {
+    setTimeout(async () => {
       Object.entries(theme.colors).forEach(([key, value]) => {
         root.style.setProperty(`--theme-${key}`, value);
 
@@ -341,7 +168,7 @@ class ThemeManager {
       this.updateTailwindConfig(theme);
 
       this.currentTheme = themeId;
-      this.saveTheme(themeId);
+      await this.saveTheme(themeId);
 
       // Hide loading overlay
       setTimeout(() => {
@@ -430,24 +257,29 @@ class ThemeManager {
     }
   }
 
-  getCurrentTheme() {
+  async getCurrentTheme() {
+    await this.waitForThemes();
     return this.currentTheme;
   }
 
-  getTheme(themeId) {
+  async getTheme(themeId) {
+    await this.waitForThemes();
     return this.themes[themeId];
   }
 
-  getAvailableThemes() {
+  async getAvailableThemes() {
+    await this.waitForThemes();
     return Object.keys(this.themes).map((id) => ({
       id,
       ...this.themes[id],
     }));
   }
 
-  showThemeSelector() {
-    return new Promise((resolve) => {
-      const modal = this.createThemeSelector(resolve);
+  async showThemeSelector() {
+    await this.waitForThemes();
+
+    return new Promise(async (resolve) => {
+      const modal = await this.createThemeSelector(resolve);
       document.body.appendChild(modal);
 
       // Show modal with animation
@@ -458,12 +290,12 @@ class ThemeManager {
     });
   }
 
-  createThemeSelector(onSelect) {
+  async createThemeSelector(onSelect) {
     const modal = document.createElement("div");
     modal.className =
       "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 opacity-0 transition-opacity duration-300";
 
-    const themes = this.getAvailableThemes();
+    const themes = await this.getAvailableThemes();
 
     modal.innerHTML = `
             <div class="bg-gray-900 rounded-lg p-8 max-w-2xl w-full mx-4 transform scale-95 transition-transform duration-300" id="theme-modal-content">
@@ -706,7 +538,7 @@ class ThemeManager {
   }
 
   // Update background image for current theme
-  updateBackgroundImage(imagePath, opacity = null) {
+  async updateBackgroundImage(imagePath, opacity = null) {
     const currentTheme = this.themes[this.currentTheme];
     if (currentTheme && currentTheme.background) {
       currentTheme.background.image = imagePath;
@@ -734,12 +566,12 @@ class ThemeManager {
       root.style.setProperty(`--theme-main-bg-opacity`, mainOpacity);
 
       // Save the updated theme
-      this.saveThemeCustomization();
+      await this.saveThemeCustomization();
     }
   }
 
   // Update background opacity for current theme
-  updateBackgroundOpacity(opacity) {
+  async updateBackgroundOpacity(opacity) {
     const currentTheme = this.themes[this.currentTheme];
     if (currentTheme && currentTheme.background) {
       currentTheme.background.opacity = opacity;
@@ -757,29 +589,32 @@ class ThemeManager {
       root.style.setProperty(`--theme-main-bg-opacity`, mainOpacity);
 
       // Save the updated theme
-      this.saveThemeCustomization();
+      await this.saveThemeCustomization();
     }
   }
 
-  // Save theme customizations to localStorage
-  saveThemeCustomization() {
+  // Save theme customizations to backend
+  async saveThemeCustomization() {
     const currentTheme = this.themes[this.currentTheme];
-    if (currentTheme) {
-      localStorage.setItem(
-        `sc-vr-theme-${this.currentTheme}-custom`,
-        JSON.stringify(currentTheme)
-      );
+    if (currentTheme && window.API && window.API.saveThemeCustomization) {
+      try {
+        await window.API.saveThemeCustomization(
+          this.currentTheme,
+          currentTheme
+        );
+      } catch (error) {
+        console.error("Failed to save theme customization:", error);
+      }
     }
   }
 
-  // Load theme customizations from localStorage
-  loadThemeCustomization(themeId) {
-    const saved = localStorage.getItem(`sc-vr-theme-${themeId}-custom`);
-    if (saved) {
+  // Load theme customizations from backend
+  async loadThemeCustomization(themeId) {
+    if (window.API && window.API.getThemeCustomization) {
       try {
-        const customTheme = JSON.parse(saved);
+        const customTheme = await window.API.getThemeCustomization(themeId);
         // Merge custom properties with default theme
-        if (this.themes[themeId] && customTheme.background) {
+        if (this.themes[themeId] && customTheme && customTheme.background) {
           this.themes[themeId].background = {
             ...this.themes[themeId].background,
             ...customTheme.background,

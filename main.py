@@ -46,7 +46,15 @@ if __name__ == "__main__":
 
     def async_launch():
         log("Launch button clicked - starting async launch thread")
-        threading.Thread(target=asyncio.run, args=(Launch(gui_components, settings, vorpXsettings),)).start()
+        combined_dict = {**gui_components, **settings, **vorpXsettings}
+        
+        threading.Thread(target=asyncio.run, args=(Launch(combined_dict),)).start()
+
+    def launch_from_config():
+        config = load_input_config()
+        launchConfig = {}
+        
+        threading.Thread(target=asyncio.run, args=(Launch(launchConfig),)).start()
 
     interaction['launch_button'].configure(command=async_launch)
 

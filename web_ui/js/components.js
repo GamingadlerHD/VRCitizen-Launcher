@@ -34,7 +34,6 @@ const Components = {
     switchElement.style.backgroundColor = "";
 
     if (setting) {
-      App.gameSettings[setting] = isActive;
       console.log("Setting changed:", setting, isActive);
     }
   },
@@ -45,28 +44,18 @@ const Components = {
     const display = document.getElementById(displayId);
     if (slider && display) {
       display.textContent = slider.value;
-      App.gameSettings[sliderId] = parseInt(slider.value);
     }
   },
 
   // Apply settings to UI elements
   applySettingsToUI(settings) {
-    console.log("Applying settings to UI:", settings);
-
-    // Field mapping for text inputs (handle both old _val suffix and new format)
     const fieldMapping = {
       scPath: "sc-path",
-      "sc-path_val": "sc-path", // Legacy format
       vorpxPath: "vorpx-path",
-      "vorpx-path_val": "vorpx-path", // Legacy format
       launcherPath: "launcher-path",
-      "launcher-path_val": "launcher-path", // Legacy format
       width: "width",
-      width_val: "width", // Legacy format
       height: "height",
-      height_val: "height", // Legacy format
       fov: "fov",
-      fov_val: "fov", // Legacy format
     };
 
     // Apply text inputs
@@ -83,11 +72,11 @@ const Components = {
     // Apply dropdowns
     const dropdownMapping = {
       selectedTemplate: "template-select",
-      "template-select_val": "template-select", // Legacy format
+      "template-select_val": "template-select",
       selectedPreset: "preset-select",
-      "preset-select_val": "preset-select", // Legacy format
+      "preset-select_val": "preset-select",
       headtrackingSource: "headtracking-source",
-      "headtracking-source_val": "headtracking-source", // Legacy format
+      "headtracking-source_val": "headtracking-source",
     };
 
     Object.entries(dropdownMapping).forEach(([settingKey, elementId]) => {
@@ -117,7 +106,6 @@ const Components = {
         } else {
           switchElement.classList.remove("active");
         }
-        App.gameSettings[switchKey] = value;
         console.log(`Set switch ${switchKey} = ${value}`);
       }
     });
@@ -125,15 +113,10 @@ const Components = {
     // Apply sliders
     const sliderMapping = {
       "gforce-boost": "gforce-boost",
-      "gforce-boost_val": "gforce-boost", // Legacy format
       "gforce-bob": "gforce-bob",
-      "gforce-bob_val": "gforce-bob", // Legacy format
       "shake-scale": "shake-scale",
-      "shake-scale_val": "shake-scale", // Legacy format
       "max-zoom": "max-zoom",
-      "max-zoom_val": "max-zoom", // Legacy format
       chromatic: "chromatic",
-      chromatic_val: "chromatic", // Legacy format
     };
 
     Object.entries(sliderMapping).forEach(([settingKey, sliderId]) => {
@@ -150,7 +133,7 @@ const Components = {
 
   // Collect all settings from UI
   collectAllSettings() {
-    return {
+    const settings = {
       scPath: document.getElementById("sc-path")?.value || "",
       vorpxPath: document.getElementById("vorpx-path")?.value || "",
       launcherPath: document.getElementById("launcher-path")?.value || "",
@@ -161,8 +144,33 @@ const Components = {
       fov: document.getElementById("fov")?.value || "",
       headtrackingSource:
         document.getElementById("headtracking-source")?.value || "TrackIR",
-      ...App.gameSettings,
     };
+
+    // Collect boolean settings from switches
+    const switches = document.querySelectorAll(".switch[data-setting]");
+    switches.forEach((switchEl) => {
+      const setting = switchEl.getAttribute("data-setting");
+      if (setting) {
+        settings[setting] = switchEl.classList.contains("active");
+      }
+    });
+
+    // Collect slider values
+    const sliders = [
+      "gforce-boost",
+      "gforce-bob", 
+      "shake-scale",
+      "max-zoom",
+      "chromatic",
+    ];
+    sliders.forEach((sliderId) => {
+      const slider = document.getElementById(sliderId);
+      if (slider) {
+        settings[sliderId] = parseInt(slider.value) || 0;
+      }
+    });
+
+    return settings;
   },
 
   // Reset all form elements
@@ -198,10 +206,6 @@ const Components = {
       switchEl.classList.remove("active");
       // Remove inline styles to let CSS handle theming
       switchEl.style.backgroundColor = "";
-      const setting = switchEl.getAttribute("data-setting");
-      if (setting) {
-        App.gameSettings[setting] = false;
-      }
     });
 
     // Reset sliders

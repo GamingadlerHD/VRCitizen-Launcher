@@ -1,27 +1,21 @@
-// Main Application for Star Citizen VR Launcher
-
 const App = {
   // Application state
   currentPage: "home",
   currentLanguage: "en",
-  gameSettings: {},
   templates: [],
   presets: [],
   themeManager: null,
-  translationManager: null, // Initialize the application
+  translationManager: null,
   async init() {
     console.log("Star Citizen VR Launcher initialized (Component version)");
 
     try {
-      // Initialize translation manager FIRST to load the correct language
       this.translationManager = new TranslationManager();
       await this.translationManager.init();
 
-      // Initialize theme manager after translations are loaded
       this.themeManager = new ThemeManager();
 
-      // Check if this is the first time running or if user wants to change theme
-      const shouldShowThemeSelector = this.shouldShowThemeSelector();
+      const shouldShowThemeSelector = await this.shouldShowThemeSelector();
 
       let userSelectedTheme = false;
       if (shouldShowThemeSelector) {
@@ -30,7 +24,7 @@ const App = {
         userSelectedTheme = true;
       } else {
         // Apply saved theme
-        this.themeManager.applyTheme(this.themeManager.getCurrentTheme());
+        await this.themeManager.applyTheme(await this.themeManager.getCurrentTheme());
       }
 
       // Load navigation component
@@ -56,16 +50,8 @@ const App = {
       setTimeout(async () => {
         try {
           const savedLanguage = await API.getCurrentLanguage();
-          console.log(
-            "Startup language check - saved language:",
-            savedLanguage
-          );
 
           if (savedLanguage && savedLanguage !== "en") {
-            console.log(
-              "Applying non-English language at startup:",
-              savedLanguage
-            );
             await this.changeLanguage(savedLanguage);
           }
         } catch (error) {
@@ -74,7 +60,6 @@ const App = {
       }, 100);
 
       Utils.debugLog("Application initialized successfully");
-      console.log("Application initialization complete");
     } catch (error) {
       Utils.debugLog(`Failed to initialize: ${error.message}`);
       console.error("Failed to initialize application:", error);
@@ -86,28 +71,23 @@ const App = {
   },
 
   // Check if theme selector should be shown
-  shouldShowThemeSelector() {
-    // Show theme selector if:
-    // 1. No theme has been saved (first run)
-    // 2. User explicitly wants to change theme (could be triggered by a setting)
-    const hasSeenThemeSelector = localStorage.getItem(
-      "sc-vr-theme-selector-seen"
-    );
-    const forceThemeSelector = localStorage.getItem(
-      "sc-vr-force-theme-selector"
-    );
+  async shouldShowThemeSelector() {
+    try {
+      // Show theme selector if user hasn't seen it before
+      if (window.API && window.API.getThemeSelectorSeen) {
+        const hasSeenThemeSelector = await window.API.getThemeSelectorSeen();
+        
+        if (!hasSeenThemeSelector) {
+          await window.API.setThemeSelectorSeen(true);
+          return true;
+        }
+      }
 
-    if (forceThemeSelector) {
-      localStorage.removeItem("sc-vr-force-theme-selector");
-      return true;
+      return false;
+    } catch (error) {
+      console.error("Failed to check theme selector status:", error);
+      return false;
     }
-
-    if (!hasSeenThemeSelector) {
-      localStorage.setItem("sc-vr-theme-selector-seen", "true");
-      return true;
-    }
-
-    return false;
   },
 
   // Initialize UI components
@@ -127,25 +107,15 @@ const App = {
   // Load initial settings for theme application only
   async loadInitialSettings(userSelectedTheme = false) {
     try {
-      console.log("Loading initial settings...");
       const settings = await API.getSettings();
 
       if (settings && Object.keys(settings).length > 0) {
-        console.log("Initial settings loaded:", settings);
-
         // Apply theme from settings only if user didn't just select a theme
         if (settings.theme && this.themeManager && !userSelectedTheme) {
-          console.log("Applying saved theme:", settings.theme);
-          this.themeManager.applyTheme(settings.theme);
-        } else if (userSelectedTheme) {
-          console.log(
-            "Skipping saved theme application - user just selected a theme"
-          );
+          await this.themeManager.applyTheme(settings.theme);
         }
 
         Utils.debugLog("Initial settings loaded successfully");
-      } else {
-        console.log("No saved settings found");
       }
     } catch (error) {
       console.error("Failed to load initial settings:", error);
@@ -156,8 +126,6 @@ const App = {
   // Show a specific page
   async showPage(pageName) {
     try {
-      console.log(`Showing page: ${pageName}`);
-
       // Hide current page
       const currentPageElement = document.querySelector(
         ".page-component:not(.hidden)"
@@ -286,10 +254,7 @@ const App = {
   // Load templates
   async loadTemplates() {
     try {
-      console.log("Loading templates...");
       this.templates = await API.getTemplates();
-      console.log("Templates loaded:", this.templates.length);
-      console.log("Template data:", this.templates);
       Utils.debugLog(`Loaded ${this.templates.length} templates`);
     } catch (error) {
       console.error("Failed to load templates:", error);
@@ -317,19 +282,15 @@ const App = {
   // Common settings loading function for all pages
   async loadAndApplySettings(pageName) {
     try {
-      console.log(`Loading settings for ${pageName} page...`);
       const settings = await API.getSettings();
 
       if (settings && Object.keys(settings).length > 0) {
-        console.log(`Applying settings to ${pageName} page:`, settings);
         Components.applySettingsToUI(settings);
 
         // Handle template selection which might trigger preset loading (Home page only)
         if (pageName === "Home" && settings.selectedTemplate) {
           await HomePage.onTemplateSelected(settings.selectedTemplate);
         }
-      } else {
-        console.log(`No settings found for ${pageName} page`);
       }
     } catch (error) {
       console.error(`Failed to load settings for ${pageName} page:`, error);
@@ -339,6 +300,9 @@ const App = {
 
 // Page-specific modules
 const HomePage = {
+  currentAspectRatio: null, // Store current aspect ratio
+  isManualResolution: false, // Track if user manually edited resolution
+
   async init() {
     // Populate template dropdown
     const templateSelect = document.getElementById("template-select");
@@ -393,8 +357,14 @@ const HomePage = {
   },
 
   async onTemplateSelected(templateName) {
+    // Reset aspect ratio and manual mode when template changes
+    this.currentAspectRatio = null;
+    this.isManualResolution = false;
+
     if (!templateName) {
       document.getElementById("fov").value = "";
+      document.getElementById("width").value = "";
+      document.getElementById("height").value = "";
       document.getElementById("preset-select").innerHTML =
         '<option value="">No Preset</option>';
       return;
@@ -412,12 +382,24 @@ const HomePage = {
       const presetSelect = document.getElementById("preset-select");
       if (presetSelect) {
         presetSelect.innerHTML = '<option value="">No Preset</option>';
+
+        // Add a "Custom" option for manual resolution
+        const customOption = document.createElement("option");
+        customOption.value = "custom";
+        customOption.textContent = "Custom";
+        presetSelect.appendChild(customOption);
+
+        // Add preset options
         App.presets.forEach((preset) => {
           const option = document.createElement("option");
           option.value = preset.name;
           option.textContent = preset.name;
           presetSelect.appendChild(option);
         });
+
+        // Clear resolution fields when template changes
+        document.getElementById("width").value = "";
+        document.getElementById("height").value = "";
       }
     } catch (error) {
       console.error("Failed to load presets:", error);
@@ -425,33 +407,58 @@ const HomePage = {
   },
 
   onPresetSelected(presetName) {
-    if (!presetName) return;
+    if (!presetName) {
+      this.currentAspectRatio = null;
+      this.isManualResolution = false;
+      return;
+    }
+
+    // Handle "Custom" option
+    if (presetName === "custom") {
+      this.currentAspectRatio = null;
+      this.isManualResolution = true;
+      return;
+    }
 
     const preset = App.presets.find((p) => p.name === presetName);
-    if (preset) {
+    if (preset && preset.width && preset.height) {
+      // Set the resolution values
       document.getElementById("width").value = preset.width;
       document.getElementById("height").value = preset.height;
+
+      // Calculate and store aspect ratio
+      this.currentAspectRatio = preset.width / preset.height;
+      this.isManualResolution = false;
     }
   },
 
   onResolutionChange(changedField) {
     const widthInput = document.getElementById("width");
     const heightInput = document.getElementById("height");
-    const presetSelect = document.getElementById("preset-select");
 
-    if (!widthInput.value || !heightInput.value) return;
+    const width = parseInt(widthInput.value) || 0;
+    const height = parseInt(heightInput.value) || 0;
 
-    const width = parseInt(widthInput.value);
-    const height = parseInt(heightInput.value);
+    // If we're in manual/custom mode, don't calculate aspect ratio
+    if (this.isManualResolution) {
+      return;
+    }
 
-    // Check if current resolution matches any preset
-    const matchingPreset = App.presets.find(
-      (p) => p.width === width && p.height === height
-    );
-    if (matchingPreset) {
-      presetSelect.value = matchingPreset.name;
-    } else {
-      presetSelect.value = "";
+    if (!width || !height || !this.currentAspectRatio) {
+      return;
+    }
+
+    // Calculate the other dimension based on aspect ratio
+    if (changedField === "width" && width > 0) {
+      const calculatedHeight = Math.round(width / this.currentAspectRatio);
+      if (calculatedHeight !== height) {
+        heightInput.value = calculatedHeight;
+      }
+    } else if (changedField === "height" && height > 0) {
+      const calculatedWidth = Math.round(height * this.currentAspectRatio);
+      if (calculatedWidth !== width) {
+        widthInput.value = calculatedWidth;
+      }
     }
   },
 
@@ -511,7 +518,7 @@ const HomePage = {
 
       // Add current theme to settings
       if (App.themeManager) {
-        config.theme = App.themeManager.getCurrentTheme();
+        config.theme = await App.themeManager.getCurrentTheme();
       }
 
       const result = await API.saveSettings(config);
@@ -616,13 +623,27 @@ const HomePage = {
       );
     }
   },
+
+  // Show theme selector modal
+  async showThemeSelector() {
+    try {
+      if (this.themeManager) {
+        await this.themeManager.showThemeSelector();
+      }
+    } catch (error) {
+      console.error("Failed to show theme selector:", error);
+      Utils.showToast(
+        this.translationManager
+          ? this.translationManager.get("theme_selector_error", "Failed to open theme selector")
+          : "Failed to open theme selector",
+        "error"
+      );
+    }
+  },
 };
 
 const SettingsPage = {
   async init() {
-    console.log("Settings page initialized");
-
-    // Load and apply current settings every time settings page is loaded
     await App.loadAndApplySettings("Settings");
   },
 
@@ -687,8 +708,6 @@ const SettingsPage = {
 
 const VorpXPage = {
   async init() {
-    console.log("VorpX page initialized");
-
     // Load and apply current settings every time VorpX page is loaded
     await App.loadAndApplySettings("VorpX");
   },
@@ -696,7 +715,8 @@ const VorpXPage = {
 
 const InfoPage = {
   async init() {
-    console.log("Info page initialized");
+    // Load and apply current settings when Info page is loaded
+    await App.loadAndApplySettings("Info");
   },
 
   openUrl(url) {

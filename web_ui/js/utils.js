@@ -41,14 +41,6 @@ const Utils = {
     }
   },
 
-  // Clear debug log
-  clearDebugLog() {
-    const debugLog = document.getElementById("debug-log");
-    if (debugLog) {
-      debugLog.innerHTML = "";
-    }
-  },
-
   // Show toast notification
   showToast(message, type = "info") {
     const container = document.getElementById("toast-container");

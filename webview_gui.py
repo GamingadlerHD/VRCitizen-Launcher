@@ -81,6 +81,24 @@ class WebViewAPI:
             error(f"Failed to browse folder: {e}")
             return None
     
+    def browse_file(self, extensions=None):
+        """Open file browser dialog"""
+        try:
+            # Note: extensions parameter is kept for API compatibility but not currently used
+            # due to webview file filter compatibility issues
+            result = webview.windows[0].create_file_dialog(
+                webview.OPEN_DIALOG,
+                directory=os.path.expanduser('~')
+            )
+            if result and len(result) > 0:
+                file_path = result[0]
+                log(f"Selected file: {file_path}")
+                return file_path
+            return None
+        except Exception as e:
+            error(f"Failed to browse file: {e}")
+            return None
+    
     def get_templates(self):
         """Get available VR templates"""
         try:
@@ -185,6 +203,84 @@ class WebViewAPI:
         except Exception as e:
             error(f"Failed to get settings: {e}")
             return {}
+    
+    def list_theme_files(self):
+        """Get list of all theme JSON files in the themes directory"""
+        try:
+            themes_dir = os.path.join(os.path.dirname(__file__), 'web_ui', 'themes')
+            if not os.path.exists(themes_dir):
+                log("Themes directory not found")
+                return []
+            
+            theme_files = []
+            for filename in os.listdir(themes_dir):
+                if filename.endswith('.json'):
+                    theme_files.append(filename)
+            
+            log(f"Found {len(theme_files)} theme files: {theme_files}")
+            return theme_files
+        except Exception as e:
+            error(f"Failed to list theme files: {e}")
+            return []
+    
+    def get_saved_theme(self):
+        """Get the saved theme from config"""
+        try:
+            config = get_config()
+            return config.get('theme', 'default')
+        except Exception as e:
+            error(f"Failed to get saved theme: {e}")
+            return 'default'
+    
+    def save_theme(self, theme_id):
+        """Save the current theme to config"""
+        try:
+            add_or_change_value_in_config('theme', theme_id)
+            log(f"Saved theme: {theme_id}")
+            return True
+        except Exception as e:
+            error(f"Failed to save theme: {e}")
+            return False
+    
+    def get_theme_customization(self, theme_id):
+        """Get theme customization data"""
+        try:
+            config = get_config()
+            custom_key = f'theme_{theme_id}_custom'
+            return config.get(custom_key, {})
+        except Exception as e:
+            error(f"Failed to get theme customization: {e}")
+            return {}
+    
+    def save_theme_customization(self, theme_id, customization_data):
+        """Save theme customization data"""
+        try:
+            custom_key = f'theme_{theme_id}_custom'
+            add_or_change_value_in_config(custom_key, customization_data)
+            log(f"Saved theme customization for {theme_id}")
+            return True
+        except Exception as e:
+            error(f"Failed to save theme customization: {e}")
+            return False
+    
+    def get_theme_selector_seen(self):
+        """Check if theme selector has been seen"""
+        try:
+            config = get_config()
+            return config.get('theme_selector_seen', False)
+        except Exception as e:
+            error(f"Failed to get theme selector seen status: {e}")
+            return False
+    
+    def set_theme_selector_seen(self, seen=True):
+        """Set theme selector seen status"""
+        try:
+            add_or_change_value_in_config('theme_selector_seen', seen)
+            log(f"Set theme selector seen: {seen}")
+            return True
+        except Exception as e:
+            error(f"Failed to set theme selector seen: {e}")
+            return False
 
 def create_window():
     """Create the main webview window"""

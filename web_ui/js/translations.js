@@ -8,7 +8,6 @@ class TranslationManager {
 
   async init() {
     // Initialize with English as default
-    // The actual saved language will be applied by App.changeLanguage() after full initialization
     this.currentLanguage = "en";
     this.translations = {};
     console.log("Translation manager initialized with default English");
@@ -26,15 +25,6 @@ class TranslationManager {
         if (result.success && result.data) {
           this.translations = result.data;
           this.currentLanguage = languageCode;
-
-          console.log(
-            "Loaded translations:",
-            Object.keys(this.translations).length,
-            "keys"
-          );
-
-          // Save language preference to both localStorage and backend config
-          localStorage.setItem("sc-vr-language", languageCode);
 
           // Update backend language (this also saves to config)
           await API.changeLanguage(languageCode);
@@ -61,7 +51,6 @@ class TranslationManager {
       }
     } catch (error) {
       console.error(`Failed to set language to ${languageCode}:`, error);
-      // Apply translations anyway to use fallbacks
       this.applyTranslations();
       return false;
     }
@@ -155,26 +144,6 @@ class TranslationManager {
 
   getCurrentLanguage() {
     return this.currentLanguage;
-  }
-
-  getAvailableLanguages() {
-    return [
-      { code: "en", name: "English", nativeName: "English" },
-      { code: "de", name: "German", nativeName: "Deutsch" },
-      { code: "it", name: "Italian", nativeName: "Italiano" },
-      { code: "es", name: "Spanish", nativeName: "Español" },
-      { code: "ru", name: "Russian", nativeName: "русский" },
-      { code: "fr", name: "French", nativeName: "français" },
-    ];
-  }
-
-  // Utility method to translate and set text content of an element
-  translateElement(elementId, translationKey, fallback = null) {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const translation = this.get(translationKey, fallback);
-      element.textContent = translation;
-    }
   }
 }
 

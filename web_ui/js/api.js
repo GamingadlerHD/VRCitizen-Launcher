@@ -184,4 +184,105 @@ const API = {
       console.error("Failed to open URL:", error);
     }
   },
+
+  // Get list of theme files
+  async listThemeFiles() {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.list_theme_files();
+      } else {
+        console.log("Theme file listing not available in preview mode");
+        return [];
+      }
+    } catch (error) {
+      console.error("Failed to list theme files:", error);
+      return [];
+    }
+  },
+
+  // Theme persistence methods
+  async getSavedTheme() {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.get_saved_theme();
+      } else {
+        console.log("Theme persistence not available in preview mode");
+        return 'default';
+      }
+    } catch (error) {
+      console.error("Failed to get saved theme:", error);
+      return 'default';
+    }
+  },
+
+  async saveTheme(themeId) {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.save_theme(themeId);
+      } else {
+        console.log("Theme saving not available in preview mode");
+        return false;
+      }
+    } catch (error) {
+      console.error("Failed to save theme:", error);
+      return false;
+    }
+  },
+
+  async getThemeCustomization(themeId) {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.get_theme_customization(themeId);
+      } else {
+        console.log("Theme customization not available in preview mode");
+        return {};
+      }
+    } catch (error) {
+      console.error("Failed to get theme customization:", error);
+      return {};
+    }
+  },
+
+  async saveThemeCustomization(themeId, customizationData) {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.save_theme_customization(themeId, customizationData);
+      } else {
+        console.log("Theme customization saving not available in preview mode");
+        return false;
+      }
+    } catch (error) {
+      console.error("Failed to save theme customization:", error);
+      return false;
+    }
+  },
+
+  async getThemeSelectorSeen() {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.get_theme_selector_seen();
+      } else {
+        console.log("Theme selector status not available in preview mode");
+        return false;
+      }
+    } catch (error) {
+      console.error("Failed to get theme selector seen status:", error);
+      return false;
+    }
+  },
+
+  async setThemeSelectorSeen(seen = true) {
+    try {
+      if (this.isAvailable()) {
+        return await window.pywebview.api.set_theme_selector_seen(seen);
+      } else {
+        console.log("Theme selector status setting not available in preview mode");
+        return false;
+      }
+    } catch (error) {
+      console.error("Failed to set theme selector seen status:", error);
+      return false;
+    }
+  },
+
 };

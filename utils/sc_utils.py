@@ -9,13 +9,13 @@ from i18n import translate
 from constants import HOSTS_FILE, DXGI_DLL, EASY_ANTICHEAT_FOLDER
 from logs import log, warn, error
 
-async def Launch(ui_elements, launcher_settings, vorpx_settings):
-    sc_folder_path = ui_elements['sc_entry'].get()
-    vorpx_path = ui_elements['vorpx_entry'].get()
-    launcher_path = ui_elements['launcher_entry'].get()
-    stay_in_vr = ui_elements['stay_in_vr'].get()
-    additional_popups = ui_elements['additional_popup'].get()
-    use_dxgi = bool(ui_elements['use_dxgi'].get())
+async def Launch(settings):
+    sc_folder_path = settings['sc_entry'].get()
+    vorpx_path = settings['vorpx_entry'].get()
+    launcher_path = settings['launcher_entry'].get()
+    stay_in_vr = settings['stay_in_vr'].get()
+    additional_popups = settings['additional_popup'].get()
+    use_dxgi = bool(settings['use_dxgi'].get())
 
     log("Launch parameters:")
     log(f"  SC Folder: {sc_folder_path}")
@@ -101,11 +101,11 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
     log("All path validations passed successfully")
     
     # Resolution validation
-    width = int(ui_elements['width_entry'].get())
-    height = int(ui_elements['height_entry'].get())
+    width = int(settings['width_entry'].get())
+    height = int(settings['height_entry'].get())
     
     if not fits_on_any_monitor(width, height):
-        if not ui_elements['ign_res_warning'].get():
+        if not settings['ign_res_warning'].get():
             warn(f"Resolution {width}x{height} does not fit on any monitor")
             messagebox.showerror(
                 translate("error_title"), 
@@ -119,7 +119,6 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
     log("Starting main launch sequence...")
     
     try:
-        doneStepID = 0
         # 1 = modify hosts file
         # 2 = paste dxgi.dll
         # 3 = start vorpX
@@ -131,11 +130,9 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
         vorpx_proc_name = os.path.basename(vorpx_path)
     
         try:
-            if (additional_popups):
-                messagebox.showinfo(translate("info_title"), translate("modifying_hosts"))
-            backup_file(HOSTS_FILE)
-            modify_hosts(add=True)
-            doneStepID += 1
+            if (settings["noBypass"] is False):
+                backup_file(HOSTS_FILE)
+                modify_hosts(add=True)
 
             # Step 2: Apply DXGI hook if needed
             if (use_dxgi is True):
@@ -145,12 +142,11 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                         translate("pasting_dxgi")
                     )
                 apply_hook_helper(dxgi_dest_path, Add=True)
-                doneStepID += 1
             
             # Step 3: Prepare VorpX
-            keepKeybinds = vorpx_settings['keep_keybinds'].get()
-            template_name = ui_elements['template_dropdown'].get()
-            custom_config = vorpx_settings["custom_config"].get()
+            keepKeybinds = settings['keep_keybinds'].get()
+            template_name = settings['template_dropdown'].get()
+            custom_config = settings["custom_config"].get()
             
             log(f"VorpX settings - Template: {template_name}, Custom Config: {custom_config}, Keep Keybinds: {keepKeybinds}")
             await PrepareVorpX(vorpx_path, template_name, custom_config, keepKeybinds)
@@ -166,23 +162,21 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 log("VorpX launched successfully")
             else:
                 log(f"VorpX already running: {vorpx_proc_name}")
-            doneStepID += 1
 
             # Step 4: Update attributes file
             backup_file(attr_orig_path)
             
             # Update view attributes
             view_attr = {
-                'Width': ui_elements['width_entry'].get(), 
-                'Height': ui_elements['height_entry'].get(), 
-                'FOV': ui_elements['fov_entry'].get()
+                'Width': settings['width_entry'].get(), 
+                'Height': settings['height_entry'].get(), 
+                'FOV': settings['fov_entry'].get()
             }
-            doneStepID += 1
             update_xml_by_dict(attr_orig_path, view_attr)
 
             # Update launcher settings
             stVal = {}
-            for component_name, component_value in launcher_settings.items():
+            for component_name, component_value in settings.items():
                 stVal[component_name] = component_value.get()
             update_xml_by_dict(attr_orig_path, stVal)
 
@@ -195,30 +189,24 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 )
             await wait_for_process(vorpx_proc_name)
             log("VorpX is now running and ready")
-
-            if (additional_popups):
-                messagebox.showinfo(
-                    translate("info_title"), 
-                    translate("deleting_eac")
-                )
         
-            if not os.path.isdir(eac_folder_path):
-                log("EAC folder does not exist - already removed or not present")
-                if (additional_popups):
-                    messagebox.showinfo(
-                        translate("info_title"), 
-                        translate("eac_already_removed")
-                    )
-            else:
-                log(f"Removing EAC folder: {eac_folder_path}")
-                try:
-                    shutil.rmtree(eac_folder_path, ignore_errors=True)
-                    log("EAC folder removed successfully")
+            if (settings["noBypass"] is False):
+                if not os.path.isdir(eac_folder_path):
+                    log("EAC folder does not exist - already removed or not present")
                     if (additional_popups):
-                        messagebox.showinfo(translate("info_title"), translate("eac_removed"))
-                except Exception as e:
-                    warn(f"Failed to remove EAC folder: {e}")
-            doneStepID += 1
+                        messagebox.showinfo(
+                            translate("info_title"), 
+                            translate("eac_already_removed")
+                        )
+                else:
+                    log(f"Removing EAC folder: {eac_folder_path}")
+                    try:
+                        shutil.rmtree(eac_folder_path, ignore_errors=True)
+                        log("EAC folder removed successfully")
+                        if (additional_popups):
+                            messagebox.showinfo(translate("info_title"), translate("eac_removed"))
+                    except Exception as e:
+                        warn(f"Failed to remove EAC folder: {e}")
             
             launch_process(launcher_path)
             if (additional_popups):
@@ -241,7 +229,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 log("Waiting for Star Citizen to exit...")
                 await wait_for_exit(sc_proc_name)
                 log("Star Citizen has exited, initiating cleanup")
-                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
+                quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, 999)
             else:
                 log("Stay in VR mode disabled - launch sequence complete")
                 
@@ -253,7 +241,7 @@ async def Launch(ui_elements, launcher_settings, vorpx_settings):
                 translate("error_title"), 
                 translate("error_occurred_revert").format(e=e)
             )
-            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, doneStepID)
+            quit_vr_mode(vorpx_proc_name, dxgi_dest_path, attr_orig_path, additional_popups, 999)
 
     except Exception as e:
         error(f"ECL1007: Critical error in launch operation: {e}")
